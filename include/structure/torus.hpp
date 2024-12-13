@@ -1,5 +1,8 @@
 #include <cstdint>
 
+#ifndef TORUS_HPP
+#define TORUS_HPP
+
 class DiscreteTorus {
   private:
     uint32_t x;
@@ -50,3 +53,4 @@ class DiscreteTorus {
   }
 };
 
+#endif 

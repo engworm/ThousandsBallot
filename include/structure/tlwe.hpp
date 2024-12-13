@@ -2,30 +2,38 @@
 #include <vector>
 #include "torus.hpp"
 
-class TLWE {
+#ifndef TLWE_HPP
+#define TLWE_HPP
+
+class DiscreteTLWE {
   private:
     int n;
     std::uint32_t prime;
-    std::vector<DiscreteTorus> x;
+    std::vector<DiscreteTorus> v;
 
   public:
-  TLWE(int n, std::uint32_t prime) : n(n), prime(prime) { return; };
-  TLWE(const TLWE &tlwe);
-  DiscreteTorus operator[](int i) const { return x[i]; };
-  int len() { return this->n+1; };
+    DiscreteTLWE(std::vector<DiscreteTorus> v, std::uint32_t prime) : v(v), prime(prime) { 
+      n = v.size()-1;
+      return; 
+    };
+    DiscreteTLWE(const DiscreteTLWE &tlwe);
+    DiscreteTorus operator[](int i) const { return v[i]; };
+    int len() { return this->n+1; };
 
 };
 
-TLWE::TLWE(const TLWE &tlwe) {
+DiscreteTLWE::DiscreteTLWE(const DiscreteTLWE &tlwe) {
   n = tlwe.n;
   prime = tlwe.prime;
-  x = tlwe.x;
+  v = tlwe.v;
 }
 
-TLWE operator+(const TLWE &a, const TLWE &b) {
-  TLWE c = a;
+DiscreteTLWE operator+(const DiscreteTLWE &a, const DiscreteTLWE &b) {
+  DiscreteTLWE c = a;
   for (int i = 0; i < c.len(); ++i) {
     c[i] += b[i];
   }
   return c;
 };
+
+#endif	

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "include/structure/torus.hpp"
+#include "include/structure/tlwe.hpp"
 
 int main() {
 
@@ -13,5 +14,12 @@ int main() {
 
   DiscreteTorus e = 3 * b;
   std::cout << e.val() << std::endl;
+
+  std::vector<DiscreteTorus> A;
+  A.emplace_back(0, P);
+  A.emplace_back(1, P);
+  A.emplace_back(2, P);
+
+  DiscreteTLWE x(A, P);
   return 0;
 }
