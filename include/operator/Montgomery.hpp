@@ -31,18 +31,19 @@ uint32_t invReprMontgomery(uint32_t X) {
   return r >> 18;
 }
 
-uint32_t mulMontgomery(uint32_t X, uint32_t Y) {
-  uint32_t c = X*Y;
-  uint32_t r = c + Consts::P*((Consts::mu*c) & 0x3FFFF); // c + Consts::P*((Consts::mu*c)%Consts::R);
-  return r >> 18;
-}
-
 uint32_t redcMontgomery(uint32_t x) {
   uint32_t q = Consts::mu*(x & 0x3FFFF) & 0x3FFFF; // Consts::mu*(x%Consts::R)%Consts::R;
   uint32_t r = (x + Consts::P*q) >> 18;
   if (r >= Consts::P) {
     r -= Consts::P;
   }
+  return r;
+}
+
+// 実際には ΧΥ < 2^{32}となるような場合しかない
+// overflowは生じない
+uint32_t mulMontgomery(uint32_t X, uint32_t Y) {
+  uint32_t r = redcMontgomery(X*Y);
   return r;
 }
 

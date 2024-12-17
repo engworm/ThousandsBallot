@@ -6,11 +6,11 @@
 
 int main() {
 
-  DiscreteTorus a(Consts::P-11), b(10);
+  DiscreteTorus a(Consts::P-30), b(10);
   DiscreteTorus c = a + b;
   std::cout << c.val() << std::endl;
 
-  DiscreteTorus d = 3 * a;
+  DiscreteTorus d = 100 * a;
   std::cout << d.val() << std::endl;
 
   // DiscreteTorus e = 3 * b;
@@ -28,10 +28,10 @@ int main() {
     return -1;
   }
 
-  uint32_t x = reprMontgomery(Consts::P-11);
-  uint32_t y = reprMontgomery(3);
+  uint32_t x = reprMontgomery(Consts::P-30);
+  uint32_t y = reprMontgomery(100);
   uint32_t z = invReprMontgomery(mulMontgomery(x, y));
   std::cout << z << std::endl;
-  std::cout << ((Consts::P-11)*3) % Consts::P << std::endl;
+  std::cout << ((Consts::P-30)*100) % Consts::P << std::endl;
   return 0;
 }
