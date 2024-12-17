@@ -4,8 +4,7 @@
 
 int main() {
 
-  constexpr int32_t P = 7;
-  DiscreteTorus a(3, P), b(10, P);
+  DiscreteTorus a(3), b(10);
   DiscreteTorus c = a + b;
   std::cout << c.val() << std::endl;
 
@@ -16,10 +15,10 @@ int main() {
   std::cout << e.val() << std::endl;
 
   std::vector<DiscreteTorus> A;
-  A.emplace_back(0, P);
-  A.emplace_back(1, P);
-  A.emplace_back(2, P);
+  A.emplace_back(0);
+  A.emplace_back(1);
+  A.emplace_back(2);
 
-  DiscreteTLWE x(A, P);
+  DiscreteTLWE x(A);
   return 0;
 }

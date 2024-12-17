@@ -1,4 +1,5 @@
 #include <cstdint>
+#include "params/params.hpp"
 
 #ifndef TORUS_HPP
 #define TORUS_HPP
@@ -6,11 +7,11 @@
 class DiscreteTorus {
   private:
     uint32_t x;
-    uint32_t prime;
+    uint32_t prime = Params::P;
 
   public:
     DiscreteTorus();
-    DiscreteTorus(uint32_t x, uint32_t prime) : x(x), prime(prime) {
+    DiscreteTorus(uint32_t x) : x(x) {
       this->x = modP(x);
       return;
       };

@@ -6,4 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_COMPILER /usr/local/bin/g++)
 
+include_directories(.)
+
 add_executable(main main.cpp)
