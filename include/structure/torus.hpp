@@ -1,5 +1,6 @@
 #include <cstdint>
 #include "params/params.hpp"
+#include "include/operator/Montgomery.hpp"
 
 #ifndef TORUS_HPP
 #define TORUS_HPP
@@ -27,18 +28,15 @@ class DiscreteTorus {
     };
 
     void operator*=(const uint32_t c) {
-      uint64_t tmp = this->x * c;
-      this->x = modP(tmp);
+      uint32_t X = reprMontgomery(this->x);
+      uint32_t C = reprMontgomery(c);
+      this->x = invReprMontgomery(mulMontgomery(X, C));
       return;
     };
 
     // should replace it to faster algo
     uint32_t modP(uint32_t x) {
-      return x % prime; 
-    }
-
-    uint32_t modP(uint64_t x) {
-      return x % prime; 
+      return x%prime; 
     }
 
   friend DiscreteTorus operator+(const DiscreteTorus &t1, const DiscreteTorus &t2) {

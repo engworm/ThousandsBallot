@@ -22,18 +22,27 @@ uint32_t constMontgomery() {
 }
 
 uint32_t reprMontgomery(uint32_t x) {
-  int32_t r = (x*Consts::R)%Consts::P;
+  int32_t r = (x << 18)%Consts::P; // (x*Consts::R)%Consts::P;
   return r;
 }
 
-uint32_t invReprMontgomery(uint32_t x) {
-  uint32_t r = x + Consts::P*((Consts::mu*x)%Consts::R);
-  return r/Consts::R;
+uint32_t invReprMontgomery(uint32_t X) {
+  uint32_t r = X + Consts::P*((Consts::mu*X) & 0x3FFFF);   // X + P*((mu*X)%R)
+  return r >> 18;
 }
 
-uint32_t mulMontgomery(uint32_t a, uint32_t b) {
-  uint32_t c = a*b;
-  int32_t r = (c + Consts::P*((Consts::mu*c)%Consts::R))/Consts::R;
+uint32_t mulMontgomery(uint32_t X, uint32_t Y) {
+  uint32_t c = X*Y;
+  uint32_t r = c + Consts::P*((Consts::mu*c) & 0x3FFFF); // c + Consts::P*((Consts::mu*c)%Consts::R);
+  return r >> 18;
+}
+
+uint32_t redcMontgomery(uint32_t x) {
+  uint32_t q = Consts::mu*(x & 0x3FFFF) & 0x3FFFF; // Consts::mu*(x%Consts::R)%Consts::R;
+  uint32_t r = (x + Consts::P*q) >> 18;
+  if (r >= Consts::P) {
+    r -= Consts::P;
+  }
   return r;
 }
 
