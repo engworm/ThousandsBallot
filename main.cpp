@@ -1,6 +1,8 @@
 #include <iostream>
+#include "params/params.hpp"
 #include "include/structure/torus.hpp"
 #include "include/structure/tlwe.hpp"
+#include "include/operator/Montgomery.hpp"
 
 int main() {
 
@@ -19,6 +21,16 @@ int main() {
   A.emplace_back(1);
   A.emplace_back(2);
 
-  DiscreteTLWE x(A);
+  // DiscreteTLWE x(A);
+
+  if (Consts::mu != constMontgomery()) {
+    std::cerr << "something wrong!" << std::endl;
+    return -1;
+  }
+
+  uint32_t x = reprMontgomery(Consts::P-1);
+  uint32_t y = reprMontgomery(10);
+  uint32_t z = mulMontgomery(x, y);
+  std::cout << invReprMontgomery(z) << std::endl;
   return 0;
 }

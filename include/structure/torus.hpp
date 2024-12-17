@@ -7,7 +7,7 @@
 class DiscreteTorus {
   private:
     uint32_t x;
-    uint32_t prime = Params::P;
+    uint32_t prime = Consts::P;
 
   public:
     DiscreteTorus();
