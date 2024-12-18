@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <boost/multiprecision/cpp_int.hpp>
 
 #ifndef PARAMS_HPP
 #define PARAMS_HPP

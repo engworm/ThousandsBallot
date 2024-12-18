@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdint>
+#include <bit>
 #include "params/params.hpp"
 
 #ifndef MONTGOMERY_HPP
@@ -22,18 +23,18 @@ uint32_t constMontgomery() {
 }
 
 uint32_t reprMontgomery(uint32_t x) {
-  int32_t r = (x << 18)%Consts::P; // (x*Consts::R)%Consts::P;
+  int32_t r = (x << std::countr_zero(Consts::R))%Consts::P; // (x*R)%P;
   return r;
 }
 
 uint32_t invReprMontgomery(uint32_t X) {
-  uint32_t r = X + Consts::P*((Consts::mu*X) & 0x3FFFF);   // X + P*((mu*X)%R)
-  return r >> 18;
+  uint32_t r = X + Consts::P*((Consts::mu*X) & (Consts::R-1));   // X + P*((mu*X)%R)
+  return r >> std::countr_zero(Consts::R);
 }
 
 uint32_t redcMontgomery(uint32_t x) {
-  uint32_t q = Consts::mu*(x & 0x3FFFF) & 0x3FFFF; // Consts::mu*(x%Consts::R)%Consts::R;
-  uint32_t r = (x + Consts::P*q) >> 18;
+  uint32_t q = Consts::mu*(x & (Consts::R-1)) & (Consts::R-1); // mu*(x%R)%R;
+  uint32_t r = (x + Consts::P*q) >> std::countr_zero(Consts::R);
   if (r >= Consts::P) {
     r -= Consts::P;
   }

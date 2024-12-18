@@ -1,4 +1,5 @@
 #include <iostream>
+#include <boost/multiprecision/cpp_int.hpp>
 #include "params/params.hpp"
 #include "include/structure/torus.hpp"
 #include "include/structure/tlwe.hpp"
@@ -10,18 +11,8 @@ int main() {
   DiscreteTorus c = a + b;
   std::cout << c.val() << std::endl;
 
-  DiscreteTorus d = 100 * a;
+  DiscreteTorus d = 10 * a;
   std::cout << d.val() << std::endl;
-
-  // DiscreteTorus e = 3 * b;
-  // std::cout << e.val() << std::endl;
-
-  // std::vector<DiscreteTorus> A;
-  // A.emplace_back(0);
-  // A.emplace_back(1);
-  // A.emplace_back(2);
-
-  // DiscreteTLWE x(A);
 
   if (Consts::mu != constMontgomery()) {
     std::cerr << "something wrong!" << std::endl;
@@ -29,9 +20,9 @@ int main() {
   }
 
   uint32_t x = reprMontgomery(Consts::P-30);
-  uint32_t y = reprMontgomery(100);
+  uint32_t y = reprMontgomery(10);
   uint32_t z = invReprMontgomery(mulMontgomery(x, y));
   std::cout << z << std::endl;
-  std::cout << ((Consts::P-30)*100) % Consts::P << std::endl;
+  std::cout << ((Consts::P-30)*10) % Consts::P << std::endl;
   return 0;
 }
