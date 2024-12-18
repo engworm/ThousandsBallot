@@ -7,17 +7,20 @@
 
 int main() {
 
+  std::cout << "P: " << Consts::P << std::endl;
+  std::cout << "R: " << Consts::R << std::endl;
+  std::cout << "mu: " << Consts::mu << std::endl;
+  if (Consts::mu != constMontgomery()) {
+    std::cerr << "Error: Montgomery constant mismatch. Expected: " << constMontgomery() << ", but got: " << Consts::mu << std::endl;
+    return -1;
+  }
+
   DiscreteTorus a(Consts::P-30), b(10);
   DiscreteTorus c = a + b;
   std::cout << c.val() << std::endl;
 
   DiscreteTorus d = 10 * a;
   std::cout << d.val() << std::endl;
-
-  if (Consts::mu != constMontgomery()) {
-    std::cerr << "something wrong!" << std::endl;
-    return -1;
-  }
 
   uint32_t x = reprMontgomery(Consts::P-30);
   uint32_t y = reprMontgomery(10);
