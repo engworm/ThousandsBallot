@@ -18,20 +18,20 @@ std::pair<int32_t, int32_t> extendedEuclidean(uint32_t a, uint32_t b) {
 
 // Compute μ = -P^{-1} mod R
 uint32_t constMontgomeryMu() {
-  int32_t r = extendedEuclidean(Consts::R, Consts::P).second;
-  return (uint32_t)(Consts::R - r);
+  int32_t r = extendedEuclidean(MontgomeryParams::R, Params::P).second;
+  return (uint32_t)(MontgomeryParams::R - r);
 }
 
 uint32_t constMontgomeryR2() {
-  uint64_t r2 = ((uint64_t)Consts::R * Consts::R);
-  return r2 % Consts::P;
+  uint64_t r2 = ((uint64_t)MontgomeryParams::R * MontgomeryParams::R);
+  return r2 % Params::P;
 }
 
 uint32_t redcMontgomery(uint64_t x) {
-  uint32_t q = Consts::mu*(x & (Consts::R-1)) & (Consts::R-1); // mu*(x%R)%R;
-  uint32_t r = (x + Consts::P*q) >> std::countr_zero(Consts::R);
-  if (r >= Consts::P) {
-    r -= Consts::P;
+  uint32_t q = MontgomeryParams::mu*(x & (MontgomeryParams::R-1)) & (MontgomeryParams::R-1); // mu*(x%R)%R;
+  uint32_t r = (x + Params::P*q) >> std::countr_zero(MontgomeryParams::R);
+  if (r >= Params::P) {
+    r -= Params::P;
   }
   return r;
 }
@@ -42,7 +42,7 @@ uint32_t mulMontgomery(uint32_t X, uint32_t Y) {
 }
 
 uint32_t reprMontgomery(uint32_t x) {
-  return mulMontgomery(x, Consts::R2);
+  return mulMontgomery(x, MontgomeryParams::R2);
 }
 
 uint32_t invReprMontgomery(uint32_t X) {

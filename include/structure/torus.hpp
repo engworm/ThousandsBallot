@@ -8,7 +8,7 @@
 class DiscreteTorus {
   private:
     uint32_t x;
-    uint32_t p = Consts::P;
+    uint32_t p = Params::P;
 
   public:
     DiscreteTorus();

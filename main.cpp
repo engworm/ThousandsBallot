@@ -8,27 +8,29 @@
 
 int main(int argc, char* argv[]) {
 
-  Consts::P = static_cast<uint32_t>(std::stoul(argv[1]));
-  Consts::R = static_cast<uint32_t>(1 << std::stol(argv[2]));
-  Consts::mu = constMontgomeryMu();
-  Consts::R2 = constMontgomeryR2();
-  Log::print(Log::LogLevel::INFO, "P =", Consts::P);
-  Log::print(Log::LogLevel::INFO, "R =", Consts::R);
-  Log::print(Log::LogLevel::INFO, "mu =", Consts::mu);
+  Params::P = static_cast<uint32_t>(std::stoul(argv[1]));
+  Params::n = static_cast<uint32_t>(std::stoul(argv[2]));
+  MontgomeryParams::R = static_cast<uint32_t>(1 << std::stol(argv[3]));
+  MontgomeryParams::mu = constMontgomeryMu();
+  MontgomeryParams::R2 = constMontgomeryR2();
+  Log::print(Log::LogLevel::INFO, "P =", Params::P);
+  Log::print(Log::LogLevel::INFO, "n =", Params::n);
+  Log::print(Log::LogLevel::INFO, "R =", MontgomeryParams::R);
+  Log::print(Log::LogLevel::INFO, "mu =", MontgomeryParams::mu);
 
-  if (((uint64_t)Consts::mu*Consts::P)%Consts::R != Consts::R-1) {
-     std::cerr << "Error: Montgomery constant mismatch. Expected: " << Consts::R - 1 << ", but got: " << ((uint64_t)Consts::mu*Consts::P)%Consts::R << std::endl;
-        return -1;
+  if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
+    Log::print(Log::LogLevel::ERROR, "Error: Montgomery constant mismatch.");
+    return -1;
   }
 
-  DiscreteTorus a(Consts::P-30), b(10);
+  DiscreteTorus a(Params::P-30), b(10);
   DiscreteTorus c = a + b;
   Log::print(Log::LogLevel::INFO, "c, a:", c, a);
 
   DiscreteTorus d = 8 * a;
   Log::print(Log::LogLevel::INFO, "d:", d);
 
-  Log::print(Log::LogLevel::INFO, "d:", (8*(Consts::P-30))%Consts::P);
+  Log::print(Log::LogLevel::INFO, "d:", (8*(Params::P-30))%Params::P);
 
   return 0;
 }

@@ -9,7 +9,7 @@
 class DiscreteTLWE {
   private:
     int n = Params::n;
-    std::uint32_t prime = Consts::P;
+    std::uint32_t prime = Params::P;
     std::vector<DiscreteTorus> v;
 
   public:
