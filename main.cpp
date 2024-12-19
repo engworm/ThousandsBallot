@@ -8,7 +8,7 @@
 int main(int argc, char* argv[]) {
 
   Consts::P = static_cast<uint32_t>(std::stoul(argv[1]));
-  Consts::R = static_cast<u_int32_t>(1 << std::stoi(argv[2]));
+  Consts::R = static_cast<u_int32_t>(1 << std::stol(argv[2]));
   Consts::mu = constMontgomery();
   std::cout << "P: " << Consts::P << std::endl;
   std::cout << "R: " << Consts::R << std::endl;
