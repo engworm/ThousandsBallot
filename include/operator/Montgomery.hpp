@@ -1,10 +1,10 @@
+#ifndef MONTGOMERY_HPP
+#define MONTGOMERY_HPP
+
 #include <iostream>
 #include <cstdint>
 #include <bit>
 #include "params/params.hpp"
-
-#ifndef MONTGOMERY_HPP
-#define MONTGOMERY_HPP
 
 std::pair<int32_t, int32_t> extendedEuclidean(uint32_t a, uint32_t b) {
   if (b==0) {

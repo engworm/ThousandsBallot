@@ -1,9 +1,9 @@
+#ifndef TORUS_HPP
+#define TORUS_HPP
+
 #include <cstdint>
 #include "params/params.hpp"
 #include "include/operator/Montgomery.hpp"
-
-#ifndef TORUS_HPP
-#define TORUS_HPP
 
 class DiscreteTorus {
   private:
@@ -48,6 +48,11 @@ class DiscreteTorus {
     DiscreteTorus t = t1; 
     t *= c;
     return t;
+  }
+
+  friend std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {
+    os << t.x;
+    return os;
   }
 };
 

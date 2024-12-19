@@ -4,15 +4,16 @@
 #include "include/structure/torus.hpp"
 #include "include/structure/tlwe.hpp"
 #include "include/operator/Montgomery.hpp"
+#include "utility/log.hpp"
 
 int main(int argc, char* argv[]) {
 
   Consts::P = static_cast<uint32_t>(std::stoul(argv[1]));
-  Consts::R = static_cast<u_int32_t>(1 << std::stol(argv[2]));
+  Consts::R = static_cast<uint32_t>(1 << std::stol(argv[2]));
   Consts::mu = constMontgomery();
-  std::cout << "P: " << Consts::P << std::endl;
-  std::cout << "R: " << Consts::R << std::endl;
-  std::cout << "mu: " << Consts::mu << std::endl;
+  Log::print(Log::LogLevel::INFO, "P =", Consts::P);
+  Log::print(Log::LogLevel::INFO, "R =", Consts::R);
+  Log::print(Log::LogLevel::INFO, "mu =", Consts::mu);
 
   if (((uint64_t)Consts::mu*Consts::P)%Consts::R != Consts::R-1) {
      std::cerr << "Error: Montgomery constant mismatch. Expected: " << Consts::R - 1 << ", but got: " << ((uint64_t)Consts::mu*Consts::P)%Consts::R << std::endl;
@@ -21,15 +22,10 @@ int main(int argc, char* argv[]) {
 
   DiscreteTorus a(Consts::P-30), b(10);
   DiscreteTorus c = a + b;
-  std::cout << c.val() << std::endl;
+  Log::print(Log::LogLevel::INFO, "c, a:", c, a);
 
   DiscreteTorus d = 10 * a;
-  std::cout << d.val() << std::endl;
+  Log::print(Log::LogLevel::INFO, "d:", d);
 
-  uint32_t x = reprMontgomery(Consts::P-30);
-  uint32_t y = reprMontgomery(10);
-  uint32_t z = invReprMontgomery(mulMontgomery(x, y));
-  std::cout << z << std::endl;
-  std::cout << ((Consts::P-30)*10) % Consts::P << std::endl;
   return 0;
 }

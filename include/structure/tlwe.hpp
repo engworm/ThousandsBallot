@@ -1,10 +1,10 @@
+#ifndef TLWE_HPP
+#define TLWE_HPP
+
 #include <cstdint>
 #include <vector>
 #include "torus.hpp"
 #include "params/params.hpp"
-
-#ifndef TLWE_HPP
-#define TLWE_HPP
 
 class DiscreteTLWE {
   private:
