@@ -8,12 +8,11 @@
 class DiscreteTorus {
   private:
     uint32_t x;
-    uint32_t prime = Consts::P;
+    uint32_t p = Consts::P;
 
   public:
     DiscreteTorus();
     DiscreteTorus(uint32_t x) : x(x) {
-      this->x = modP(x);
       return;
       };
 
@@ -36,7 +35,7 @@ class DiscreteTorus {
 
     // should replace it to faster algo
     uint32_t modP(uint32_t x) {
-      return x%prime; 
+      return x%this->p;
     }
 
   friend DiscreteTorus operator+(const DiscreteTorus &t1, const DiscreteTorus &t2) {

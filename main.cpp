@@ -5,14 +5,18 @@
 #include "include/structure/tlwe.hpp"
 #include "include/operator/Montgomery.hpp"
 
-int main() {
+int main(int argc, char* argv[]) {
 
+  Consts::P = static_cast<uint32_t>(std::stoul(argv[1]));
+  Consts::R = static_cast<u_int32_t>(1 << std::stoi(argv[2]));
+  Consts::mu = constMontgomery();
   std::cout << "P: " << Consts::P << std::endl;
   std::cout << "R: " << Consts::R << std::endl;
   std::cout << "mu: " << Consts::mu << std::endl;
-  if (Consts::mu != constMontgomery()) {
-    std::cerr << "Error: Montgomery constant mismatch. Expected: " << constMontgomery() << ", but got: " << Consts::mu << std::endl;
-    return -1;
+
+  if (((uint64_t)Consts::mu*Consts::P)%Consts::R != Consts::R-1) {
+     std::cerr << "Error: Montgomery constant mismatch. Expected: " << Consts::R - 1 << ", but got: " << ((uint64_t)Consts::mu*Consts::P)%Consts::R << std::endl;
+        return -1;
   }
 
   DiscreteTorus a(Consts::P-30), b(10);
