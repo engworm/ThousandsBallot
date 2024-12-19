@@ -8,6 +8,7 @@ namespace Consts {
   uint32_t P = 0;
   uint32_t R = 0;
   uint32_t mu = 0;
+  uint32_t R2 = 0;
 }
 
 namespace Params {

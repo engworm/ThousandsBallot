@@ -10,7 +10,8 @@ int main(int argc, char* argv[]) {
 
   Consts::P = static_cast<uint32_t>(std::stoul(argv[1]));
   Consts::R = static_cast<uint32_t>(1 << std::stol(argv[2]));
-  Consts::mu = constMontgomery();
+  Consts::mu = constMontgomeryMu();
+  Consts::R2 = constMontgomeryR2();
   Log::print(Log::LogLevel::INFO, "P =", Consts::P);
   Log::print(Log::LogLevel::INFO, "R =", Consts::R);
   Log::print(Log::LogLevel::INFO, "mu =", Consts::mu);
@@ -24,8 +25,10 @@ int main(int argc, char* argv[]) {
   DiscreteTorus c = a + b;
   Log::print(Log::LogLevel::INFO, "c, a:", c, a);
 
-  DiscreteTorus d = 10 * a;
+  DiscreteTorus d = 8 * a;
   Log::print(Log::LogLevel::INFO, "d:", d);
+
+  Log::print(Log::LogLevel::INFO, "d:", (8*(Consts::P-30))%Consts::P);
 
   return 0;
 }
