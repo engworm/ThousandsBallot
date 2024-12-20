@@ -11,8 +11,8 @@ int main(int argc, char* argv[]) {
   boost::program_options::options_description desc("Options");
   desc.add_options()
     ("help,h", "Help")
-    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[Required] Parameter")
-    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[Required] Montgomery Parameter");
+    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken()->required(), "[Required] Parameter")
+    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken()->required(), "[Required] Montgomery Parameter");
 
   boost::program_options::variables_map vm;
   try {
@@ -33,12 +33,18 @@ int main(int argc, char* argv[]) {
     Params::P = P[0];
     Params::n = P[1];
   }
+  else {
+    return -1;
+  }
 
   if (vm.count("mont")) {
     std::vector<uint32_t> M = vm["mont"].as<std::vector<uint32_t>>();
     MontgomeryParams::R = 1 << M[0];
     MontgomeryParams::mu = constMontgomeryMu();
     MontgomeryParams::R2 = constMontgomeryR2();
+  }
+  else {
+    return -1;
   }
 
   Log::print(Log::LogLevel::INFO, "P =", Params::P);
