@@ -1,5 +1,6 @@
 #include <iostream>
-#include <boost/multiprecision/cpp_int.hpp>
+#include <vector>
+#include <boost/program_options.hpp>
 #include "params/params.hpp"
 #include "include/structure/torus.hpp"
 #include "include/structure/tlwe.hpp"
@@ -7,12 +8,39 @@
 #include "utility/log.hpp"
 
 int main(int argc, char* argv[]) {
+  boost::program_options::options_description desc("Options");
+  desc.add_options()
+    ("help,h", "Help")
+    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[Required] Parameter")
+    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[Required] Montgomery Parameter");
 
-  Params::P = static_cast<uint32_t>(std::stoul(argv[1]));
-  Params::n = static_cast<uint32_t>(std::stoul(argv[2]));
-  MontgomeryParams::R = static_cast<uint32_t>(1 << std::stol(argv[3]));
-  MontgomeryParams::mu = constMontgomeryMu();
-  MontgomeryParams::R2 = constMontgomeryR2();
+  boost::program_options::variables_map vm;
+  try {
+    boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+  } catch (boost::program_options::error &e) {
+    Log::print(Log::LogLevel::ERROR, e.what());
+    return -1;
+  }
+  boost::program_options::notify(vm);
+
+  if (vm.count("help")) {
+    std::cout << desc << std::endl;
+    return 0;
+  }
+
+  if (vm.count("param")) {
+    std::vector<uint32_t> P = vm["param"].as<std::vector<uint32_t>>();
+    Params::P = P[0];
+    Params::n = P[1];
+  }
+
+  if (vm.count("mont")) {
+    std::vector<uint32_t> M = vm["mont"].as<std::vector<uint32_t>>();
+    MontgomeryParams::R = 1 << M[0];
+    MontgomeryParams::mu = constMontgomeryMu();
+    MontgomeryParams::R2 = constMontgomeryR2();
+  }
+
   Log::print(Log::LogLevel::INFO, "P =", Params::P);
   Log::print(Log::LogLevel::INFO, "n =", Params::n);
   Log::print(Log::LogLevel::INFO, "R =", MontgomeryParams::R);

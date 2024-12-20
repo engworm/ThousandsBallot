@@ -2,7 +2,6 @@
 #define PARAMS_HPP
 
 #include <cstdint>
-#include <boost/multiprecision/cpp_int.hpp>
 
 namespace Params {
   uint32_t P = 0;
