@@ -10,9 +10,9 @@
 int main(int argc, char* argv[]) {
   boost::program_options::options_description desc("Options");
   desc.add_options()
-    ("help,h", "Help")
-    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Parameter")
-    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication Parameter.\n e.g. -M r, where R = 2^r.");
+    ("help,h", "Help\n")
+    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] TFHE Parameter.\nSpecify integer P and n, where P is a prime number and n is the length of secret key.\ne.g. -P 12289 4\n")
+    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication scaling factor R.\nSpecify integer r, so that R = 2^r > P.\ne.g. -M 18\n");
                                                                                                 
   boost::program_options::variables_map vm;
   try {
@@ -24,7 +24,6 @@ int main(int argc, char* argv[]) {
   boost::program_options::notify(vm);
 
   if (vm.count("help")) {
-    std::cout << "flag" << std::endl;
     std::cout << desc << std::endl;
     return 0;
   }
@@ -66,6 +65,13 @@ int main(int argc, char* argv[]) {
   Log::print(Log::LogLevel::INFO, "d:", d);
 
   Log::print(Log::LogLevel::INFO, "d:", (8*(Params::P-30))%Params::P);
+
+  std::vector<DiscreteTorus> X;
+  X.push_back(a);
+  X.push_back(d);
+  DiscreteTLWE A(X);
+
+  std::cout << A << std::endl;
 
   return 0;
 }

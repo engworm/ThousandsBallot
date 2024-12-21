@@ -14,17 +14,23 @@ class DiscreteTLWE {
 
   public:
     DiscreteTLWE(std::vector<DiscreteTorus> v) : v(v) { 
-      n = v.size()-1;
       return; 
     };
     DiscreteTLWE(const DiscreteTLWE &tlwe);
     DiscreteTorus operator[](int i) const { return v[i]; };
     int len() { return this->v.size(); };
 
+    friend std::ostream& operator<<(std::ostream &os, const DiscreteTLWE &tlwe) {
+      for (auto torus: tlwe.v) {
+        os << torus.val() << ' ';
+      }
+    return os;
+  }
+
 };
 
 DiscreteTLWE::DiscreteTLWE(const DiscreteTLWE &tlwe) {
-  v = tlwe.v;
+  this->v = tlwe.v;
 }
 
 DiscreteTLWE operator+(const DiscreteTLWE &a, const DiscreteTLWE &b) {
