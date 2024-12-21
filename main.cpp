@@ -11,19 +11,20 @@ int main(int argc, char* argv[]) {
   boost::program_options::options_description desc("Options");
   desc.add_options()
     ("help,h", "Help")
-    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken()->required(), "[Required] Parameter")
-    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken()->required(), "[Required] Montgomery Parameter");
-
+    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Parameter")
+    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication Parameter.\n e.g. -M r, where R = 2^r.");
+                                                                                                
   boost::program_options::variables_map vm;
   try {
     boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
   } catch (boost::program_options::error &e) {
     Log::print(Log::LogLevel::ERROR, e.what());
-    return -1;
+    return 1;
   }
   boost::program_options::notify(vm);
 
   if (vm.count("help")) {
+    std::cout << "flag" << std::endl;
     std::cout << desc << std::endl;
     return 0;
   }
@@ -34,7 +35,7 @@ int main(int argc, char* argv[]) {
     Params::n = P[1];
   }
   else {
-    return -1;
+    return 1;
   }
 
   if (vm.count("mont")) {
@@ -44,7 +45,7 @@ int main(int argc, char* argv[]) {
     MontgomeryParams::R2 = constMontgomeryR2();
   }
   else {
-    return -1;
+    return 1;
   }
 
   Log::print(Log::LogLevel::INFO, "P =", Params::P);
@@ -54,7 +55,7 @@ int main(int argc, char* argv[]) {
 
   if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
     Log::print(Log::LogLevel::ERROR, "Error: Montgomery constant mismatch.");
-    return -1;
+    return 1;
   }
 
   DiscreteTorus a(Params::P-30), b(10);
