@@ -66,12 +66,15 @@ int main(int argc, char* argv[]) {
 
   Log::print(Log::LogLevel::INFO, "d:", (8*(Params::P-30))%Params::P);
 
-  std::vector<DiscreteTorus> X;
-  X.push_back(a);
-  X.push_back(d);
-  DiscreteTLWE A(X);
-
-  std::cout << A << std::endl;
+  std::vector<uint32_t> secret(Params::n, 0);
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(0, 1);
+  for (uint32_t i = 0; i < Params::n; ++i) {
+    secret[i] = dis(gen);
+  }
+  DiscreteTLWE tlwe(10, secret);
+  Log::print(Log::LogLevel::INFO, "tlwe:", tlwe);
 
   return 0;
 }
