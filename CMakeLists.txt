@@ -14,8 +14,8 @@ elseif()
   message(FATAL_ERROR "BOOST_ROOT is not set")
 endif()
 
-# set(BOOST_ROOT "/usr/local/include/boost_1_87_0")
-message(STATUS "${BOOST_ROOT}")
+message(STATUS "BOOST_ROOT is set to ${BOOST_ROOT}")
+
 find_package(GTest REQUIRED)
 include_directories(/usr/local/include)
 include_directories(${BOOST_ROOT})
