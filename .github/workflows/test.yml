@@ -10,16 +10,16 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: brew install gcc boost cmake tree
+      run: brew install gcc boost cmake 
     
-    - run: tree /opt/homebrew/Cellar/boost/1.87.0/include
-    - run: tree /opt/homebrew/Cellar/boost/1.87.0/include/boost
+    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include
+    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include/boost
 
     - name: Install GTest
       run: brew install googletest
 
     - run: echo "GTEST_ROOT=/opt/homebrew/opt/googletest/lib/cmake" >> $GITHUB_ENV
-    - run: echo "BOOST_ROOT=/opt/homebrew/Cellar/boost/1.87.0/include" >> $GITHUB_ENV
+    - run: echo "BOOST_ROOT=/opt/homebrew/Cellar/boost/1.87.0/include/boost" >> $GITHUB_ENV
 
     - name: Configure CMake
       run: cmake -S . -B build -DGTEST_ROOT=$GTEST_ROOT -DBOOST_ROOT=$BOOST_ROOT
