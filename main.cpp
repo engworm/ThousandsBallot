@@ -50,7 +50,8 @@ int main(int argc, char* argv[]) {
   Log::print(Log::LogLevel::INFO, "P =", Params::P);
   Log::print(Log::LogLevel::INFO, "n =", Params::n);
   Log::print(Log::LogLevel::INFO, "R =", MontgomeryParams::R);
-  Log::print(Log::LogLevel::INFO, "mu =", MontgomeryParams::mu);
+  Log::print(Log::LogLevel::INFO, "μ =", MontgomeryParams::mu);
+  Log::print(Log::LogLevel::INFO, "R^2 =", MontgomeryParams::R2);
 
   if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
     Log::print(Log::LogLevel::ERROR, "Error: Montgomery constant mismatch.");

@@ -4,9 +4,9 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
+#include <random>
 #include "torus.hpp"
 #include "params/params.hpp"
-#include <random>
 
 class DiscreteTLWE {
   private:
