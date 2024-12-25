@@ -10,7 +10,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: brew install gcc boost cmake
+      run: brew install gcc boost cmake tree
     
     - run: tree /opt/homebrew/Cellar/boost/1.87.0/
 
