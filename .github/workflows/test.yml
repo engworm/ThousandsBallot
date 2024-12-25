@@ -18,7 +18,7 @@ jobs:
         echo "GTEST_ROOT=/opt/homebrew/opt/googletest/lib/cmake" >> $GITHUB_ENV
 
     - name: Prepare Boost 
-      run: echo "BOOST_ROOT=/opt/homebrew/opt/boost" >> $GITHUB_ENV
+      run: echo "BOOST_ROOT=/opt/homebrew/Cellar/boost/1.87.0" >> $GITHUB_ENV
 
     - name: Configure CMake
       run: cmake -S . -B build -DGTEST_ROOT=$GTEST_ROOT -DBOOST_ROOT=$BOOST_ROOT
