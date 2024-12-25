@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   build-and-test:
-    runs-on: macOS
+    runs-on: macos-latest
 
     steps:
     - name: Checkout repository
