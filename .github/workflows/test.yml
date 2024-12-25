@@ -12,7 +12,8 @@ jobs:
     - name: Install dependencies
       run: brew install gcc boost cmake tree
     
-    - run: tree /opt/homebrew/Cellar/boost/1.87.0/
+    - run: tree /opt/homebrew/Cellar/boost/1.87.0/include
+    - run: tree /opt/homebrew/Cellar/boost/1.87.0/include/boost
 
     - name: Install GTest
       run: brew install googletest
