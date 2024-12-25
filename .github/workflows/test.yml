@@ -15,7 +15,7 @@ jobs:
     - name: Install GTest
       run: |
         brew install googletest
-        set(GTEST_ROOT /opt/homebrew/opt/googletest/lib/cmake)
+        echo 'set(GTEST_ROOT /opt/homebrew/opt/googletest/lib/cmake)' >> $GITHUB_ENV
 
     - name: Configure CMake
       run: cmake -S . -B build -DGTEST_ROOT=$GTEST_ROOT
