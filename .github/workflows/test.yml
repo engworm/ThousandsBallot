@@ -19,7 +19,7 @@ jobs:
 
     - run: echo "GTEST_ROOT=/opt/homebrew/opt/googletest/lib/cmake" >> $GITHUB_ENV
     - run: echo "BOOST_INCLUDE=/opt/homebrew/Cellar/boost/1.87.0/include" >> $GITHUB_ENV
-    - run: echo "BOOST_LIB=/opt/homebrew/Cellar/boost/1.87.0" >> $GITHUB_ENV
+    - run: echo "BOOST_LIB=/opt/homebrew/Cellar/boost/1.87.0/lib" >> $GITHUB_ENV
 
     - name: Configure CMake
       run: cmake -S . -B build -DGTEST_ROOT=$GTEST_ROOT -DBOOST_INCLUDE=$BOOST_INCLUDE -DBOOST_LIB=$BOOST_LIB
