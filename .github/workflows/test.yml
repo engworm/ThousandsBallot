@@ -12,10 +12,6 @@ jobs:
     - name: Install dependencies
       run: brew install gcc boost cmake 
     
-    - run: ls /opt/homebrew/Cellar/boost/1.87.0 | grep "*lib"
-    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include | grep "*lib"
-    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include/boost | grep "*lib"
-
     - run: find /opt/homebrew/Cellar/boost/1.87.0 -name "libboost_program_options.*"
 
     - name: Install GTest
