@@ -12,17 +12,21 @@ jobs:
     - name: Install dependencies
       run: brew install gcc boost cmake 
     
-    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include
-    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include/boost
+    - run: ls /opt/homebrew/Cellar/boost/1.87.0 | grep "*lib"
+    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include | grep "*lib"
+    - run: ls /opt/homebrew/Cellar/boost/1.87.0/include/boost | grep "*lib"
+
+    - run: find /opt/homebrew/Cellar/boost/1.87.0 -name "libboost_program_options.*"
 
     - name: Install GTest
       run: brew install googletest
 
     - run: echo "GTEST_ROOT=/opt/homebrew/opt/googletest/lib/cmake" >> $GITHUB_ENV
-    - run: echo "BOOST_ROOT=/opt/homebrew/Cellar/boost/1.87.0/include/boost" >> $GITHUB_ENV
+    - run: echo "BOOST_INCLUDE=/opt/homebrew/Cellar/boost/1.87.0/include" >> $GITHUB_ENV
+    - run: echo "BOOST_LIB=/opt/homebrew/Cellar/boost/1.87.0" >> $GITHUB_ENV
 
     - name: Configure CMake
-      run: cmake -S . -B build -DGTEST_ROOT=$GTEST_ROOT -DBOOST_ROOT=$BOOST_ROOT
+      run: cmake -S . -B build -DGTEST_ROOT=$GTEST_ROOT -DBOOST_INCLUDE=$BOOST_INCLUDE -DBOOST_LIB=$BOOST_LIB
     
     - name: Build
       run: cmake --build build
