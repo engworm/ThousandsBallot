@@ -1,9 +1,37 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(ENCLIPTICA VERSION 1.0 LANGUAGES CXX)
+set(PROJECT_NAME ThousandsBallot)
+project(${PROJECT_NAME})
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_COMPILER /usr/local/bin/g++)
+set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_C_COMPILER gcc)
 
-add_executable(main main.cpp)
+if(DEFINED ENV{BOOST_INCLUDE})
+  set(BOOST_INCLUDE $ENV{BOOST_INCLUDE})
+elseif()
+  message(FATAL_ERROR "BOOST_INCLUDE is not set")
+endif()
+
+if(DEFINED ENV{BOOST_LIB})
+  set(BOOST_LIB $ENV{BOOST_LIB})
+elseif()
+  message(FATAL_ERROR "BOOST_LIB is not set")
+endif()
+
+find_package(GTest REQUIRED)
+include_directories(/usr/local/include)
+include_directories(${BOOST_INCLUDE})
+include_directories(.)
+include_directories(./include)
+link_directories(${BOOST_LIB})
+
+add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp)
+add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp)
+
+target_link_libraries(${PROJECT_NAME} -lboost_program_options)
+target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)
+
+enable_testing()
+add_test(NAME MontgomeryTest COMMAND test_montgomerymul --P=12289 --r=18)
