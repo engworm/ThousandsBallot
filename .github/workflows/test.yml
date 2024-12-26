@@ -12,7 +12,7 @@ jobs:
     - name: Install dependencies
       run: brew install gcc boost cmake 
     
-    - run: find /opt/homebrew/Cellar/boost/1.87.0 -name "libboost_program_options.*"
+    # - run: find /opt/homebrew/Cellar/boost/1.87.0 -name "libboost_program_options.*"
 
     - name: Install GTest
       run: brew install googletest

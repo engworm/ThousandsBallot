@@ -3,18 +3,22 @@
 
 #include <cstdint>
 #include "params/params.hpp"
-#include "include/operator/Montgomery.hpp"
+#include "operator/Montgomery.hpp"
 
 class DiscreteTorus {
   private:
     uint32_t x;
-    uint32_t p = Params::P;
+    uint32_t P = Params::P;
 
   public:
     DiscreteTorus();
     DiscreteTorus(uint32_t x) : x(x) {
-      return;
-      };
+        if (x >= this->P) {
+          throw std::invalid_argument("Discrete Torus Element must be less than P");
+        }
+      }
+
+    DiscreteTorus(const DiscreteTorus &tlwe);
 
     uint32_t val() {
       return this->x;
@@ -22,6 +26,12 @@ class DiscreteTorus {
 
     void operator+=(const DiscreteTorus &t) {
       uint32_t tmp = this->x + t.x;
+      this->x = modP(tmp);
+      return;
+    };
+
+    void operator-=(const DiscreteTorus &t) {
+      uint32_t tmp = this->x + (this->P - t.x);
       this->x = modP(tmp);
       return;
     };
@@ -35,7 +45,7 @@ class DiscreteTorus {
 
     // should replace it to faster algo
     uint32_t modP(uint32_t x) {
-      return x%this->p;
+      return x%this->P;
     }
 
   friend DiscreteTorus operator+(const DiscreteTorus &t1, const DiscreteTorus &t2) {
@@ -55,5 +65,11 @@ class DiscreteTorus {
     return os;
   }
 };
+
+DiscreteTorus::DiscreteTorus(const DiscreteTorus &t) {
+  this->x = t.x;
+  this->P = t.P;
+  return;
+}
 
 #endif 

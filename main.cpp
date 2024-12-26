@@ -2,10 +2,11 @@
 #include <vector>
 #include <boost/program_options.hpp>
 #include "params/params.hpp"
-#include "include/structure/torus.hpp"
-#include "include/structure/tlwe.hpp"
-#include "include/operator/Montgomery.hpp"
+#include "structure/torus.hpp"
+#include "structure/tlwe.hpp"
+#include "operator/Montgomery.hpp"
 #include "utility/log.hpp"
+#include "solver/solver_tlwe.hpp"
 
 int main(int argc, char* argv[]) {
   boost::program_options::options_description desc("Options");
@@ -58,14 +59,13 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  DiscreteTorus a(Params::P-30), b(10);
-  DiscreteTorus c = a + b;
-  Log::print(Log::LogLevel::INFO, "c, a:", c, a);
-
-  DiscreteTorus d = 8 * a;
-  Log::print(Log::LogLevel::INFO, "d:", d);
-
-  Log::print(Log::LogLevel::INFO, "d:", (8*(Params::P-30))%Params::P);
+  /* 
+  Torusの加法と減法をオーバーフローさせないために，
+  2P < 2^32 である必要がある
+  */
+  if (Params::P > (1<<31)) {
+    throw std::invalid_argument("2P must be less than 2^32");
+  }
 
   std::vector<uint32_t> secret(Params::n, 0);
   std::random_device rd;
@@ -76,6 +76,9 @@ int main(int argc, char* argv[]) {
   }
   DiscreteTLWE tlwe(10, secret);
   Log::print(Log::LogLevel::INFO, "tlwe:", tlwe);
+
+  DiscreteTorus ans = SolverTLWE::solve(tlwe, secret);
+  Log::print(Log::LogLevel::INFO, "tlwe:", ans);
 
   return 0;
 }

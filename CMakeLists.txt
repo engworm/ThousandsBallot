@@ -24,6 +24,7 @@ find_package(GTest REQUIRED)
 include_directories(/usr/local/include)
 include_directories(${BOOST_INCLUDE})
 include_directories(.)
+include_directories(./include)
 link_directories(${BOOST_LIB})
 
 add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp)
