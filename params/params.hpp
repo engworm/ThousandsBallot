@@ -15,5 +15,10 @@ namespace MontgomeryParams {
   extern uint32_t R2;
 }
 
+namespace NttParams {
+  extern uint32_t P;
+  extern uint32_t N;
+  extern uint32_t psi;
+}
 
 #endif

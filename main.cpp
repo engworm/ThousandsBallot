@@ -10,6 +10,8 @@
 #include "decrypt/decrypt_tlwe.hpp"
 #include "structure/torus_poly.hpp"
 #include "structure/poly.hpp"
+#include "structure/galoisfield.hpp"
+#include "operator/ntt.hpp"
 
 int main(int argc, char* argv[]) {
   boost::program_options::options_description desc("Options");
@@ -88,6 +90,11 @@ int main(int argc, char* argv[]) {
   Poly poly({1, 1, 1, 1});
   TorusPoly toruspoly({0, 1, 0, 0});
   Log::print(Log::LogLevel::INFO, "toruspoly:", poly * toruspoly);
+
+  if (InitializeGaloisField::initialize()) {
+    Log::print(Log::LogLevel::INFO, "Initialize Galois Field");
+    std::cout << "psi = " << NttParams::psi << std::endl;
+  }
 
   return 0;
 }

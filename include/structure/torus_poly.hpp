@@ -9,7 +9,6 @@
 #include "structure/poly.hpp"
 
 class TorusPoly {
-
   private:
     uint32_t N{}; 
     std::uint32_t P = Params::P;
