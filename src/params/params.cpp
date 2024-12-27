@@ -3,6 +3,7 @@
 namespace Params {
   uint32_t P = 0;
   uint32_t n = 0;
+  uint32_t N = 0;
 }
 
 namespace MontgomeryParams {

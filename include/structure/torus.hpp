@@ -6,6 +6,8 @@
 #include "operator/Montgomery.hpp"
 
 class DiscreteTorus {
+  friend class TorusPoly;
+
   private:
     uint32_t x;
     uint32_t P = Params::P;

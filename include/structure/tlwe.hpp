@@ -24,7 +24,8 @@ class DiscreteTLWE {
   public:
     DiscreteTLWE(const uint32_t n) : n(n) {};
     DiscreteTLWE(const DiscreteTLWE &tlwe);
-    DiscreteTLWE(DiscreteTLWE &&tlwe) noexcept : n(tlwe.n), P(tlwe.P), v(std::move(tlwe.v)) {}; 
+    DiscreteTLWE(DiscreteTLWE &&tlwe) noexcept 
+                          : n(tlwe.n), P(tlwe.P), v(std::move(tlwe.v)) {}; 
 
     int len() const { return this->v.size(); };
 
