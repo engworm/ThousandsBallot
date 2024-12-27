@@ -6,15 +6,15 @@
 #include <vector>
 #include "params/params.hpp"
 
-class Poly {
+class IntPoly {
   public:
     uint32_t N{};
     std::vector<uint32_t> coeffs;
     uint32_t& operator[](int i) { return coeffs[i]; }
   
   public:
-    Poly() = default;
-    Poly(const std::vector<uint32_t> &coeffs) : coeffs(coeffs) {
+    IntPoly() = default;
+    IntPoly(const std::vector<uint32_t> &coeffs) : coeffs(coeffs) {
       this->N = coeffs.size();
     };
 

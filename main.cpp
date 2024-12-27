@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
   try {
     boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
   } catch (boost::program_options::error &e) {
-    Log::print(Log::LogLevel::ERROR, e.what());
+    throw std::invalid_argument(e.what());
     return 1;
   }
   boost::program_options::notify(vm);
@@ -55,15 +55,16 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  Log::print(Log::LogLevel::INFO, "P =", Params::P);
-  Log::print(Log::LogLevel::INFO, "n =", Params::n);
-  Log::print(Log::LogLevel::INFO, "N =", Params::N);
-  Log::print(Log::LogLevel::INFO, "R =", MontgomeryParams::R);
-  Log::print(Log::LogLevel::INFO, "μ =", MontgomeryParams::mu);
-  Log::print(Log::LogLevel::INFO, "R^2 =", MontgomeryParams::R2);
+  Log::info("param = {\n",
+              "P =", Params::P, "\n", 
+              "n =", Params::n, "\n", 
+              "N =", Params::N, "\n", 
+              "R =", MontgomeryParams::R, "\n", 
+              "μ =", MontgomeryParams::mu, "\n", 
+              "R^2 =", MontgomeryParams::R2, "\n}");
 
   if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
-    Log::print(Log::LogLevel::ERROR, "Error: Montgomery constant mismatch.");
+    Log::error("Montgomery constant mismatched");
     return 1;
   }
 
@@ -83,26 +84,29 @@ int main(int argc, char* argv[]) {
     secret[i] = dis(gen);
   }
   DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(10, secret);
-  Log::print(Log::LogLevel::INFO, "tlwe:", tlwe);
+  Log::debug("tlwe:", tlwe);
 
   DiscreteTorus ans = DecryptDiscreteTLWE::decrypt(tlwe, secret);
-  Log::print(Log::LogLevel::INFO, "tlwe:", ans);
+  Log::debug("tlwe:", ans);
 
-  Poly poly({1, 1, 1, 1});
-  DiscreteTorusPoly toruspoly({0, 1, 0, 0});
-  Log::print(Log::LogLevel::INFO, "toruspoly:", poly * toruspoly);
+  IntPoly intpoly1({1, 1, 1, 1});
+  DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
 
-  if (InitializeGaloisField::initialize()) {
-    Log::print(Log::LogLevel::INFO, "Initialize Galois Field");
-    std::cout << "psi = " << NttParams::psi << std::endl;
-  }
 
 #ifdef NTT
-  std::cout << "NTT is defined" << std::endl;
-  GaloisFieldPoly p1(std::move(poly));
-  GaloisFieldPoly p2(std::move(toruspoly));
+  if (InitializeGaloisField::initialize()) {
+    Log::info("NTT is ready");
 
-  GaloisFieldPoly p3 = p1 * p2;
+    GaloisFieldPoly p1(std::move(intpoly1));
+    GaloisFieldPoly p2(std::move(toruspoly2));
+
+    GaloisFieldPoly p3 = p1 * p2;
+    Log::debug("p3:", p3);
+  }
+  else {
+    Log::error("NTT is not ready");
+    return 1;
+  }
 #else
   std::cout << "NTT is not defined" << std::endl;
   DiscreteTorusPoly p3 = poly * toruspoly;

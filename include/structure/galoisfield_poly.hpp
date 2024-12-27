@@ -24,7 +24,7 @@ class GaloisFieldPoly {
       this->N = coeffs.size();
     };
     
-    GaloisFieldPoly(const Poly &poly) {
+    GaloisFieldPoly(const IntPoly &poly) {
       if (this->N != poly.size()) {
         throw std::invalid_argument("Polynomial degree must be the same");
       }

@@ -37,9 +37,9 @@ class DiscreteTorusPoly {
     DiscreteTorus operator[](int i) const { return coeffs[i]; };
     std::vector<DiscreteTorus> get_coeffs() const {return coeffs; }
 
-    friend DiscreteTorusPoly operator*(const Poly& poly, const DiscreteTorusPoly &toruspoly) {
+    friend DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly) {
 
-      if (poly.size() != toruspoly.N) {
+      if (intpoly.size() != toruspoly.N) {
         throw std::invalid_argument("Polynomial degree must be the same");
       }
 
@@ -49,10 +49,10 @@ class DiscreteTorusPoly {
         for (size_t j = 0; j < toruspoly.N; ++j) {
           size_t k = (i + j) % toruspoly.N;
           if (i + j >= toruspoly.N) {
-            result[k] -= poly[j]* toruspoly[i];
+            result[k] -= intpoly[j]* toruspoly[i];
           }
           else {
-            result[k] += poly[j] * toruspoly[i];
+            result[k] += intpoly[j] * toruspoly[i];
           }
         }
       }
