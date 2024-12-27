@@ -19,16 +19,10 @@ class GaloisFieldElement {
 
   public:
     GaloisFieldElement() : a(0) {};
-    GaloisFieldElement(uint32_t a) : a(a) {
-      if (a >= this->P) {
-        throw std::invalid_argument("Galois Field Element must be less than P");
-      }
-    }
 
-    // DiscreteTorusを渡すコピーコンストラクタが必要
-    // uint32_tを渡すコピーコンストラクタが必要
-    GaloisFieldElement(const GaloisFieldElement &a); 
-    GaloisFieldElement(const DiscreteTorus &t); 
+    GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 
+    GaloisFieldElement(const DiscreteTorus &t) : a(t.val()) {}; 
+    GaloisFieldElement(const uint32_t &x) : a(x) {}; 
 
     uint32_t val() const {
       return this->a;
@@ -53,6 +47,24 @@ class GaloisFieldElement {
       return;
     };
 
+    GaloisFieldElement& operator=(const GaloisFieldElement& other) {
+      if (this != &other) {
+        this->a = other.a;
+        this->P = other.P;
+      }
+      return *this;
+    }
+
+    GaloisFieldElement& operator=(GaloisFieldElement&& other) noexcept {
+      if (this != &other) {
+        this->a = other.a;
+        this->P = other.P;
+        other.a = 0;
+        other.P = 0;
+      }
+      return *this;
+    }
+
 
     friend bool operator==(const GaloisFieldElement &a1, const GaloisFieldElement&a2) {
       return a1.a == a2.a;
@@ -76,15 +88,6 @@ class GaloisFieldElement {
     }
 };
 
-GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) {
-  this->a = a.a;
-  return;
-}
-
-GaloisFieldElement::GaloisFieldElement(const DiscreteTorus &t) {
-  this->a = t.val();
-  return;
-}
 
 class InitializeGaloisField : public GaloisFieldElement {
   public:

@@ -11,6 +11,7 @@
 #include "structure/torus_poly.hpp"
 #include "structure/poly.hpp"
 #include "structure/galoisfield.hpp"
+#include "structure/galoisfield_poly.hpp"
 #include "operator/ntt.hpp"
 
 int main(int argc, char* argv[]) {
@@ -88,13 +89,24 @@ int main(int argc, char* argv[]) {
   Log::print(Log::LogLevel::INFO, "tlwe:", ans);
 
   Poly poly({1, 1, 1, 1});
-  TorusPoly toruspoly({0, 1, 0, 0});
+  DiscreteTorusPoly toruspoly({0, 1, 0, 0});
   Log::print(Log::LogLevel::INFO, "toruspoly:", poly * toruspoly);
 
   if (InitializeGaloisField::initialize()) {
     Log::print(Log::LogLevel::INFO, "Initialize Galois Field");
     std::cout << "psi = " << NttParams::psi << std::endl;
   }
+
+#ifdef NTT
+  std::cout << "NTT is defined" << std::endl;
+  GaloisFieldPoly p1(std::move(poly));
+  GaloisFieldPoly p2(std::move(toruspoly));
+
+  GaloisFieldPoly p3 = p1 * p2;
+#else
+  std::cout << "NTT is not defined" << std::endl;
+  DiscreteTorusPoly p3 = poly * toruspoly;
+#endif
 
   return 0;
 }

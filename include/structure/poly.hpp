@@ -7,20 +7,20 @@
 #include "params/params.hpp"
 
 class Poly {
-  private:
+  public:
     uint32_t N{};
     std::vector<uint32_t> coeffs;
-
-  protected:
     uint32_t& operator[](int i) { return coeffs[i]; }
   
   public:
+    Poly() = default;
     Poly(const std::vector<uint32_t> &coeffs) : coeffs(coeffs) {
       this->N = coeffs.size();
     };
 
     uint32_t size() const { return this->N; };
     uint32_t operator[](int i) const { return coeffs[i]; };
+    std::vector<uint32_t> get_coeffs() const { return coeffs; }
 };
 
 #endif
