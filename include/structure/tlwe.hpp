@@ -9,34 +9,22 @@
 #include "params/params.hpp"
 
 class DiscreteTLWE {
+
+  friend class EncryptDiscreteTLWE;
+  friend class DecryptDiscreteTLWE;
+
   private:
     int n{}; 
     std::uint32_t P = Params::P;
     std::vector<DiscreteTorus> v;
 
-  public:
-    DiscreteTLWE(const uint32_t message, const std::vector<uint32_t> &secret) {
-      this->n = secret.size();
-
-      std::random_device rd;
-      std::mt19937 gen(rd());
-      std::uniform_int_distribution<uint32_t> dis(0, this->P-1);
-
-      DiscreteTorus b(message);
-      for (int i = 0; i < this->n; ++i) {
-          uint32_t random_value = dis(gen);
-          this->v.push_back(DiscreteTorus(random_value));
-          b += secret[i] * DiscreteTorus(random_value); 
-      }
-      this->v.push_back(b);
-    }
-
-    // DiscreteTLWE(std::vector<DiscreteTorus> v) : v(v) { 
-      // return; 
-    // };
-
-    DiscreteTLWE(const DiscreteTLWE &tlwe);
+  protected:
     DiscreteTorus operator[](int i) const { return v[i]; };
+
+  public:
+    DiscreteTLWE(const uint32_t n) : n(n) {};
+    DiscreteTLWE(const DiscreteTLWE &tlwe);
+
     int len() const { return this->v.size(); };
 
     friend std::ostream& operator<<(std::ostream &os, const DiscreteTLWE &tlwe) {
@@ -57,18 +45,6 @@ class DiscreteTLWE {
         this->v[i] *= c;
       }
     }
-
-  protected:
-    DiscreteTorus decrypt(const std::vector<uint32_t> &secret) const {
-      DiscreteTorus b = this->v[this->n];
-      for (int i = 0; i < this->n; ++i) {
-        b -= secret[i] * this->v[i];
-      }
-      return b;
-    }
-
-  friend class SolverTLWE;
-
 };
 
 DiscreteTLWE::DiscreteTLWE(const DiscreteTLWE &tlwe) {

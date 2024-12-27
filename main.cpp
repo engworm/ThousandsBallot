@@ -6,7 +6,8 @@
 #include "structure/tlwe.hpp"
 #include "operator/Montgomery.hpp"
 #include "utility/log.hpp"
-#include "solver/solver_tlwe.hpp"
+#include "encrypt/encrypt_tlwe.hpp"
+#include "decrypt/decrypt_tlwe.hpp"
 
 int main(int argc, char* argv[]) {
   boost::program_options::options_description desc("Options");
@@ -74,10 +75,10 @@ int main(int argc, char* argv[]) {
   for (uint32_t i = 0; i < Params::n; ++i) {
     secret[i] = dis(gen);
   }
-  DiscreteTLWE tlwe(10, secret);
+  DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(10, secret);
   Log::print(Log::LogLevel::INFO, "tlwe:", tlwe);
 
-  DiscreteTorus ans = SolverTLWE::solve(tlwe, secret);
+  DiscreteTorus ans = DecryptDiscreteTLWE::decrypt(tlwe, secret);
   Log::print(Log::LogLevel::INFO, "tlwe:", ans);
 
   return 0;
