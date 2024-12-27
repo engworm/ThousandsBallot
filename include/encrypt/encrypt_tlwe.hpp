@@ -22,7 +22,7 @@ class EncryptDiscreteTLWE : public DiscreteTLWE {
           b += secret[i] * DiscreteTorus(random_value); 
       }
       tlwe.v.push_back(b);
-      return tlwe;
+      return std::move(tlwe);
     }
 };
 
