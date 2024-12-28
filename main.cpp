@@ -2,16 +2,14 @@
 #include <vector>
 #include <boost/program_options.hpp>
 #include "params/params.hpp"
-#include "structure/torus.hpp"
 #include "structure/tlwe.hpp"
 #include "operator/Montgomery.hpp"
 #include "utility/log.hpp"
 #include "encrypt/encrypt_tlwe.hpp"
 #include "decrypt/decrypt_tlwe.hpp"
-#include "structure/torus_poly.hpp"
-#include "structure/poly.hpp"
-#include "structure/galoisfield.hpp"
-#include "structure/galoisfield_poly.hpp"
+#include "structure/poly_base.hpp"
+#include "structure/discrete_torus_galoisfield.hpp"
+#include "structure/discrete_torus_galoisfield_poly.hpp"
 #include "operator/ntt.hpp"
 
 int main(int argc, char* argv[]) {
@@ -103,10 +101,8 @@ int main(int argc, char* argv[]) {
     GaloisFieldPoly p3 = p1 * p2;
     Log::debug("p3:", p3);
 
-    // これをやろうとすると相互includeになってしまい，エラーになる
-
-    // DiscreteTorusPoly toruspoly3(p3);
-    // Log::debug("toruspoly3:", toruspoly3);
+    DiscreteTorusPoly toruspoly3 = p3;
+    Log::debug("toruspoly3:", toruspoly3);
   }
   else {
     Log::error("NTT is not ready");

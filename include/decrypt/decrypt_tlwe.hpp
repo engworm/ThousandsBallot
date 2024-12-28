@@ -2,7 +2,6 @@
 #define DECRYPT_TLWE_HPP
 
 #include "params/params.hpp"
-#include "structure/torus.hpp"
 #include "structure/tlwe.hpp"
 
 class DecryptDiscreteTLWE : public DiscreteTLWE {

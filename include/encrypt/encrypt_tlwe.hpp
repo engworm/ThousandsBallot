@@ -2,7 +2,7 @@
 #define ENCRYPT_TLWE_HPP
 
 #include "params/params.hpp"
-#include "structure/torus.hpp"
+#include "structure/discrete_torus_galoisfield.hpp"
 #include "structure/tlwe.hpp"
 
 class EncryptDiscreteTLWE : public DiscreteTLWE {

@@ -1,5 +1,5 @@
-#ifndef POLY_HPP
-#define POLY_HPP
+#ifndef POLY_BASE_HPP
+#define POLY_BASE_HPP
 
 #include <iostream>
 #include <cstdint>
@@ -14,7 +14,7 @@ concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
 template<Arithmetic T>
 class PolyBase {
   protected:
-    uint32_t N{};
+    uint32_t N = NttParams::N;
     std::vector<T> coeffs;
     T& operator[](int i) { return coeffs[i]; }
   

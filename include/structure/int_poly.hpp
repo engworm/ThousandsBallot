@@ -2,7 +2,7 @@
 #define INT_POLY_HPP
 
 #include <cstdint>
-#include "structure/poly.hpp"
+#include "structure/poly_base.hpp"
 
 using IntPoly = PolyBase<uint32_t>;
 

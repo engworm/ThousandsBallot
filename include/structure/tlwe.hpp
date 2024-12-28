@@ -5,8 +5,8 @@
 #include <cstdint>
 #include <vector>
 #include <random>
-#include "torus.hpp"
 #include "params/params.hpp"
+#include "structure/discrete_torus_galoisfield.hpp"
 
 class DiscreteTLWE {
 
