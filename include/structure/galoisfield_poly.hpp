@@ -10,7 +10,7 @@
 #include "structure/torus.hpp"
 #include "structure/torus_poly.hpp"
 
-class GaloisFieldPoly {
+class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
   private:
     uint32_t N = NttParams::N;
     std::uint32_t P = NttParams::P;
@@ -44,15 +44,6 @@ class GaloisFieldPoly {
       }
     };
 
-    GaloisFieldPoly(GaloisFieldPoly&& poly) noexcept
-      : N(poly.N), coeffs(std::move(poly.coeffs)) {};
-
-    // GaloisFieldPoly(Poly&& poly) noexcept
-      // : N(poly.N), coeffs(std::move(poly.get_coeffs())) {};
-
-    uint32_t size() const { return this->N; };
-    GaloisFieldElement operator[](int i) const { return coeffs[i]; };
-  
     friend GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) {
       if (poly1.N != poly2.N) {
         throw std::invalid_argument("Polynomial degree must be the same");

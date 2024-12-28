@@ -97,8 +97,8 @@ int main(int argc, char* argv[]) {
   if (InitializeGaloisField::initialize()) {
     Log::info("NTT is ready");
 
-    GaloisFieldPoly p1(std::move(intpoly1));
-    GaloisFieldPoly p2(std::move(toruspoly2));
+    GaloisFieldPoly p1 = intpoly1;
+    GaloisFieldPoly p2 = toruspoly2;
 
     GaloisFieldPoly p3 = p1 * p2;
     Log::debug("p3:", p3);
@@ -108,8 +108,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 #else
-  std::cout << "NTT is not defined" << std::endl;
-  DiscreteTorusPoly p3 = poly * toruspoly;
+  // std::cout << "NTT is not defined" << std::endl;
+  // DiscreteTorusPoly p3 = poly * toruspoly;
 #endif
 
   return 0;

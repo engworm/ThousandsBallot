@@ -7,35 +7,17 @@
 #include "params/params.hpp"
 #include "structure/torus.hpp"
 #include "structure/poly.hpp"
+#include "structure/int_poly.hpp"
 
-class DiscreteTorusPoly {
-  private:
-    uint32_t N{}; 
-    std::uint32_t P = Params::P;
-    std::vector<DiscreteTorus> coeffs;
-  
-  protected:
-    DiscreteTorus& operator[](int i) { return coeffs[i]; }
-
+class DiscreteTorusPoly : public PolyBase<DiscreteTorus> {
   public:
-    DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : coeffs(coeffs) {
+    DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {
       this->N = coeffs.size();
     };
 
-    // DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly) {
-      // this->N = toruspoly.N;
-      // this->P = toruspoly.P;
-      // for (int i = 0; i < N; ++i) {
-        // this->coeffs[i] = toruspoly[i];
-      // }
-    // }
-
-    DiscreteTorusPoly(DiscreteTorusPoly&& toruspoly) noexcept
-      : N(toruspoly.N), P(toruspoly.P), coeffs(std::move(toruspoly.coeffs)) {};
-
-    uint32_t size() const { return this->N; };
-    DiscreteTorus operator[](int i) const { return coeffs[i]; };
-    std::vector<DiscreteTorus> get_coeffs() const {return coeffs; }
+    DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly) : PolyBase<DiscreteTorus>(toruspoly.get_coeffs()) {
+      this->N = toruspoly.size();
+     }
 
     friend DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly) {
 
