@@ -96,7 +96,7 @@ class InitializeGaloisField : public GaloisFieldElement {
       NttParams::N = Params::N;
       NttParams::psi = search_2N_primitive_root_of_unity().val();
 
-      GaloisFieldElement a = 1;
+      GaloisFieldElement a(1);
       for (int i = 0; i < Params::N; ++i) {
           a *= NttParams::psi;
       }

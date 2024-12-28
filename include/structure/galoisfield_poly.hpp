@@ -15,10 +15,7 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
     uint32_t N = NttParams::N;
     std::uint32_t P = NttParams::P;
     std::vector<GaloisFieldElement> coeffs;
-  
-  protected:
-    GaloisFieldElement& operator[](int i) { return coeffs[i]; }
-  
+
   public:
     GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) : coeffs(coeffs) {
       this->N = coeffs.size();

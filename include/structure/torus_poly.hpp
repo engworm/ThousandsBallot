@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
-#include "params/params.hpp"
 #include "structure/torus.hpp"
 #include "structure/poly.hpp"
 #include "structure/int_poly.hpp"

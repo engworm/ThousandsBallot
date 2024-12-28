@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
-#include "params/params.hpp"
 
 template<typename T>
 concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
