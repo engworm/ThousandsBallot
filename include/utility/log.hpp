@@ -2,6 +2,7 @@
 #define LOG_HPP
 
 #include <iostream>
+#include <string>
 
 class Log {
   public:
@@ -10,30 +11,37 @@ class Log {
       WARN,
       ERROR
     };
+
+    template <typename ...T>
+    static void debug(const T &...objs) {
+      print(std::cout, objs...);
+    }
     
     template <typename ...T>
-    static void print(LogLevel level, const T &...objs) {
-      auto print_with_space = [](const auto &first, const auto &...rest) {
-        std::cout << first;
-        ((std::cout << ' ' << rest), ...);
-      };
+    static void info(const T &...objs) {
+      std::cout << "\x1b[32m[Info]\x1b[39m ";
+      print(std::cout, objs...);
+    }
 
-      switch (level) {
-        case INFO:
-          print_with_space(objs...);
-          std::cout << std::endl;
-          break;
-        case WARN:
-          print_with_space(objs...);
-          std::cout << std::endl;
-          break;
-        case ERROR:
-          print_with_space(objs...);
-          std::cerr << std::endl;
-          break;
-        default:
-          break;
-      }
+    template <typename ...T>
+    static void warn(const T &...objs) {
+      std::cout << "\x1b[32m[Warn]\x1b[39m ";
+      print(std::cout, objs...);
+    }
+
+    template <typename ...T>
+    static void error(const T &...objs) {
+      std::cout << "\x1b[32m[Error]\x1b[39m ";
+      print(std::cout, objs...);
+      std::exit(EXIT_FAILURE);
+    }
+
+  private:
+    template <typename Stream, typename First, typename ...Rest>
+    static void print(Stream &os, const First &first, const Rest &...rest) {
+      os << first;
+      ((os << ' ' << rest), ...);
+      os << std::endl;
     }
 };
 

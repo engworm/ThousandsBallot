@@ -2,8 +2,9 @@
 #include <cstdint>
 #include <random>
 #include "params/params.hpp"
-#include "include/operator/Montgomery.hpp" 
-#include "include/structure/torus.hpp"
+#include "operator/Montgomery.hpp" 
+#include "structure/galoisfield.hpp"
+#include "structure/torus.hpp"
 
 class MontgomeryTest : public ::testing::Test {
 protected:

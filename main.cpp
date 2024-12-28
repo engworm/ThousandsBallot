@@ -2,24 +2,30 @@
 #include <vector>
 #include <boost/program_options.hpp>
 #include "params/params.hpp"
-#include "structure/torus.hpp"
 #include "structure/tlwe.hpp"
 #include "operator/Montgomery.hpp"
 #include "utility/log.hpp"
-#include "solver/solver_tlwe.hpp"
+#include "encrypt/encrypt_tlwe.hpp"
+#include "decrypt/decrypt_tlwe.hpp"
+#include "structure/poly_base.hpp"
+#include "structure/torus.hpp"
+#include "structure/galoisfield.hpp"
+#include "structure/toruspoly.hpp"
+#include "structure/galoisfieldpoly.hpp"
+#include "operator/ntt.hpp"
 
 int main(int argc, char* argv[]) {
   boost::program_options::options_description desc("Options");
   desc.add_options()
     ("help,h", "Help\n")
-    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] TFHE Parameter.\nSpecify integer P and n, where P is a prime number and n is the length of secret key.\ne.g. -P 12289 4\n")
+    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] TFHE Parameter.\nSpecify integer P and n, N, where P is a prime number and n is the length of secret key, N is degree of Polynomial.\ne.g. -P 12289 4 1024\n")
     ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication scaling factor R.\nSpecify integer r, so that R = 2^r > P.\ne.g. -M 18\n");
                                                                                                 
   boost::program_options::variables_map vm;
   try {
     boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
   } catch (boost::program_options::error &e) {
-    Log::print(Log::LogLevel::ERROR, e.what());
+    throw std::invalid_argument(e.what());
     return 1;
   }
   boost::program_options::notify(vm);
@@ -33,6 +39,7 @@ int main(int argc, char* argv[]) {
     std::vector<uint32_t> P = vm["param"].as<std::vector<uint32_t>>();
     Params::P = P[0];
     Params::n = P[1];
+    Params::N = P[2];
   }
   else {
     return 1;
@@ -48,14 +55,16 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  Log::print(Log::LogLevel::INFO, "P =", Params::P);
-  Log::print(Log::LogLevel::INFO, "n =", Params::n);
-  Log::print(Log::LogLevel::INFO, "R =", MontgomeryParams::R);
-  Log::print(Log::LogLevel::INFO, "μ =", MontgomeryParams::mu);
-  Log::print(Log::LogLevel::INFO, "R^2 =", MontgomeryParams::R2);
+  Log::info("param = {\n",
+              "P =", Params::P, "\n", 
+              "n =", Params::n, "\n", 
+              "N =", Params::N, "\n", 
+              "R =", MontgomeryParams::R, "\n", 
+              "μ =", MontgomeryParams::mu, "\n", 
+              "R^2 =", MontgomeryParams::R2, "\n}");
 
   if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
-    Log::print(Log::LogLevel::ERROR, "Error: Montgomery constant mismatch.");
+    Log::error("Montgomery constant mismatched");
     return 1;
   }
 
@@ -74,11 +83,37 @@ int main(int argc, char* argv[]) {
   for (uint32_t i = 0; i < Params::n; ++i) {
     secret[i] = dis(gen);
   }
-  DiscreteTLWE tlwe(10, secret);
-  Log::print(Log::LogLevel::INFO, "tlwe:", tlwe);
+  DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(10, secret);
+  Log::debug("tlwe:", tlwe);
 
-  DiscreteTorus ans = SolverTLWE::solve(tlwe, secret);
-  Log::print(Log::LogLevel::INFO, "tlwe:", ans);
+  DiscreteTorus ans = DecryptDiscreteTLWE::decrypt(tlwe, secret);
+  Log::debug("tlwe:", ans);
+
+  IntPoly intpoly1({1, 1, 1, 1});
+  DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
+
+
+#ifdef NTT
+  if (InitializeGaloisField::initialize()) {
+    Log::info("NTT is ready");
+
+    GaloisFieldPoly p1 = intpoly1;
+    GaloisFieldPoly p2 = toruspoly2;
+
+    GaloisFieldPoly p3 = p1 * p2;
+    Log::debug("p3:", p3);
+
+    DiscreteTorusPoly toruspoly3 = p3;
+    Log::debug("toruspoly3:", toruspoly3);
+  }
+  else {
+    Log::error("NTT is not ready");
+    return 1;
+  }
+#else
+  // std::cout << "NTT is not defined" << std::endl;
+  // DiscreteTorusPoly p3 = poly * toruspoly;
+#endif
 
   return 0;
 }

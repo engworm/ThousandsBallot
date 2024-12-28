@@ -30,6 +30,8 @@ link_directories(${BOOST_LIB})
 add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp)
 add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp)
 
+add_definitions(-DNTT)
+
 target_link_libraries(${PROJECT_NAME} -lboost_program_options)
 target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)
 
