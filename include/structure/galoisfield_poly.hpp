@@ -7,6 +7,7 @@
 #include "params/params.hpp"
 #include "structure/galoisfield.hpp"
 #include "structure/poly.hpp"
+#include "structure/int_poly.hpp"
 #include "structure/torus.hpp"
 #include "structure/torus_poly.hpp"
 

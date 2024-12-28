@@ -20,7 +20,7 @@ class DiscreteTorus {
         }
       }
 
-    DiscreteTorus(const DiscreteTorus &tlwe);
+    DiscreteTorus(const DiscreteTorus &t);
 
     uint32_t val() const {
       return this->x;

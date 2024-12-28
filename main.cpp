@@ -102,6 +102,11 @@ int main(int argc, char* argv[]) {
 
     GaloisFieldPoly p3 = p1 * p2;
     Log::debug("p3:", p3);
+
+    // これをやろうとすると相互includeになってしまい，エラーになる
+
+    // DiscreteTorusPoly toruspoly3(p3);
+    // Log::debug("toruspoly3:", toruspoly3);
   }
   else {
     Log::error("NTT is not ready");

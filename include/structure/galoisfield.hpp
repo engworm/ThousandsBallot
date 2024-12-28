@@ -21,8 +21,8 @@ class GaloisFieldElement {
     GaloisFieldElement() : a(0) {};
 
     GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 
-    GaloisFieldElement(const DiscreteTorus &t) : a(t.val()) {}; 
     GaloisFieldElement(const uint32_t &x) : a(x) {}; 
+    GaloisFieldElement(const DiscreteTorus &t) : a(t.val()) {}; 
 
     uint32_t val() const {
       return this->a;
