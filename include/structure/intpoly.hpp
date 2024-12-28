@@ -1,5 +1,5 @@
-#ifndef INT_POLY_HPP
-#define INT_POLY_HPP
+#ifndef INTPOLY_HPP
+#define INTPOLY_HPP
 
 #include <cstdint>
 #include "structure/poly_base.hpp"

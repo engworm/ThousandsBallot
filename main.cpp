@@ -8,8 +8,10 @@
 #include "encrypt/encrypt_tlwe.hpp"
 #include "decrypt/decrypt_tlwe.hpp"
 #include "structure/poly_base.hpp"
-#include "structure/discrete_torus_galoisfield.hpp"
-#include "structure/discrete_torus_galoisfield_poly.hpp"
+#include "structure/torus.hpp"
+#include "structure/galoisfield.hpp"
+#include "structure/toruspoly.hpp"
+#include "structure/galoisfieldpoly.hpp"
 #include "operator/ntt.hpp"
 
 int main(int argc, char* argv[]) {

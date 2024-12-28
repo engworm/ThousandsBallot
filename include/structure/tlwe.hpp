@@ -6,7 +6,8 @@
 #include <vector>
 #include <random>
 #include "params/params.hpp"
-#include "structure/discrete_torus_galoisfield.hpp"
+#include "structure/galoisfield.hpp"
+#include "structure/torus.hpp"
 
 class DiscreteTLWE {
 
