@@ -33,6 +33,7 @@ class Log {
     static void error(const T &...objs) {
       std::cout << "\x1b[32m[Error]\x1b[39m ";
       print(std::cout, objs...);
+      std::exit(EXIT_FAILURE);
     }
 
   private:
