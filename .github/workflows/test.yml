@@ -2,7 +2,7 @@ name: Run Tests
 on: [push]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: macos-latest
   
     steps:
@@ -26,15 +26,6 @@ jobs:
     
     - name: Build
       run: cmake --build build
-
-  
-  test:
-    runs-on: macos-latest
-    needs: build
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
 
     - name: Run tests
       run: |
