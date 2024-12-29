@@ -33,15 +33,6 @@ jobs:
     needs: build
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Download build artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build
-        path: build
-
     - name: Run tests
       run: |
         cd build && ctest --output-on-failure
