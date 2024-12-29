@@ -5,9 +5,10 @@
 #include "operator/Montgomery.hpp" 
 #include "structure/galoisfield.hpp"
 #include "structure/torus.hpp"
+#include "utility/log.hpp"
 
 class MontgomeryTest : public ::testing::Test {
-protected:
+  protected:
     void SetUp() override {
         if (Params::P == 0) {
             throw std::runtime_error("Params::P is not set");
@@ -19,14 +20,27 @@ protected:
         std::cout << "  R^2 = " << MontgomeryParams::R2 << ",\n";
         std::cout << "}" << std::endl;
     }
+  private:
+    int seed;
+
+  public:
+    MontgomeryTest() {
+        if (std::getenv("TEST_SEED") != nullptr) {
+            seed = std::stoi(std::getenv("TEST_SEED"));
+        }
+        return;
+    }
+    int getseed() const { return seed; }
 };
 
 // テストケース
 TEST_F(MontgomeryTest, MultiplyTest1) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, Params::P-1);
+  std::mt19937 gen(MontgomeryTest::getseed());
+  std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
   DiscreteTorus a(dis(gen));
+
+  Log::debug("a = ", a.val());
+  Log::debug("k = ", 1);
 
   DiscreteTorus c = 1 * a;
 
@@ -37,13 +51,15 @@ TEST_F(MontgomeryTest, MultiplyTest1) {
 }
 
 TEST_F(MontgomeryTest, MultiplyTest2) {
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, Params::P-1);
+  std::mt19937 gen(MontgomeryTest::getseed());
+  std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
   DiscreteTorus a(dis(gen));
 
   std::uniform_int_distribution<uint32_t> disN(0, std::numeric_limits<uint32_t>::max());
   uint32_t k = disN(gen);
+
+  Log::debug("a = ", a.val());
+  Log::debug("k = ", k);
 
   DiscreteTorus c =  k * a;
 
@@ -64,6 +80,10 @@ int main(int argc, char **argv) {
         else if (std::string(argv[i]).find("--r=") == 0) {
             std::string p_value = std::string(argv[i]).substr(4);
             MontgomeryParams::R = 1 << std::stoul(p_value);
+        }
+        else if (std::string(argv[i]).find("--seed=") == 0) {
+            std::string seed = std::string(argv[i]).substr(7);
+            setenv("TEST_SEED", seed.c_str(), 1);
         }
     }
 
