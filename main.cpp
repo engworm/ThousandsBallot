@@ -92,10 +92,13 @@ int main(int argc, char* argv[]) {
   IntPoly intpoly1({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
 
+  DiscreteTorusPoly toruspoly = intpoly1 * toruspoly2;
+  Log::debug("toruspoly:", toruspoly);
+
 
 #ifdef NTT
-  if (InitializeGaloisField::initialize()) {
-    Log::info("NTT is ready");
+  if (SetUpNttConstants::setup()) {
+    Log::info("NTT multiplication domain setup completed");
 
     GaloisFieldPoly p1 = intpoly1;
     GaloisFieldPoly p2 = toruspoly2;

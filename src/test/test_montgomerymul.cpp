@@ -39,8 +39,8 @@ TEST_F(MontgomeryTest, MultiplyTest1) {
   std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
   DiscreteTorus a(dis(gen));
 
-  Log::debug("a = ", a.val());
-  Log::debug("k = ", 1);
+  Log::debug("a =", a.val());
+  Log::debug("k =", 1);
 
   DiscreteTorus c = 1 * a;
 
@@ -58,8 +58,8 @@ TEST_F(MontgomeryTest, MultiplyTest2) {
   std::uniform_int_distribution<uint32_t> disN(0, std::numeric_limits<uint32_t>::max());
   uint32_t k = disN(gen);
 
-  Log::debug("a = ", a.val());
-  Log::debug("k = ", k);
+  Log::debug("a =", a.val());
+  Log::debug("k =", k);
 
   DiscreteTorus c =  k * a;
 

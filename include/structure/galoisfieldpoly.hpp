@@ -80,7 +80,6 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
       if (poly1.N != poly2.N) {
         Log::error("Polynomial degree must be the same");
       }
-      std::cout << "mgmg" << std::endl;
 
       std::vector<GaloisFieldElement> zero(poly1.N, GaloisFieldElement(0));
       GaloisFieldPoly result(zero);
