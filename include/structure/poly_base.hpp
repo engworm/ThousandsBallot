@@ -31,6 +31,6 @@ class PolyBase {
     friend std::ostream& operator<<(std::ostream &os, const PolyBase<U> &poly);
 };
 
-#include "src/structure/poly_base.tpp"
+#include "structure/poly_base.tpp"
 
 #endif

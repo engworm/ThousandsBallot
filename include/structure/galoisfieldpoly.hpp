@@ -16,90 +16,24 @@ class GaloisFieldPoly;
 namespace galoisfieldpoly {
   class DiscreteTorusPoly : public PolyBase<DiscreteTorus> {
     public:
-      DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {
-        this->N = coeffs.size();
-      };
-
-      DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly) : PolyBase<DiscreteTorus>(toruspoly.get_coeffs()) {
-        this->N = toruspoly.size();
-      }
-
+      DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs);
+      DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly);
       DiscreteTorusPoly(const GaloisFieldPoly &poly);
-
-      friend DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly) {
-
-        if (intpoly.size() != toruspoly.N) {
-          throw std::invalid_argument("Polynomial degree must be the same");
-        }
-
-        std::vector<DiscreteTorus> zero(toruspoly.N, DiscreteTorus(0));
-        DiscreteTorusPoly result(zero);
-        for (size_t i = 0; i < toruspoly.N; ++i) {
-          for (size_t j = 0; j < toruspoly.N; ++j) {
-            size_t k = (i + j) % toruspoly.N;
-            if (i + j >= toruspoly.N) {
-              result[k] -= intpoly[j]* toruspoly[i];
-            }
-            else {
-              result[k] += intpoly[j] * toruspoly[i];
-            }
-          }
-        }
-
-        return result;
-      }
   };
+  DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly);
 }
 
 class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
   public:
-    GaloisFieldPoly() = default;
-    GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) : PolyBase<GaloisFieldElement>(coeffs) {
-      this->N = coeffs.size();
-    };
+    GaloisFieldPoly();
+    GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs);
     
-    GaloisFieldPoly(const IntPoly &poly) {
-      this->N = poly.size();
-      for (int i = 0; i < this->N; ++i) {
-        std::vector<uint32_t> tmp = poly.get_coeffs(); 
-        this->coeffs.emplace_back(GaloisFieldElement(poly[i]));
-      }
-    };
+    GaloisFieldPoly(const IntPoly &poly);
+    GaloisFieldPoly(const galoisfieldpoly::DiscreteTorusPoly &poly);
 
-    GaloisFieldPoly(const galoisfieldpoly::DiscreteTorusPoly &poly) {
-      this->N = poly.size();
-      for (int i = 0; i < this->N; ++i) {
-        std::vector<DiscreteTorus> tmp = poly.get_coeffs();
-        this->coeffs.emplace_back(GaloisFieldElement(poly[i]));
-      }
-    };
-
-    friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {
-      for (auto coeff: poly.coeffs) {
-        os << coeff << ' ';
-      }
-      return os;
-    }
+    friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
 };
 
-galoisfieldpoly::DiscreteTorusPoly::DiscreteTorusPoly(const GaloisFieldPoly &poly) {
-  this->N = poly.size();
-  for (int i = 0; i < this->N; ++i) {
-    std::vector<GaloisFieldElement> tmp = poly.get_coeffs();
-    this->coeffs.emplace_back(DiscreteTorus(poly[i]));
-  }
-}
-
-GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) {
-  if (poly1.size() != poly2.size()) {
-    Log::error("Polynomial degree must be the same");
-  }
-
-  std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
-  GaloisFieldPoly result(zero);
-  std::cout << "NTT multiplication" << std::endl;
-  std::cout << result.size() << std::endl;
-  return result;
-}
+GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2);
 
 #endif
