@@ -24,7 +24,7 @@ GaloisFieldPoly::GaloisFieldPoly(const DiscreteTorusPoly &poly) {
 };
 
 std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {
-  for (auto coeff: poly.coeffs) {
+  for (auto coeff: poly.get_coeffs()) {
     os << coeff << ' ';
   }
   return os;

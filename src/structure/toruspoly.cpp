@@ -17,6 +17,13 @@ namespace galoisfieldpoly {
     }
   }
 
+  std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly) {
+    for (auto coeff: poly.get_coeffs()) {
+      os << coeff << ' ';
+    }
+    return os;
+  }
+
   DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly) {
 
     if (intpoly.size() != toruspoly.size()) {

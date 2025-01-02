@@ -19,6 +19,8 @@ namespace galoisfieldpoly {
       DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs);
       DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly);
       DiscreteTorusPoly(const GaloisFieldPoly &poly);
+
+      friend std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly);
   };
   DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly);
 }
