@@ -114,8 +114,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 #else
-  // std::cout << "NTT is not defined" << std::endl;
-  // DiscreteTorusPoly p3 = poly * toruspoly;
+  std::cout << "NTT is not defined" << std::endl;
+  DiscreteTorusPoly toruspoly3 = intpoly1 * toruspoly2;
 #endif
 
   return 0;

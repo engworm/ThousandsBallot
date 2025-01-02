@@ -57,22 +57,11 @@ namespace galoisfield {
         return x%this->P;
       }
 
-    friend DiscreteTorus operator+(const DiscreteTorus &t1, const DiscreteTorus &t2) {
-        DiscreteTorus t = t1;
-        t += t2;
-        return t;
+      friend std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {
+        os << t.x;
+        return os;
       }
 
-    friend DiscreteTorus operator*(const uint32_t c, const DiscreteTorus &t1) {
-      DiscreteTorus t = t1; 
-      t *= c;
-      return t;
-    }
-
-    friend std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {
-      os << t.x;
-      return os;
-    }
   };
 
   DiscreteTorus::DiscreteTorus(const DiscreteTorus &t) {
@@ -80,6 +69,19 @@ namespace galoisfield {
     this->P = t.P;
     return;
   }
+
+  DiscreteTorus operator+(const DiscreteTorus &t1, const DiscreteTorus &t2) {
+    DiscreteTorus t = t1;
+    t += t2;
+    return t;
+  }
+
+  DiscreteTorus operator*(const uint32_t c, const DiscreteTorus &t1) {
+    DiscreteTorus t = t1; 
+    t *= c;
+    return t;
+  }
+
 }
 
 class GaloisFieldElement {
@@ -140,27 +142,27 @@ class GaloisFieldElement {
     }
 
 
-    friend bool operator==(const GaloisFieldElement &a1, const GaloisFieldElement&a2) {
-      return a1.a == a2.a;
-    }
-
-    friend GaloisFieldElement operator+(const GaloisFieldElement &a, const GaloisFieldElement &b) {
-      GaloisFieldElement c = a;
-      c += b;
-      return c;
-    }
-
-    friend GaloisFieldElement operator*(const GaloisFieldElement a, const GaloisFieldElement &b) {
-      GaloisFieldElement c = a; 
-      c *= b;
-      return c;
-    }
-
     friend std::ostream& operator<<(std::ostream &os, const GaloisFieldElement &a) {
       os << a.a;
       return os;
     }
 };
+
+bool operator==(const GaloisFieldElement &a1, const GaloisFieldElement&a2) {
+  return a1.val() == a2.val();
+}
+
+GaloisFieldElement operator+(const GaloisFieldElement &a, const GaloisFieldElement &b) {
+  GaloisFieldElement c = a;
+  c += b;
+  return c;
+}
+
+GaloisFieldElement operator*(const GaloisFieldElement a, const GaloisFieldElement &b) {
+  GaloisFieldElement c = a; 
+  c *= b;
+  return c;
+}
 
 galoisfield::DiscreteTorus::DiscreteTorus(const GaloisFieldElement &a) : x(a.val()) {};
 

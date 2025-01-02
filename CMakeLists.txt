@@ -38,3 +38,6 @@ target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pt
 enable_testing()
 add_test(NAME MontgomeryTest COMMAND test_montgomerymul --P=12289 --r=18 --seed=1)
 add_test(NAME MontgomeryTest2 COMMAND test_montgomerymul --P=12289 --r=18 --seed=2)
+add_test(NAME MontgomeryTest3 COMMAND test_montgomerymul --P=12289 --r=18 --seed=3)
+add_test(NAME MontgomeryTest4 COMMAND test_montgomerymul --P=12289 --r=18 --seed=4)
+add_test(NAME MontgomeryTest5 COMMAND test_montgomerymul --P=12289 --r=18 --seed=5)

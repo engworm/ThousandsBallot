@@ -74,20 +74,6 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
       }
     };
 
-    std::vector<GaloisFieldElement> get_coeffs() const { return coeffs; }
-
-    friend GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) {
-      if (poly1.N != poly2.N) {
-        Log::error("Polynomial degree must be the same");
-      }
-
-      std::vector<GaloisFieldElement> zero(poly1.N, GaloisFieldElement(0));
-      GaloisFieldPoly result(zero);
-      std::cout << "NTT multiplication" << std::endl;
-      std::cout << result.size() << std::endl;
-      return result;
-    }
-
     friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {
       for (auto coeff: poly.coeffs) {
         os << coeff << ' ';
@@ -102,6 +88,18 @@ galoisfieldpoly::DiscreteTorusPoly::DiscreteTorusPoly(const GaloisFieldPoly &pol
     std::vector<GaloisFieldElement> tmp = poly.get_coeffs();
     this->coeffs.emplace_back(DiscreteTorus(poly[i]));
   }
+}
+
+GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) {
+  if (poly1.size() != poly2.size()) {
+    Log::error("Polynomial degree must be the same");
+  }
+
+  std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
+  GaloisFieldPoly result(zero);
+  std::cout << "NTT multiplication" << std::endl;
+  std::cout << result.size() << std::endl;
+  return result;
 }
 
 #endif
