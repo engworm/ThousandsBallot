@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
+#include "params/params.hpp"
 
 template<typename T>
 concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
@@ -16,24 +17,20 @@ class PolyBase {
   protected:
     uint32_t N = NttParams::N;
     std::vector<T> coeffs;
-    T& operator[](int i) { return coeffs[i]; }
   
   public:
-    PolyBase() = default;
-    PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs) {
-      this->N = coeffs.size();
-    };
+    PolyBase();
+    PolyBase(const std::vector<T> &coeffs); 
 
-    uint32_t size() const { return this->N; };
-    T operator[](int i) const { return coeffs[i]; };
-    std::vector<T> get_coeffs() const { return coeffs; }
+    uint32_t size() const;
+    T operator[](int i) const;
+    T& operator[](int i);
+    std::vector<T> get_coeffs() const;
 
-    friend std::ostream& operator<<(std::ostream &os, const PolyBase &poly) {
-      for (auto coeff: poly.get_coeffs()) {
-        os << coeff << ' ';
-      }
-      return os;
-    }
+    template<Arithmetic U>
+    friend std::ostream& operator<<(std::ostream &os, const PolyBase<U> &poly);
 };
+
+#include "src/structure/poly_base.tpp"
 
 #endif
