@@ -27,8 +27,8 @@ include_directories(.)
 include_directories(./include)
 link_directories(${BOOST_LIB})
 
-add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp)
-add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp)
+add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp) 
+add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp)
 
 add_definitions(-DNTT)
 
