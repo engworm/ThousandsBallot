@@ -25,13 +25,13 @@ class Log {
 
     template <typename ...T>
     static void warn(const T &...objs) {
-      std::cout << "\x1b[32m[Warn]\x1b[39m ";
+      std::cout << "\x1b[33m[Warn]\x1b[39m ";
       print(std::cout, objs...);
     }
 
     template <typename ...T>
     static void error(const T &...objs) {
-      std::cout << "\x1b[32m[Error]\x1b[39m ";
+      std::cout << "\x1b[31m[Error]\x1b[39m ";
       print(std::cout, objs...);
       std::exit(EXIT_FAILURE);
     }

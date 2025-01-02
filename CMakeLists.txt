@@ -27,8 +27,8 @@ include_directories(.)
 include_directories(./include)
 link_directories(${BOOST_LIB})
 
-add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp)
-add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp)
+add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp) 
+add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp)
 
 add_definitions(-DNTT)
 
@@ -36,4 +36,8 @@ target_link_libraries(${PROJECT_NAME} -lboost_program_options)
 target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)
 
 enable_testing()
-add_test(NAME MontgomeryTest COMMAND test_montgomerymul --P=12289 --r=18)
+add_test(NAME MontgomeryTest COMMAND test_montgomerymul --P=12289 --r=18 --seed=1)
+add_test(NAME MontgomeryTest2 COMMAND test_montgomerymul --P=12289 --r=18 --seed=2)
+add_test(NAME MontgomeryTest3 COMMAND test_montgomerymul --P=12289 --r=18 --seed=3)
+add_test(NAME MontgomeryTest4 COMMAND test_montgomerymul --P=12289 --r=18 --seed=4)
+add_test(NAME MontgomeryTest5 COMMAND test_montgomerymul --P=12289 --r=18 --seed=5)

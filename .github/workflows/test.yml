@@ -4,7 +4,7 @@ on: [push]
 jobs:
   build-and-test:
     runs-on: macos-latest
-
+  
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -28,4 +28,5 @@ jobs:
       run: cmake --build build
 
     - name: Run tests
-      run: cd build && ctest --output-on-failure
+      run: |
+        cd build && ctest --verbose
