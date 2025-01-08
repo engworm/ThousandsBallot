@@ -46,11 +46,11 @@ class SetUpNttConstants {
         psi_pow *= psi;
       }
 
+      bool res = false;
       if (psi_pow == NttParams::P-1 && psi_pow*psi_pow == 1) {
-        return true;
-      } else {
-        return false;
-      }
+        res = true;
+      } 
+      return res;
     }
     
     static GaloisFieldElement search_2N_primitive_root_of_unity() {

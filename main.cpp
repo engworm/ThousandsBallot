@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  Log::info("param = {\n",
+  Log::debug("param = {\n",
               "P =", Params::P, "\n", 
               "n =", Params::n, "\n", 
               "N =", Params::N, "\n", 
@@ -99,6 +99,36 @@ int main(int argc, char* argv[]) {
 #ifdef NTT
   if (SetUpNttConstants::setup()) {
     Log::info("NTT multiplication domain setup completed");
+    Log::debug("NTT domain param = {",
+                "\n",
+                "P =", NttParams::P, "\n", 
+                "N =", NttParams::N, "\n", 
+                "ψ =", NttParams::psi, "\n", 
+                "ω =", NttParams::omega, "\n}");
+    
+    std::vector<GaloisFieldElement> psi_power_table(NttParams::N);
+    psi_power_table[0] = 1;
+    for (int i = 0; i < NttParams::N; ++i) {
+      psi_power_table[i] = psi_power_table[i-1] * NttParams::psi;
+    }
+
+    auto bit_reverse = [](uint32_t n, uint32_t log2n) {
+            uint32_t ans = 0;
+            for (uint32_t i = 0; i < log2n; ++i) {
+                ans = (ans << 1) | (n & 1);
+                n >>= 1;
+            }
+            return ans;
+        };
+    
+    std::vector<GaloisFieldElement> psi_power_table_bit_reversed_order(NttParams::N);
+    for (int i = 0; i < NttParams::N; ++i) {
+      int rev_i = bit_reverse(i, std::log2(NttParams::N));
+      std::cout << rev_i << std::endl;
+      psi_power_table_bit_reversed_order[rev_i] = psi_power_table[i];
+    }
+
+    Log::debug("psi_powe_table_bit_reversed_order",  psi_power_table_bit_reversed_order[0], psi_power_table_bit_reversed_order[1], psi_power_table_bit_reversed_order[2], psi_power_table_bit_reversed_order[3]); 
 
     GaloisFieldPoly p1 = intpoly1;
     GaloisFieldPoly p2 = toruspoly2;
