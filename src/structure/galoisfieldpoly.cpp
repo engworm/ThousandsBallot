@@ -1,5 +1,6 @@
 #include "structure/galoisfieldpoly.hpp"
 #include "structure/toruspoly.hpp"
+#include "factory/multiplication_factory.hpp"
 
 
 GaloisFieldPoly::GaloisFieldPoly() = default;
@@ -34,10 +35,12 @@ GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &p
   if (poly1.size() != poly2.size()) {
     Log::error("Polynomial degree must be the same");
   }
+  
+  bool useNTT = false;
+#ifdef NTT
+  useNTT = true;
+#endif
 
-  std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
-  GaloisFieldPoly result(zero);
-  std::cout << "NTT multiplication" << std::endl;
-  std::cout << result.size() << std::endl;
-  return result;
+  auto multiplication_strategy = MultiplicationFactory::create(useNTT);
+  return multiplication_strategy->multiply(poly1, poly2);
 }
