@@ -3,11 +3,9 @@
 #include <boost/program_options.hpp>
 #include "params/params.hpp"
 #include "structure/tlwe.hpp"
-#include "operator/Montgomery.hpp"
 #include "utility/log.hpp"
 #include "encrypt/encrypt_tlwe.hpp"
 #include "decrypt/decrypt_tlwe.hpp"
-#include "structure/poly_base.hpp"
 #include "structure/torus.hpp"
 #include "structure/galoisfield.hpp"
 #include "structure/toruspoly.hpp"
