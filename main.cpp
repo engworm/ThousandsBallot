@@ -107,39 +107,6 @@ int main(int argc, char* argv[]) {
   IntPoly intpoly1({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
 
-#ifdef NTT
-  Log::debug("NTT domain param = {",
-              "\n",
-              "P =", NttParams::P, "\n", 
-              "N =", NttParams::N, "\n", 
-              "ψ =", NttParams::psi, "\n", 
-              "ω =", NttParams::omega, "\n}");
-    
-  std::vector<GaloisFieldElement> psi_power_table(NttParams::N);
-  psi_power_table[0] = 1;
-  for (int i = 0; i < NttParams::N; ++i) {
-    psi_power_table[i] = psi_power_table[i-1] * NttParams::psi;
-  }
-
-  auto bit_reverse = [](uint32_t n, uint32_t log2n) {
-          uint32_t ans = 0;
-          for (uint32_t i = 0; i < log2n; ++i) {
-              ans = (ans << 1) | (n & 1);
-              n >>= 1;
-          }
-          return ans;
-      };
-    
-  std::vector<GaloisFieldElement> psi_power_table_bit_reversed_order(NttParams::N);
-  for (int i = 0; i < NttParams::N; ++i) {
-    int rev_i = bit_reverse(i, std::log2(NttParams::N));
-    std::cout << rev_i << std::endl;
-    psi_power_table_bit_reversed_order[rev_i] = psi_power_table[i];
-  }
-
-  Log::debug("psi_powe_table_bit_reversed_order",  psi_power_table_bit_reversed_order[0], psi_power_table_bit_reversed_order[1], psi_power_table_bit_reversed_order[2], psi_power_table_bit_reversed_order[3]); 
-#endif
-
   GaloisFieldPoly gfpoly1 = std::move(intpoly1);
   GaloisFieldPoly gfpoly2 = std::move(toruspoly2);
 
@@ -155,7 +122,10 @@ int main(int argc, char* argv[]) {
   IntPoly intpoly4({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly5({0, 1, 0, 0});
 
-  GaloisFieldPoly gfpoly6 = intpoly4 * toruspoly5;
+  GaloisFieldPoly gfpoly4 = std::move(intpoly4);
+  GaloisFieldPoly gfpoly5 = std::move(toruspoly5);
+
+  GaloisFieldPoly gfpoly6 = gfpoly4 * gfpoly5;
   DiscreteTorusPoly toruspoly6 = gfpoly6;
   Log::debug("toruspoly6:", toruspoly6);
 

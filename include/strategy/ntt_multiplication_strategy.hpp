@@ -20,7 +20,7 @@ private:
 
   static NTTMultiplicationStrategy *instance;
   NTTMultiplicationStrategy() {
-    Log::info("NTT Multiplication Strategy: psi power table preparation is complete");
+    Log::info("NTT Multiplication Strategy: ψ power table preparation is complete");
     init_psi_power_table();
     init_psi_power_table_bit_reversed_order();
   };
@@ -43,12 +43,12 @@ public:
 
   void init_psi_power_table_bit_reversed_order() {
     auto bit_reverse = [](uint32_t n, uint32_t log2n) {
-        uint32_t ans = 0;
-        for (uint32_t i = 0; i < log2n; ++i) {
-            ans = (ans << 1) | (n & 1);
-            n >>= 1;
-        }
-        return ans;
+      uint32_t ans = 0;
+      for (uint32_t i = 0; i < log2n; ++i) {
+          ans = (ans << 1) | (n & 1);
+          n >>= 1;
+      }
+      return ans;
     };
 
     psi_power_table_bit_reversed_order.reserve(N);
@@ -59,10 +59,10 @@ public:
   }
 
   GaloisFieldPoly multiply(const GaloisFieldPoly &a, const GaloisFieldPoly &b) const override {
-      std::vector<GaloisFieldElement> zero(a.size(), GaloisFieldElement(0));
-      GaloisFieldPoly result(zero);
-      Log::info("NTT multiplication logic here");
-      return result;
+    std::vector<GaloisFieldElement> zero(a.size(), GaloisFieldElement(0));
+    GaloisFieldPoly result(zero);
+    Log::info("NTT multiplication logic here");
+    return result;
   }
 };
 
