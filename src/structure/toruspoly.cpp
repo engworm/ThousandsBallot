@@ -30,8 +30,6 @@ namespace galoisfieldpoly {
       throw std::invalid_argument("Polynomial degree must be the same");
     }
 
-    Log::warn("Naive polynomial multiplication has been selected");
-
     std::vector<DiscreteTorus> zero(toruspoly.size(), DiscreteTorus(0));
     DiscreteTorusPoly result(zero);
     for (size_t i = 0; i < toruspoly.size(); ++i) {

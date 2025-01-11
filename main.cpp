@@ -76,8 +76,10 @@ int main(int argc, char* argv[]) {
 
 #ifdef NTT
   if (!SetUpNttConstants::setup()) {
-    Log::error("NTT is not ready");
+    Log::error("Failed to set up NTT constants");
   }
+#else
+  Log::warn("Naive polynomial multiplication has been selected");
 #endif
 
   std::vector<uint32_t> secret(Params::n, 0);
@@ -87,19 +89,19 @@ int main(int argc, char* argv[]) {
   for (uint32_t i = 0; i < Params::n; ++i) {
     secret[i] = dis(gen);
   }
-  DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(10, secret);
+
+  uint32_t message = 10;
+  Log::debug("mssg:", message);
+  DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(message, secret);
   Log::debug("tlwe:", tlwe);
 
   DiscreteTorus ans = DecryptDiscreteTLWE::decrypt(tlwe, secret);
-  Log::debug("tlwe:", ans);
+  Log::debug("decrypted mssg:", ans);
 
   IntPoly intpoly1({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
 
-  DiscreteTorusPoly toruspoly = intpoly1 * toruspoly2;
-  Log::debug("toruspoly:", toruspoly);
-
-
+#ifdef NTT
   Log::debug("NTT domain param = {",
               "\n",
               "P =", NttParams::P, "\n", 
@@ -131,13 +133,15 @@ int main(int argc, char* argv[]) {
 
   Log::debug("psi_powe_table_bit_reversed_order",  psi_power_table_bit_reversed_order[0], psi_power_table_bit_reversed_order[1], psi_power_table_bit_reversed_order[2], psi_power_table_bit_reversed_order[3]); 
 
-  GaloisFieldPoly p1 = intpoly1;
-  GaloisFieldPoly p2 = toruspoly2;
+  GaloisFieldPoly gfpoly1 = intpoly1;
+  GaloisFieldPoly gfpoly2 = toruspoly2;
 
-  GaloisFieldPoly p3 = p1 * p2;
-  Log::debug("p3:", p3);
+  GaloisFieldPoly gfpoly3 = gfpoly1 * gfpoly2;
 
-  DiscreteTorusPoly toruspoly3 = p3;
+  DiscreteTorusPoly toruspoly3 = gfpoly3;
+#else
+  DiscreteTorusPoly toruspoly3 = intpoly1 * toruspoly2;
+#endif
   Log::debug("toruspoly3:", toruspoly3);
 
   return 0;

@@ -10,7 +10,6 @@ public:
         std::vector<GaloisFieldElement> zero(a.size(), GaloisFieldElement(0));
         GaloisFieldPoly result(zero);
         // Regular multiplication logic here
-        Log::warn("Naive polynomial multiplication has been selected");
         return result;
     }
 };
