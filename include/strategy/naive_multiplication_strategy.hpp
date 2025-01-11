@@ -7,10 +7,6 @@
 class RegularMultiplicationStrategy : public MultiplicationStrategy {
 public:
     GaloisFieldPoly multiply(const GaloisFieldPoly &a, const GaloisFieldPoly &b) const override {
-        if (a.size() != b.size()) {
-            Log::error("Polynomial degree must be the same");
-        }
-
         std::vector<GaloisFieldElement> zero(a.size(), GaloisFieldElement(0));
         GaloisFieldPoly result(zero);
         // Regular multiplication logic here

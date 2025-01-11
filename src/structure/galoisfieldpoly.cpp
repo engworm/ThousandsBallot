@@ -3,7 +3,6 @@
 #include "factory/multiplication_factory.hpp"
 
 
-GaloisFieldPoly::GaloisFieldPoly() = default;
 GaloisFieldPoly::GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) : PolyBase<GaloisFieldElement>(coeffs) {
   this->N = coeffs.size();
 };

@@ -27,7 +27,6 @@ namespace galoisfieldpoly {
 
 class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
   public:
-    GaloisFieldPoly();
     GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs);
     
     GaloisFieldPoly(const IntPoly &poly);
