@@ -75,11 +75,13 @@ int main(int argc, char* argv[]) {
   }
 
 #ifdef NTT
+  Log::info("Polynomial Multiplication Method: [NTT]");
   if (!SetUpNttConstants::setup()) {
     Log::error("Failed to set up NTT constants");
   }
 #else
-  Log::warn("Naive polynomial multiplication has been selected");
+  Log::info("Polynomial Multiplication Method: [Naive]");
+  Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
 #endif
 
   std::vector<uint32_t> secret(Params::n, 0);
