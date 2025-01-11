@@ -66,7 +66,6 @@ PolyBase<T>::PolyBase(PolyBase<U> &&poly) noexcept {
 
 template<Arithmetic T>
 void PolyBase<T>::reset() {
-  Log::info("Resetting polynomial");
   this->N = 0;
   std::vector<T>().swap(this->coeffs);
 } 
