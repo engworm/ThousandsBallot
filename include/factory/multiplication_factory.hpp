@@ -12,7 +12,7 @@ public:
         if (useNTT) {
             return std::make_unique<NTTMultiplicationStrategy>();
         } else {
-            return std::make_unique<RegularMultiplicationStrategy>();
+            return std::make_unique<NaiveMultiplicationStrategy>();
         }
     }
 };
