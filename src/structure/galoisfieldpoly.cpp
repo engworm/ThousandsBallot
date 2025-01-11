@@ -3,29 +3,17 @@
 #include "factory/multiplication_factory.hpp"
 
 
-GaloisFieldPoly::GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) : PolyBase<GaloisFieldElement>(coeffs) {
+GaloisFieldPoly::GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) 
+    : PolyBase<GaloisFieldElement>(coeffs) {
   this->N = coeffs.size();
 };
     
-// GaloisFieldPoly::GaloisFieldPoly(const IntPoly &poly) {
-  // this->N = poly.size();
-  // for (int i = 0; i < this->N; ++i) {
-    // std::vector<uint32_t> tmp = poly.get_coeffs(); 
-    // this->coeffs.emplace_back(GaloisFieldElement(poly[i]));
-  // }
-// };
-
-GaloisFieldPoly::GaloisFieldPoly(const DiscreteTorusPoly &poly) {
-  this->N = poly.size();
-  for (int i = 0; i < this->N; ++i) {
-    std::vector<DiscreteTorus> tmp = poly.get_coeffs();
-    this->coeffs.emplace_back(GaloisFieldElement(poly[i]));
-  }
-};
-
 GaloisFieldPoly::GaloisFieldPoly(IntPoly &&intpoly) noexcept
     : PolyBase<GaloisFieldElement>(std::move(intpoly)) {
-    this->N = intpoly.size();
+}
+
+GaloisFieldPoly::GaloisFieldPoly(DiscreteTorusPoly &&toruspoly) noexcept
+    : PolyBase<GaloisFieldElement>(std::move(toruspoly)) {
 }
 
 std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {

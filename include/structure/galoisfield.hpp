@@ -22,8 +22,11 @@ namespace galoisfield {
       DiscreteTorus();
       DiscreteTorus(uint32_t x);
 
+      // DiscreteTorus(const uint32_t &x); 
       DiscreteTorus(const DiscreteTorus &t);
       DiscreteTorus(const GaloisFieldElement &a);
+
+      // DiscreteTorus(uint32_t &&x) noexcept;
 
       uint32_t val() const;
 

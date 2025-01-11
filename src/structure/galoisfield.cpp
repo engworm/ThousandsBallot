@@ -12,7 +12,9 @@ GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {};
 GaloisFieldElement::GaloisFieldElement(const uint32_t &x) : a(x) {}; 
 GaloisFieldElement::GaloisFieldElement(const galoisfield::DiscreteTorus &t) : a(t.val()) {}; 
 
-GaloisFieldElement::GaloisFieldElement(uint32_t &&x) noexcept : a(std::move(x)) {};
+GaloisFieldElement::GaloisFieldElement(uint32_t &&x) noexcept : a(std::move(x)) {
+  Log::info("Move constructor called");
+};
 
 uint32_t GaloisFieldElement::val() const {
   return this->a;

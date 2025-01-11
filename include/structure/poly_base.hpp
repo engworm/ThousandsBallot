@@ -18,7 +18,7 @@ class PolyBase {
   protected:
     uint32_t N = NttParams::N;
     std::vector<T> coeffs;
-  
+
   public:
     PolyBase();
     PolyBase(const std::vector<T> &coeffs); 
@@ -27,6 +27,8 @@ class PolyBase {
 
     template<Arithmetic U>
     PolyBase(PolyBase<U> &&poly) noexcept;
+
+    void reset();
 
     uint32_t size() const;
     T operator[](const size_t i) const;
@@ -42,7 +44,7 @@ PolyBase<T>::PolyBase() = default;
 
 template<Arithmetic T>
 PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs) {
-    this->N = coeffs.size();
+  this->N = coeffs.size();
 }
 
 template<Arithmetic T>
@@ -54,45 +56,47 @@ PolyBase<T>::PolyBase(PolyBase &&poly) noexcept
 template<Arithmetic T>
 template<Arithmetic U>
 PolyBase<T>::PolyBase(PolyBase<U> &&poly) noexcept {
-    this->N = poly.size();
-    this->coeffs.reserve(poly.size());
-    for (int i = 0; i < poly.size(); ++i) {
-        this->coeffs.emplace_back(poly[i]);
-    }
+  this->N = poly.size();
+  this->coeffs.reserve(poly.size());
+  for (int i = 0; i < poly.size(); ++i) {
+      this->coeffs.emplace_back(std::move(poly[i]));
+  }
+  poly.reset();
 }
 
-// template<Arithmetic T>
-// PolyBase<T>::PolyBase(PolyBase &&poly) noexcept {
-  // Log::debug("PolyBase<U> &&poly");
-// }
-
+template<Arithmetic T>
+void PolyBase<T>::reset() {
+  Log::info("Resetting polynomial");
+  this->N = 0;
+  std::vector<T>().swap(this->coeffs);
+} 
 
 template<Arithmetic T>
 uint32_t PolyBase<T>::size() const {
-    return this->N;
+  return this->N;
 }
 
 template<Arithmetic T>
 T PolyBase<T>::operator[](const size_t i) const {
-    return coeffs[i];
+  return coeffs[i];
 }
 
 template<Arithmetic T>
 T& PolyBase<T>::operator[](const size_t i) {
-    return coeffs[i];
+  return coeffs[i];
 }
 
 template<Arithmetic T>
 std::vector<T> PolyBase<T>::get_coeffs() const {
-    return coeffs;
+  return coeffs;
 }
 
 template<Arithmetic T>
 std::ostream& operator<<(std::ostream &os, const PolyBase<T> &poly) {
-    for (auto coeff: poly.get_coeffs()) {
-        os << coeff << ' ';
-    }
-    return os;
+  for (auto coeff: poly.get_coeffs()) {
+    os << coeff << ' ';
+  }
+  return os;
 }
 
 template class PolyBase<uint32_t>;

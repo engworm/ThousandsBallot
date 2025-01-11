@@ -138,12 +138,15 @@ int main(int argc, char* argv[]) {
 #endif
 
   GaloisFieldPoly gfpoly1 = std::move(intpoly1);
-  GaloisFieldPoly gfpoly2 = toruspoly2;
+  GaloisFieldPoly gfpoly2 = std::move(toruspoly2);
+
+  Log::debug("gfpoly1:", gfpoly1);
+  Log::debug("gfpoly2:", gfpoly2);
 
   GaloisFieldPoly gfpoly3 = gfpoly1 * gfpoly2;
+  Log::debug("gfpoly3:", gfpoly3);
 
   DiscreteTorusPoly toruspoly3 = gfpoly3;
-
   Log::debug("toruspoly3:", toruspoly3);
 
   return 0;
