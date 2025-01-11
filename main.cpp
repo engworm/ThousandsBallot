@@ -57,7 +57,9 @@ int main(int argc, char* argv[]) {
   Log::debug("param = {\n",
               "P =", Params::P, "\n", 
               "n =", Params::n, "\n", 
-              "N =", Params::N, "\n", 
+              "N =", Params::N, "\n}");
+
+  Log::debug("Montgomery param = {\n",
               "R =", MontgomeryParams::R, "\n", 
               "μ =", MontgomeryParams::mu, "\n", 
               "R^2 =", MontgomeryParams::R2, "\n}");

@@ -6,10 +6,20 @@
 
 class NaiveMultiplicationStrategy : public MultiplicationStrategy {
 public:
-    GaloisFieldPoly multiply(const GaloisFieldPoly &a, const GaloisFieldPoly &b) const override {
-        std::vector<GaloisFieldElement> zero(a.size(), GaloisFieldElement(0));
+    GaloisFieldPoly multiply(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) const override {
+        std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
         GaloisFieldPoly result(zero);
-        // Naive multiplication logic here
+        for (size_t i = 0; i < poly1.size(); ++i) {
+          for (size_t j = 0; j < poly1.size(); ++j) {
+            size_t k = (i + j) % poly1.size();
+            if (i + j >= poly1.size()) {
+              result[k] -= poly1[j]* poly2[i];
+            }
+            else {
+              result[k] += poly2[j] * poly2[i];
+            }
+          }
+        }
         return result;
     }
 };
