@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
-#include "params/params.hpp"
+#include "params/nttparams.hpp"
 #include "structure/galoisfield.hpp"
 
 template<typename T>

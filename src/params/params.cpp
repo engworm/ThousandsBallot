@@ -11,10 +11,3 @@ namespace MontgomeryParams {
   uint32_t mu = 0;
   uint32_t R2 = 0;
 }
-
-namespace NttParams {
-  uint32_t P = 0;
-  uint32_t N = 0;
-  uint32_t psi = 0;
-  uint32_t omega = 0;
-}

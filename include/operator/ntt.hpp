@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstdint>
 #include <random>
-#include "params/params.hpp"
+#include "params/nttparams.hpp"
 #include "structure/galoisfield.hpp"
 #include "utility/log.hpp"
 

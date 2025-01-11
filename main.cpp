@@ -3,6 +3,7 @@
 #include <boost/program_options.hpp>
 #include <utility>
 #include "params/params.hpp"
+#include "params/nttparams.hpp"
 #include "structure/tlwe.hpp"
 #include "utility/log.hpp"
 #include "encrypt/encrypt_tlwe.hpp"

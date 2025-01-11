@@ -23,7 +23,6 @@ endif()
 find_package(GTest REQUIRED)
 include_directories(/usr/local/include)
 include_directories(${BOOST_INCLUDE})
-include_directories(.)
 include_directories(./include)
 link_directories(${BOOST_LIB})
 
@@ -31,8 +30,8 @@ if(NTT)
   add_definitions(-DNTT)
 endif()
 
-add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp) 
-add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp)
+add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp src/params/nttparams.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp) 
+add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp) 
 
 target_link_libraries(${PROJECT_NAME} -lboost_program_options)
 target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)
