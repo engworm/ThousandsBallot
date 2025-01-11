@@ -1,3 +1,4 @@
+#include <utility>
 #include "structure/galoisfield.hpp"
 #include "utility/log.hpp"
 
@@ -10,6 +11,8 @@ GaloisFieldElement::GaloisFieldElement() : a(0) {};
 GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 
 GaloisFieldElement::GaloisFieldElement(const uint32_t &x) : a(x) {}; 
 GaloisFieldElement::GaloisFieldElement(const galoisfield::DiscreteTorus &t) : a(t.val()) {}; 
+
+GaloisFieldElement::GaloisFieldElement(uint32_t &&x) noexcept : a(std::move(x)) {};
 
 uint32_t GaloisFieldElement::val() const {
   return this->a;

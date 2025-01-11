@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <boost/program_options.hpp>
+#include <utility>
 #include "params/params.hpp"
 #include "structure/tlwe.hpp"
 #include "utility/log.hpp"
@@ -136,7 +137,7 @@ int main(int argc, char* argv[]) {
   Log::debug("psi_powe_table_bit_reversed_order",  psi_power_table_bit_reversed_order[0], psi_power_table_bit_reversed_order[1], psi_power_table_bit_reversed_order[2], psi_power_table_bit_reversed_order[3]); 
 #endif
 
-  GaloisFieldPoly gfpoly1 = intpoly1;
+  GaloisFieldPoly gfpoly1 = std::move(intpoly1);
   GaloisFieldPoly gfpoly2 = toruspoly2;
 
   GaloisFieldPoly gfpoly3 = gfpoly1 * gfpoly2;

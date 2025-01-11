@@ -57,6 +57,8 @@ class GaloisFieldElement {
     GaloisFieldElement(const uint32_t &x);
     GaloisFieldElement(const galoisfield::DiscreteTorus &t);
 
+    GaloisFieldElement(uint32_t &&x) noexcept;
+
     uint32_t val() const;
 
     void operator+=(const GaloisFieldElement &b);

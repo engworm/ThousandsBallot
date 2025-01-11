@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <vector>
 #include "params/params.hpp"
+#include "structure/galoisfield.hpp"
 
 template<typename T>
 concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
@@ -22,6 +23,11 @@ class PolyBase {
     PolyBase();
     PolyBase(const std::vector<T> &coeffs); 
 
+    PolyBase(PolyBase &&poly) noexcept;
+
+    template<Arithmetic U>
+    PolyBase(PolyBase<U> &&poly) noexcept;
+
     uint32_t size() const;
     T operator[](int i) const;
     T& operator[](int i);
@@ -31,6 +37,65 @@ class PolyBase {
     friend std::ostream& operator<<(std::ostream &os, const PolyBase<U> &poly);
 };
 
-#include "structure/poly_base.tpp"
+template<Arithmetic T>
+PolyBase<T>::PolyBase() = default;
+
+template<Arithmetic T>
+PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs) {
+    this->N = coeffs.size();
+}
+
+template<Arithmetic T>
+PolyBase<T>::PolyBase(PolyBase &&poly) noexcept
+    : coeffs(std::move(poly.coeffs)) {
+    this->N = poly.size();
+}
+
+template<Arithmetic T>
+template<Arithmetic U>
+PolyBase<T>::PolyBase(PolyBase<U> &&poly) noexcept {
+    this->N = poly.size();
+    for (int i = 0; i < poly.size(); ++i) {
+        this->coeffs.emplace_back(poly[i]);
+    }
+}
+
+// template<Arithmetic T>
+// PolyBase<T>::PolyBase(PolyBase &&poly) noexcept {
+  // Log::debug("PolyBase<U> &&poly");
+// }
+
+
+template<Arithmetic T>
+uint32_t PolyBase<T>::size() const {
+    return this->N;
+}
+
+template<Arithmetic T>
+T PolyBase<T>::operator[](int i) const {
+    return coeffs[i];
+}
+
+template<Arithmetic T>
+T& PolyBase<T>::operator[](int i) {
+    return coeffs[i];
+}
+
+template<Arithmetic T>
+std::vector<T> PolyBase<T>::get_coeffs() const {
+    return coeffs;
+}
+
+template<Arithmetic T>
+std::ostream& operator<<(std::ostream &os, const PolyBase<T> &poly) {
+    for (auto coeff: poly.get_coeffs()) {
+        os << coeff << ' ';
+    }
+    return os;
+}
+
+template class PolyBase<uint32_t>;
+template class PolyBase<GaloisFieldElement>;
+template PolyBase<GaloisFieldElement>::PolyBase(PolyBase<uint32_t> &&poly) noexcept;
 
 #endif

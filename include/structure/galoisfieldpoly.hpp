@@ -29,8 +29,10 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
   public:
     GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs);
     
-    GaloisFieldPoly(const IntPoly &poly);
+    GaloisFieldPoly(const IntPoly &poly) = delete;
     GaloisFieldPoly(const galoisfieldpoly::DiscreteTorusPoly &poly);
+
+    GaloisFieldPoly(IntPoly &&poly) noexcept;
 
     friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
 };
