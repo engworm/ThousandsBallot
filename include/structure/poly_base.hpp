@@ -29,8 +29,8 @@ class PolyBase {
     PolyBase(PolyBase<U> &&poly) noexcept;
 
     uint32_t size() const;
-    T operator[](int i) const;
-    T& operator[](int i);
+    T operator[](const size_t i) const;
+    T& operator[](const size_t i);
     std::vector<T> get_coeffs() const;
 
     template<Arithmetic U>
@@ -55,6 +55,7 @@ template<Arithmetic T>
 template<Arithmetic U>
 PolyBase<T>::PolyBase(PolyBase<U> &&poly) noexcept {
     this->N = poly.size();
+    this->coeffs.reserve(poly.size());
     for (int i = 0; i < poly.size(); ++i) {
         this->coeffs.emplace_back(poly[i]);
     }
@@ -72,12 +73,12 @@ uint32_t PolyBase<T>::size() const {
 }
 
 template<Arithmetic T>
-T PolyBase<T>::operator[](int i) const {
+T PolyBase<T>::operator[](const size_t i) const {
     return coeffs[i];
 }
 
 template<Arithmetic T>
-T& PolyBase<T>::operator[](int i) {
+T& PolyBase<T>::operator[](const size_t i) {
     return coeffs[i];
 }
 
