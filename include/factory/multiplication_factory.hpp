@@ -8,11 +8,12 @@
 
 class MultiplicationFactory {
 public:
-    static std::unique_ptr<MultiplicationStrategy> create(bool useNTT) {
+    static MultiplicationStrategy* create(bool useNTT) {
         if (useNTT) {
-            return std::make_unique<NTTMultiplicationStrategy>();
+            return NTTMultiplicationStrategy::getInstance();
         } else {
-            return std::make_unique<NaiveMultiplicationStrategy>();
+            static NaiveMultiplicationStrategy instance;
+            return &instance;
         }
     }
 };

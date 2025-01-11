@@ -152,5 +152,12 @@ int main(int argc, char* argv[]) {
   DiscreteTorusPoly toruspoly3 = gfpoly3;
   Log::debug("toruspoly3:", toruspoly3);
 
+  IntPoly intpoly4({1, 1, 1, 1});
+  DiscreteTorusPoly toruspoly5({0, 1, 0, 0});
+
+  GaloisFieldPoly gfpoly6 = intpoly4 * toruspoly5;
+  DiscreteTorusPoly toruspoly6 = gfpoly6;
+  Log::debug("toruspoly6:", toruspoly6);
+
   return 0;
 }
