@@ -35,7 +35,8 @@ class PolyBase {
     T& operator[](const size_t i);
     std::vector<T> get_coeffs() const;
 
-    friend std::ostream& operator<< <>(std::ostream &os, const PolyBase<T> &poly);
+    template<Arithmetic U>
+    friend std::ostream& operator<<(std::ostream &os, const PolyBase<U> &poly);
 };
 
 template<Arithmetic T>
