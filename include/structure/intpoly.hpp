@@ -4,6 +4,15 @@
 #include <cstdint>
 #include "structure/poly_base.hpp"
 
-using IntPoly = PolyBase<uint32_t>;
+class IntPoly : public PolyBase<uint32_t> {
+  public:
+    IntPoly() = default;
+    IntPoly(const std::vector<uint32_t> &coeffs);
+  
+  protected:
+    void print(std::ostream &os) const override;
+
+  friend std::ostream& operator<<(std::ostream &os, const IntPoly &poly);
+};
 
 #endif

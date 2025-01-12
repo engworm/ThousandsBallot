@@ -1,13 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <boost/program_options.hpp>
+#include <utility>
 #include "params/params.hpp"
+#include "params/nttparams.hpp"
 #include "structure/tlwe.hpp"
-#include "operator/Montgomery.hpp"
 #include "utility/log.hpp"
 #include "encrypt/encrypt_tlwe.hpp"
 #include "decrypt/decrypt_tlwe.hpp"
-#include "structure/poly_base.hpp"
 #include "structure/torus.hpp"
 #include "structure/galoisfield.hpp"
 #include "structure/toruspoly.hpp"
@@ -55,10 +55,12 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  Log::info("param = {\n",
+  Log::debug("param = {\n",
               "P =", Params::P, "\n", 
               "n =", Params::n, "\n", 
-              "N =", Params::N, "\n", 
+              "N =", Params::N, "\n}");
+
+  Log::debug("Montgomery param = {\n",
               "R =", MontgomeryParams::R, "\n", 
               "μ =", MontgomeryParams::mu, "\n", 
               "R^2 =", MontgomeryParams::R2, "\n}");
@@ -76,6 +78,16 @@ int main(int argc, char* argv[]) {
     throw std::invalid_argument("2P must be less than 2^32");
   }
 
+#ifdef NTT
+  Log::info("Polynomial Multiplication Method: [NTT]");
+  if (!SetUpNttConstants::setup()) {
+    Log::error("Failed to set up NTT constants");
+  }
+#else
+  Log::info("Polynomial Multiplication Method: [Naive]");
+  Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
+#endif
+
   std::vector<uint32_t> secret(Params::n, 0);
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -83,40 +95,42 @@ int main(int argc, char* argv[]) {
   for (uint32_t i = 0; i < Params::n; ++i) {
     secret[i] = dis(gen);
   }
-  DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(10, secret);
+
+  uint32_t message = 10;
+  Log::debug("mssg:", message);
+  DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(message, secret);
   Log::debug("tlwe:", tlwe);
 
   DiscreteTorus ans = DecryptDiscreteTLWE::decrypt(tlwe, secret);
-  Log::debug("tlwe:", ans);
+  Log::debug("decrypted mssg:", ans);
 
   IntPoly intpoly1({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
 
-  DiscreteTorusPoly toruspoly = intpoly1 * toruspoly2;
-  Log::debug("toruspoly:", toruspoly);
+  Log::debug("intpoly1:", intpoly1);
+  Log::debug("toruspoly2:", toruspoly2);
 
+  GaloisFieldPoly gfpoly1 = std::move(intpoly1);
+  GaloisFieldPoly gfpoly2 = std::move(toruspoly2);
 
-#ifdef NTT
-  if (SetUpNttConstants::setup()) {
-    Log::info("NTT multiplication domain setup completed");
+  GaloisFieldPoly gfpoly3 = gfpoly1 * gfpoly2;
 
-    GaloisFieldPoly p1 = intpoly1;
-    GaloisFieldPoly p2 = toruspoly2;
+  DiscreteTorusPoly toruspoly3 = gfpoly3;
+  Log::debug("toruspoly3:", toruspoly3);
 
-    GaloisFieldPoly p3 = p1 * p2;
-    Log::debug("p3:", p3);
+  IntPoly intpoly4({1, 1, 1, 1});
+  DiscreteTorusPoly toruspoly5({0, 1, 0, 0});
 
-    DiscreteTorusPoly toruspoly3 = p3;
-    Log::debug("toruspoly3:", toruspoly3);
-  }
-  else {
-    Log::error("NTT is not ready");
-    return 1;
-  }
-#else
-  std::cout << "NTT is not defined" << std::endl;
-  DiscreteTorusPoly toruspoly3 = intpoly1 * toruspoly2;
-#endif
+  // Log::debug("intpoly4:", intpoly4);
+  Log::debug("toruspoly5:", toruspoly5);
+
+  GaloisFieldPoly gfpoly4 = std::move(intpoly4);
+  GaloisFieldPoly gfpoly5 = std::move(toruspoly5);
+
+  GaloisFieldPoly gfpoly6 = gfpoly4 * gfpoly5;
+
+  DiscreteTorusPoly toruspoly6 = gfpoly6;
+  Log::debug("toruspoly6:", toruspoly6);
 
   return 0;
 }

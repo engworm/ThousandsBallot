@@ -20,19 +20,42 @@ elseif()
   message(FATAL_ERROR "BOOST_LIB is not set")
 endif()
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 find_package(GTest REQUIRED)
 include_directories(/usr/local/include)
 include_directories(${BOOST_INCLUDE})
-include_directories(.)
 include_directories(./include)
 link_directories(${BOOST_LIB})
 
-add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp) 
-add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp)
+if(NTT)
+  add_definitions(-DNTT)
+endif()
 
-add_definitions(-DNTT)
+set(SOURCE_FILES
+    main.cpp
+    src/params/params.cpp
+    src/params/nttparams.cpp
+    src/operator/Montgomery.cpp
+    src/structure/torus.cpp
+    src/structure/galoisfield.cpp
+    src/structure/toruspoly.cpp
+    src/structure/intpoly.cpp
+    src/structure/galoisfieldpoly.cpp
+    src/strategy/ntt_multiplication_strategy.cpp)
 
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} -lboost_program_options)
+
+set(TEST_SOURCE_FILES
+    src/test/test_montgomerymul.cpp
+    src/params/params.cpp
+    src/operator/Montgomery.cpp
+    src/structure/torus.cpp
+    src/structure/galoisfield.cpp)
+
+add_executable(test_montgomerymul ${TEST_SOURCE_FILES})
 target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)
 
 enable_testing()
