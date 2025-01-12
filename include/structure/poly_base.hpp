@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <vector>
 #include "params/nttparams.hpp"
-#include "structure/galoisfield.hpp"
 
 template<typename T>
 concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {

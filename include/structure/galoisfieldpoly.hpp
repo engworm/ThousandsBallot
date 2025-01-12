@@ -2,14 +2,10 @@
 #define DISCRETE_TORUS_GALOISFIELD_POLY_HPP
 
 #include <iostream>
-#include <cstdint>
 #include <vector>
-#include "params/params.hpp"
-#include "structure/torus.hpp"
 #include "structure/galoisfield.hpp"
 #include "structure/poly_base.hpp"
 #include "structure/intpoly.hpp"
-#include "utility/log.hpp"
 
 class DiscreteTorusPoly;
 

@@ -1,6 +1,7 @@
 #ifndef TORUSPOLY_HPP
 #define TORUSPOLY_HPP
 
+#include "structure/torus.hpp"
 #include "structure/galoisfieldpoly.hpp"
 
 class DiscreteTorusPoly : public PolyBase<DiscreteTorus> {

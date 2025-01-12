@@ -6,7 +6,6 @@
 #include <random>
 #include "params/params.hpp"
 #include "operator/Montgomery.hpp"
-#include "utility/log.hpp"
 
 class GaloisFieldElement;
 
