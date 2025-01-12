@@ -107,8 +107,8 @@ int main(int argc, char* argv[]) {
   IntPoly intpoly1({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
 
-  // Log::debug("intpoly1:", intpoly1);
-  // Log::debug("toruspoly2:", toruspoly2);
+  Log::debug("intpoly1:", intpoly1);
+  Log::debug("toruspoly2:", toruspoly2);
 
   GaloisFieldPoly gfpoly1 = std::move(intpoly1);
   GaloisFieldPoly gfpoly2 = std::move(toruspoly2);
@@ -116,13 +116,13 @@ int main(int argc, char* argv[]) {
   GaloisFieldPoly gfpoly3 = gfpoly1 * gfpoly2;
 
   DiscreteTorusPoly toruspoly3 = gfpoly3;
-  // Log::debug("toruspoly3:", toruspoly3);
+  Log::debug("toruspoly3:", toruspoly3);
 
   IntPoly intpoly4({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly5({0, 1, 0, 0});
 
-  // Log::debug("intpoly4:", intpoly4);
-  // Log::debug("toruspoly5:", toruspoly5);
+  Log::debug("intpoly4:", intpoly4);
+  Log::debug("toruspoly5:", toruspoly5);
 
   GaloisFieldPoly gfpoly4 = std::move(intpoly4);
   GaloisFieldPoly gfpoly5 = std::move(toruspoly5);
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
   GaloisFieldPoly gfpoly6 = gfpoly4 * gfpoly5;
 
   DiscreteTorusPoly toruspoly6 = gfpoly6;
-  // Log::debug("toruspoly6:", toruspoly6);
+  Log::debug("toruspoly6:", toruspoly6);
 
   return 0;
 }
