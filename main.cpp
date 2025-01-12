@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
   IntPoly intpoly1({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
 
-  Log::debug("intpoly1:", intpoly1);
+  // Log::debug("intpoly1:", intpoly1);
   Log::debug("toruspoly2:", toruspoly2);
 
   GaloisFieldPoly gfpoly1 = std::move(intpoly1);
@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
   IntPoly intpoly4({1, 1, 1, 1});
   DiscreteTorusPoly toruspoly5({0, 1, 0, 0});
 
-  Log::debug("intpoly4:", intpoly4);
+  // Log::debug("intpoly4:", intpoly4);
   Log::debug("toruspoly5:", toruspoly5);
 
   GaloisFieldPoly gfpoly4 = std::move(intpoly4);
