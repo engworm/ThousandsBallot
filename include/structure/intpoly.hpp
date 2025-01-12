@@ -7,19 +7,12 @@
 class IntPoly : public PolyBase<uint32_t> {
   public:
     IntPoly() = default;
-    IntPoly(const std::vector<uint32_t> &coeffs) : PolyBase<uint32_t>(coeffs) {
-      this->N = coeffs.size();
-    };
+    IntPoly(const std::vector<uint32_t> &coeffs);
   
   protected:
-    void print(std::ostream &os) const override {
-      PolyBase<uint32_t>::print(os);
-    }
+    void print(std::ostream &os) const override;
 
-  friend std::ostream& operator<<(std::ostream &os, const IntPoly &poly) {
-    poly.print(os);
-    return os;
-  }
+  friend std::ostream& operator<<(std::ostream &os, const IntPoly &poly);
 };
 
 #endif

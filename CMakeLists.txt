@@ -33,10 +33,29 @@ if(NTT)
   add_definitions(-DNTT)
 endif()
 
-add_executable(${PROJECT_NAME} main.cpp src/params/params.cpp src/params/nttparams.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp src/structure/toruspoly.cpp src/structure/galoisfieldpoly.cpp src/strategy/ntt_multiplication_strategy.cpp) 
-add_executable(test_montgomerymul src/test/test_montgomerymul.cpp src/params/params.cpp src/operator/Montgomery.cpp src/structure/torus.cpp src/structure/galoisfield.cpp) 
+set(SOURCE_FILES
+    main.cpp
+    src/params/params.cpp
+    src/params/nttparams.cpp
+    src/operator/Montgomery.cpp
+    src/structure/torus.cpp
+    src/structure/galoisfield.cpp
+    src/structure/toruspoly.cpp
+    src/structure/intpoly.cpp
+    src/structure/galoisfieldpoly.cpp
+    src/strategy/ntt_multiplication_strategy.cpp)
 
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} -lboost_program_options)
+
+set(TEST_SOURCE_FILES
+    src/test/test_montgomerymul.cpp
+    src/params/params.cpp
+    src/operator/Montgomery.cpp
+    src/structure/torus.cpp
+    src/structure/galoisfield.cpp)
+
+add_executable(test_montgomerymul ${TEST_SOURCE_FILES})
 target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)
 
 enable_testing()
