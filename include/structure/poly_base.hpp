@@ -19,6 +19,8 @@ class PolyBase {
     uint32_t N = NttParams::N;
     std::vector<T> coeffs;
 
+    virtual void print(std::ostream &os) const;
+
   public:
     PolyBase();
     PolyBase(const std::vector<T> &coeffs); 
@@ -38,6 +40,13 @@ class PolyBase {
     template<Arithmetic U>
     friend std::ostream& operator<<(std::ostream &os, const PolyBase<U> &poly);
 };
+
+template<Arithmetic T>
+void PolyBase<T>::print(std::ostream &os) const {
+  for (auto coeff: coeffs) {
+    os << coeff << ' ';
+  }
+}
 
 template<Arithmetic T>
 PolyBase<T>::PolyBase() = default;
@@ -92,14 +101,12 @@ std::vector<T> PolyBase<T>::get_coeffs() const {
 
 template<Arithmetic T>
 std::ostream& operator<<(std::ostream &os, const PolyBase<T> &poly) {
-  for (auto coeff: poly.get_coeffs()) {
-    os << coeff << ' ';
-  }
+  poly.print(os);
   return os;
 }
 
-template class PolyBase<uint32_t>;
-template class PolyBase<GaloisFieldElement>;
-template PolyBase<GaloisFieldElement>::PolyBase(PolyBase<uint32_t> &&poly) noexcept;
+// template class PolyBase<uint32_t>;
+// template class PolyBase<GaloisFieldElement>;
+// template PolyBase<GaloisFieldElement>::PolyBase(PolyBase<uint32_t> &&poly) noexcept;
 
 #endif

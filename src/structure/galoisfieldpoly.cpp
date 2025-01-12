@@ -16,10 +16,12 @@ GaloisFieldPoly::GaloisFieldPoly(DiscreteTorusPoly &&toruspoly) noexcept
     : PolyBase<GaloisFieldElement>(std::move(toruspoly)) {
 }
 
+void GaloisFieldPoly::print(std::ostream &os) const {
+  PolyBase<GaloisFieldElement>::print(os);
+}
+
 std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {
-  for (auto coeff: poly.get_coeffs()) {
-    os << coeff << ' ';
-  }
+  poly.print(os);
   return os;
 }
 

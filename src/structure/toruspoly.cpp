@@ -17,10 +17,12 @@ namespace galoisfieldpoly {
     }
   }
 
+  void DiscreteTorusPoly::print(std::ostream &os) const {
+    PolyBase<DiscreteTorus>::print(os);
+  }
+
   std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly) {
-    for (auto coeff: poly.get_coeffs()) {
-      os << coeff << ' ';
-    }
+    poly.print(os);
     return os;
   }
 

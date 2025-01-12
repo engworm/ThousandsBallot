@@ -20,7 +20,10 @@ namespace galoisfieldpoly {
       DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly);
       DiscreteTorusPoly(const GaloisFieldPoly &poly);
 
-      friend std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly);
+    protected:
+      void print(std::ostream &os) const override;
+
+    friend std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly);
   };
   DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly);
 }
@@ -35,9 +38,11 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
     GaloisFieldPoly(IntPoly &&poly) noexcept;
     GaloisFieldPoly(galoisfieldpoly::DiscreteTorusPoly &&poly) noexcept;
 
-    friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
-};
+  protected:
+    void print(std::ostream &os) const override;
 
+  friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
+};
 GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2);
 
 #endif
