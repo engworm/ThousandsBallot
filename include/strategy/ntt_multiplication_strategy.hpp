@@ -24,9 +24,12 @@ private:
   void init_psi_power_table();
   void init_psi_power_table_bit_reversed_order();
 
+  void trans_NTT(std::vector<GaloisFieldElement> &a) const;
+  void trans_INTT(std::vector<GaloisFieldElement> &a) const;
+
 public:
   static NTTMultiplicationStrategy* getInstance();
-  GaloisFieldPoly multiply(const GaloisFieldPoly &a, const GaloisFieldPoly &b) const override;
+  GaloisFieldPoly multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const override ;
 };
 
 #endif 

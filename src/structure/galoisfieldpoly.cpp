@@ -25,7 +25,7 @@ std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {
   return os;
 }
 
-GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) {
+GaloisFieldPoly operator*(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) {
   if (poly1.size() != poly2.size()) {
     Log::error("Polynomial degree must be the same");
   }

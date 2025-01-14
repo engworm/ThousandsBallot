@@ -6,7 +6,7 @@
 
 class NaiveMultiplicationStrategy : public MultiplicationStrategy {
 public:
-    GaloisFieldPoly multiply(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) const override {
+    GaloisFieldPoly multiply(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) const override {
         std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
         GaloisFieldPoly result(zero);
         for (size_t i = 0; i < poly1.size(); ++i) {

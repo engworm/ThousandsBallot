@@ -41,6 +41,7 @@ class GaloisFieldElement {
 
 bool operator==(const GaloisFieldElement &a1, const GaloisFieldElement&a2);
 GaloisFieldElement operator+(const GaloisFieldElement &a, const GaloisFieldElement &b);
+GaloisFieldElement operator-(const GaloisFieldElement &a, const GaloisFieldElement &b);
 GaloisFieldElement operator*(const GaloisFieldElement a, const GaloisFieldElement &b);
 
 

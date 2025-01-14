@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <vector>
 #include "params/nttparams.hpp"
+#include "utility/log.hpp"
 
 template<typename T>
 concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
@@ -52,6 +53,7 @@ PolyBase<T>::PolyBase() = default;
 
 template<Arithmetic T>
 PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs) {
+  Log::warn("PolyBase Copy Constructor activated");
   this->N = coeffs.size();
 }
 

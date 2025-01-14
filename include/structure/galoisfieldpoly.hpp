@@ -24,6 +24,6 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
 
   friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
 };
-GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2);
+GaloisFieldPoly operator*(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2);
 
 #endif

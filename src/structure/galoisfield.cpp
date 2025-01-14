@@ -72,6 +72,12 @@ GaloisFieldElement operator+(const GaloisFieldElement &a, const GaloisFieldEleme
   return c;
 }
 
+GaloisFieldElement operator-(const GaloisFieldElement &a, const GaloisFieldElement &b) {
+  GaloisFieldElement c = a;
+  c -= b;
+  return c;
+}
+
 GaloisFieldElement operator*(const GaloisFieldElement a, const GaloisFieldElement &b) {
   GaloisFieldElement c = a; 
   c *= b;
