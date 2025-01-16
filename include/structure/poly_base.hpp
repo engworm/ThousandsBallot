@@ -23,6 +23,7 @@ class PolyBase {
 
   public:
     PolyBase();
+    PolyBase(size_t N);
     PolyBase(const std::vector<T> &coeffs); 
 
     PolyBase(PolyBase &&poly) noexcept;
@@ -50,6 +51,9 @@ void PolyBase<T>::print(std::ostream &os) const {
 
 template<Arithmetic T>
 PolyBase<T>::PolyBase() = default;
+
+template<Arithmetic T>
+PolyBase<T>::PolyBase(size_t N) : N(N), coeffs(N, T(0)) {};
 
 template<Arithmetic T>
 PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs) {

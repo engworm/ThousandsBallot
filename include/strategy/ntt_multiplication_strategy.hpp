@@ -30,8 +30,8 @@ private:
   void init_psi_inverse_power_table();
   void init_psi_inverse_power_table_bit_reversed_order();
 
-  void trans_NTT(std::vector<GaloisFieldElement> &a) const;
-  void trans_INTT(std::vector<GaloisFieldElement> &a) const;
+  void forward_NTT(GaloisFieldPoly &a) const;
+  void inverse_NTT(GaloisFieldPoly &a) const;
 
 public:
   static NTTMultiplicationStrategy* getInstance();

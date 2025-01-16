@@ -64,7 +64,7 @@ void NTTMultiplicationStrategy::init_psi_inverse_power_table_bit_reversed_order(
   }
 }
 
-void NTTMultiplicationStrategy::trans_NTT(std::vector<GaloisFieldElement> &a) const {
+void NTTMultiplicationStrategy::forward_NTT(GaloisFieldPoly &a) const {
     uint32_t t = N;
     for (uint32_t m = 1; m < N; m *= 2) {
         t /= 2;
@@ -82,7 +82,7 @@ void NTTMultiplicationStrategy::trans_NTT(std::vector<GaloisFieldElement> &a) co
     }
 }
 
-void NTTMultiplicationStrategy::trans_INTT(std::vector<GaloisFieldElement> &a) const {
+void NTTMultiplicationStrategy::inverse_NTT(GaloisFieldPoly &a) const {
   uint32_t t = 1;
   for (uint32_t m = N; m > 1; m /= 2) {
     uint32_t j1 = 0;
@@ -115,14 +115,12 @@ NTTMultiplicationStrategy* NTTMultiplicationStrategy::getInstance() {
 GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
   Log::info("NTT multiplication logic here");
   std::vector<GaloisFieldElement> aa, bb;
-  aa = a.get_coeffs();
-  bb = b.get_coeffs();
-  trans_NTT(aa);
-  trans_NTT(bb);
-  std::vector<GaloisFieldElement> res(a.size(), GaloisFieldElement(0));
+  forward_NTT(a);
+  forward_NTT(b);
+  GaloisFieldPoly res(a.size());
   for (size_t i = 0; i < N; ++i) {
-    res[i] = aa[i] * bb[i];
+    res[i] = a[i] * b[i];
   } 
-  trans_INTT(res);
+  inverse_NTT(res);
   return res;
 }

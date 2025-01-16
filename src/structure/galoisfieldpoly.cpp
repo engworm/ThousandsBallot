@@ -2,6 +2,9 @@
 #include "structure/toruspoly.hpp"
 #include "factory/multiplication_factory.hpp"
 
+GaloisFieldPoly::GaloisFieldPoly(size_t N) 
+    : PolyBase<GaloisFieldElement>(N) {
+};
 
 GaloisFieldPoly::GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) 
     : PolyBase<GaloisFieldElement>(coeffs) {
