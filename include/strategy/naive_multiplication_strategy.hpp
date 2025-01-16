@@ -16,7 +16,7 @@ public:
               result[k] -= poly1[j]* poly2[i];
             }
             else {
-              result[k] += poly2[j] * poly2[i];
+              result[k] += poly1[j] * poly2[i];
             }
           }
         }

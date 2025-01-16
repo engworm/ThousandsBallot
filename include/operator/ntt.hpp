@@ -7,20 +7,36 @@
 #include "params/nttparams.hpp"
 #include "structure/galoisfield.hpp"
 #include "utility/log.hpp"
+#include "Montgomery.hpp"
 
 class SetUpNttConstants {
   public:
     static bool setup() {
       NttParams::P = Params::P;
       NttParams::N = Params::N;
+      NttParams::N_inverse = inv(NttParams::N);
 
       NttParams::psi = search_2N_primitive_root_of_unity().val();
+      NttParams::psi_inverse = inv(NttParams::psi);
       NttParams::omega = NttParams::psi*NttParams::psi;
+
+      Log::info("NTT Constants: {\n",
+                "P =", NttParams::P, "\n",
+                "N =", NttParams::N, "\n",
+                "N^-1 =", NttParams::N_inverse, "\n",
+                "ψ =", NttParams::psi, "\n",
+                "ψ^-1 =", NttParams::psi_inverse, "\n",
+                "ω =", NttParams::omega, "\n}");
 
       return true;
     }
   
   private:
+    static uint32_t inv(GaloisFieldElement x) {
+      uint32_t r = extendedEuclidean(Params::P, x.val()).second + Params::P;
+      return r;
+    }
+    
     static GaloisFieldElement search_2N_root_of_unity(int seed) {
       std::mt19937 gen(seed);
       std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
