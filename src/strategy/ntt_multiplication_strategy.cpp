@@ -113,8 +113,6 @@ NTTMultiplicationStrategy* NTTMultiplicationStrategy::getInstance() {
 }
 
 GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
-  Log::info("NTT multiplication logic here");
-  std::vector<GaloisFieldElement> aa, bb;
   forward_NTT(a);
   forward_NTT(b);
   GaloisFieldPoly res(a.size());
