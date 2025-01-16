@@ -7,7 +7,7 @@
 #include "params/nttparams.hpp"
 #include "structure/galoisfield.hpp"
 #include "utility/log.hpp"
-#include "Montgomery.hpp"
+#include "utility/extendedEuclidean.hpp"
 
 class SetUpNttConstants {
   public:
