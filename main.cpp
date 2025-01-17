@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
 
   GaloisFieldPoly gfpoly3 = std::move(gfpoly1 * gfpoly2);
 
-  DiscreteTorusPoly toruspoly3 = gfpoly3;
+  DiscreteTorusPoly toruspoly3 = std::move(gfpoly3);
   Log::debug("toruspoly3:", toruspoly3);
 
 

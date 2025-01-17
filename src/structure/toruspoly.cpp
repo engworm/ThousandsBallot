@@ -4,12 +4,8 @@ DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) :
   this->N = coeffs.size();
 };
 
-DiscreteTorusPoly::DiscreteTorusPoly(const GaloisFieldPoly &poly) {
-  this->N = poly.size();
-  for (int i = 0; i < this->N; ++i) {
-    std::vector<GaloisFieldElement> tmp = poly.get_coeffs();
-    this->coeffs.emplace_back(DiscreteTorus(poly[i]));
-  }
+DiscreteTorusPoly::DiscreteTorusPoly(GaloisFieldPoly &&gfpoly) noexcept
+    : PolyBase<DiscreteTorus>(std::move(gfpoly)) {
 }
 
 void DiscreteTorusPoly::print(std::ostream &os) const {
