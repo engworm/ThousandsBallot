@@ -38,6 +38,7 @@ set(SOURCE_FILES
     src/params/params.cpp
     src/params/nttparams.cpp
     src/operator/Montgomery.cpp
+    src/operator/ntt.cpp
     src/structure/torus.cpp
     src/structure/galoisfield.cpp
     src/structure/toruspoly.cpp
