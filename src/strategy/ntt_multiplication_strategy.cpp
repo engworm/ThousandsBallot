@@ -30,6 +30,8 @@ void NTTMultiplicationStrategy::init_psi_inverse_power_table() {
   }
 }
 
+
+// bit-reversed order の処理は共通化したい
 void NTTMultiplicationStrategy::init_psi_power_table_bit_reversed_order() {
   auto bit_reverse = [](uint32_t n, uint32_t log2n) {
     uint32_t ans = 0;

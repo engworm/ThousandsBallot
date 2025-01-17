@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdint>
 #include <random>
+#include "params/params.hpp"
 #include "params/nttparams.hpp"
 #include "structure/galoisfield.hpp"
 #include "utility/log.hpp"
@@ -39,16 +40,16 @@ class SetUpNttConstants {
     
     static GaloisFieldElement search_2N_root_of_unity(int seed) {
       std::mt19937 gen(seed);
-      std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
+      std::uniform_int_distribution<uint32_t> dis(0, NttParams::P-1);
     
       GaloisFieldElement x(dis(gen));
       GaloisFieldElement psi = 1; 
 
-      if ((NttParams::P-1)%(2*Params::N) != 0) {
+      if ((NttParams::P-1)%(2*NttParams::N) != 0) {
         Log::error("P-1 is not divisible by 2N");
       }
 
-      for (int i = 0; i < (Params::P-1)/(2*Params::N); ++i) {
+      for (int i = 0; i < (NttParams::P-1)/(2*NttParams::N); ++i) {
         psi *= x;
       }
     
@@ -58,7 +59,7 @@ class SetUpNttConstants {
     // check if psi is 2N-th primitive root of unity
     static bool check_2N_primitive_root_of_unitiy(GaloisFieldElement const &psi) {
       GaloisFieldElement psi_pow = 1;
-      for (int i = 0; i < Params::N; ++i) {
+      for (int i = 0; i < NttParams::N; ++i) {
         psi_pow *= psi;
       }
 
