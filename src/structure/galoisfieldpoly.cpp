@@ -7,9 +7,7 @@ GaloisFieldPoly::GaloisFieldPoly(size_t N)
 };
 
 GaloisFieldPoly::GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) 
-    : PolyBase<GaloisFieldElement>(coeffs) {
-  this->N = coeffs.size();
-};
+    : PolyBase<GaloisFieldElement>(coeffs) {};
     
 GaloisFieldPoly::GaloisFieldPoly(IntPoly &&intpoly) noexcept
     : PolyBase<GaloisFieldElement>(std::move(intpoly)) {

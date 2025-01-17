@@ -2,9 +2,7 @@
 
 IntPoly::IntPoly(size_t N) : PolyBase<uint32_t>(N) {};
 
-IntPoly::IntPoly(const std::vector<uint32_t> &coeffs) : PolyBase<uint32_t>(coeffs) {
-  this->N = coeffs.size();
-};
+IntPoly::IntPoly(const std::vector<uint32_t> &coeffs) : PolyBase<uint32_t>(coeffs) {};
 
 void IntPoly::print(std::ostream &os) const {
   PolyBase<uint32_t>::print(os);

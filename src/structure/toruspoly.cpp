@@ -2,9 +2,7 @@
 
 DiscreteTorusPoly::DiscreteTorusPoly(size_t N) : PolyBase<DiscreteTorus>(N) {};  
 
-DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {
-  this->N = coeffs.size();
-};
+DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {};
 
 DiscreteTorusPoly::DiscreteTorusPoly(GaloisFieldPoly &&gfpoly) noexcept
     : PolyBase<DiscreteTorus>(std::move(gfpoly)) {

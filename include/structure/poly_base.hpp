@@ -25,6 +25,7 @@ class PolyBase {
     PolyBase();
     PolyBase(size_t N);
     PolyBase(const std::vector<T> &coeffs); 
+    PolyBase(const PolyBase &poly) = delete;
 
     PolyBase(PolyBase &&poly) noexcept = default;
 
@@ -56,10 +57,7 @@ template<Arithmetic T>
 PolyBase<T>::PolyBase(size_t N) : N(N), coeffs(N, T(0)) {};
 
 template<Arithmetic T>
-PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs) {
-  Log::warn("PolyBase Copy Constructor activated");
-  this->N = coeffs.size();
-}
+PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs), N(coeffs.size()) {};
 
 template<Arithmetic T>
 template<Arithmetic U>
