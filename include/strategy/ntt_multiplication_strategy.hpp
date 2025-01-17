@@ -2,6 +2,7 @@
 #define NTT_MULTIPLICATION_STRATEGY_HPP
 
 #include <vector>
+#include <memory>
 #include "params/nttparams.hpp"
 #include "strategy/multiplication_strategy.hpp"
 #include "structure/galoisfieldpoly.hpp"
@@ -22,7 +23,7 @@ private:
   static std::vector<GaloisFieldElement> psi_inverse_power_table;
   static std::vector<GaloisFieldElement> psi_inverse_power_table_bit_reversed_order;
 
-  static NTTMultiplicationStrategy *instance;
+  static std::shared_ptr<NTTMultiplicationStrategy> instance;
   NTTMultiplicationStrategy();
 
   void init_psi_power_table();
@@ -34,7 +35,7 @@ private:
   void inverse_NTT(GaloisFieldPoly &a) const;
 
 public:
-  static NTTMultiplicationStrategy* getInstance();
+  static std::shared_ptr<NTTMultiplicationStrategy> getInstance();
   GaloisFieldPoly multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const override ;
 };
 

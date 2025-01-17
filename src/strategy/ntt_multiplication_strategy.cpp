@@ -1,6 +1,6 @@
 #include "strategy/ntt_multiplication_strategy.hpp"
 
-NTTMultiplicationStrategy* NTTMultiplicationStrategy::instance = nullptr;
+std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::instance;
 std::vector<GaloisFieldElement> NTTMultiplicationStrategy::psi_power_table;
 std::vector<GaloisFieldElement> NTTMultiplicationStrategy::psi_power_table_bit_reversed_order;
 std::vector<GaloisFieldElement> NTTMultiplicationStrategy::psi_inverse_power_table;
@@ -107,9 +107,9 @@ void NTTMultiplicationStrategy::inverse_NTT(GaloisFieldPoly &a) const {
   }
 }
 
-NTTMultiplicationStrategy* NTTMultiplicationStrategy::getInstance() {
-  if (!instance) { 
-    instance = new NTTMultiplicationStrategy();
+std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::getInstance() {
+  if (!instance.get()) { 
+    instance = std::shared_ptr<NTTMultiplicationStrategy>(new NTTMultiplicationStrategy());
   }
   return instance;
 }
