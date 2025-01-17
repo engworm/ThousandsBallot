@@ -1,5 +1,7 @@
 #include "structure/toruspoly.hpp"
 
+DiscreteTorusPoly::DiscreteTorusPoly(size_t N) : PolyBase<DiscreteTorus>(N) {};  
+
 DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {
   this->N = coeffs.size();
 };

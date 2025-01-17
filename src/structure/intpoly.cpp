@@ -1,5 +1,7 @@
 #include "structure/intpoly.hpp"
 
+IntPoly::IntPoly(size_t N) : PolyBase<uint32_t>(N) {};
+
 IntPoly::IntPoly(const std::vector<uint32_t> &coeffs) : PolyBase<uint32_t>(coeffs) {
   this->N = coeffs.size();
 };

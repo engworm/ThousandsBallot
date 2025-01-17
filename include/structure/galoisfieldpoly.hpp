@@ -11,6 +11,7 @@ class DiscreteTorusPoly;
 
 class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
   public:
+    GaloisFieldPoly() = default;
     GaloisFieldPoly(size_t N);
     GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs);
     

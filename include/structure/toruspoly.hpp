@@ -6,6 +6,8 @@
 
 class DiscreteTorusPoly : public PolyBase<DiscreteTorus> {
 public:
+    DiscreteTorusPoly() = default;
+    DiscreteTorusPoly(size_t N); 
     DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs);
 
     DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly) = delete;
