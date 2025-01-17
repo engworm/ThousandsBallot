@@ -44,6 +44,7 @@ set(SOURCE_FILES
     src/structure/intpoly.cpp
     src/structure/galoisfieldpoly.cpp
     src/strategy/ntt_multiplication_strategy.cpp
+    src/strategy/naive_multiplication_strategy.cpp
     src/factory/multiplication_factory.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
