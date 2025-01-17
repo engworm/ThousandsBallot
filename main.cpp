@@ -125,7 +125,7 @@ int main(int argc, char* argv[]) {
   Log::debug("intpoly1:", intpoly1);
   Log::debug("toruspoly2:", toruspoly2);
 
-  DiscreteTorusPoly toruspoly3_naive = intpoly1 * toruspoly2;
+  DiscreteTorusPoly toruspoly3_naive = std::move(intpoly1 * toruspoly2);
   Log::debug("toruspoly3:", toruspoly3_naive);
 
   GaloisFieldPoly gfpoly1 = std::move(intpoly1);

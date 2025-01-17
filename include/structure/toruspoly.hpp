@@ -7,8 +7,10 @@
 class DiscreteTorusPoly : public PolyBase<DiscreteTorus> {
 public:
     DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs);
-    DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly);
+    DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly) = delete;
     DiscreteTorusPoly(const GaloisFieldPoly &poly);
+
+    DiscreteTorusPoly(DiscreteTorusPoly &&toruspoly) noexcept = default;
 
 protected:
     void print(std::ostream &os) const override;
