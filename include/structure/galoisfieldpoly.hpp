@@ -16,9 +16,11 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
     
     GaloisFieldPoly(const IntPoly &poly) = delete;
     GaloisFieldPoly(const DiscreteTorusPoly &poly) = delete;
+    GaloisFieldPoly(const GaloisFieldPoly &poly) = delete;
 
     GaloisFieldPoly(IntPoly &&poly) noexcept;
     GaloisFieldPoly(DiscreteTorusPoly &&poly) noexcept;
+    GaloisFieldPoly(GaloisFieldPoly &&poly) noexcept;
 
   protected:
     void print(std::ostream &os) const override;
