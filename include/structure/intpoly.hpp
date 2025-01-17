@@ -7,7 +7,12 @@
 class IntPoly : public PolyBase<uint32_t> {
   public:
     IntPoly() = default;
+    IntPoly(size_t N);
     IntPoly(const std::vector<uint32_t> &coeffs);
+
+    IntPoly(const IntPoly &poly) = delete;
+
+    IntPoly(IntPoly &&intpoly) noexcept = default;
   
   protected:
     void print(std::ostream &os) const override;

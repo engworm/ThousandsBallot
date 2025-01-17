@@ -104,33 +104,38 @@ int main(int argc, char* argv[]) {
   DiscreteTorus ans = DecryptDiscreteTLWE::decrypt(tlwe, secret);
   Log::debug("decrypted mssg:", ans);
 
-  IntPoly intpoly1({1, 1, 1, 1});
-  DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
+
+    std::uniform_int_distribution<uint32_t> dis_poly(0, (1<<12));
+
+    // 4次元の多項式の係数を生成
+    std::vector<uint32_t> coeffs1(4);
+    std::vector<DiscreteTorus> coeffs2(4);
+    for (auto& coeff : coeffs1) {
+        coeff = dis_poly(gen);
+    }
+    for (auto& coeff : coeffs2) {
+        coeff = dis_poly(gen);
+    }
+
+  // IntPoly intpoly1({1, 1, 1, 1});
+  // DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
+  IntPoly intpoly1(coeffs1);
+  DiscreteTorusPoly toruspoly2(coeffs2);
 
   Log::debug("intpoly1:", intpoly1);
   Log::debug("toruspoly2:", toruspoly2);
 
+  DiscreteTorusPoly toruspoly3_naive = std::move(intpoly1 * toruspoly2);
+  Log::debug("toruspoly3:", toruspoly3_naive);
+
   GaloisFieldPoly gfpoly1 = std::move(intpoly1);
   GaloisFieldPoly gfpoly2 = std::move(toruspoly2);
 
-  GaloisFieldPoly gfpoly3 = gfpoly1 * gfpoly2;
+  GaloisFieldPoly gfpoly3 = std::move(gfpoly1 * gfpoly2);
 
-  DiscreteTorusPoly toruspoly3 = gfpoly3;
+  DiscreteTorusPoly toruspoly3 = std::move(gfpoly3);
   Log::debug("toruspoly3:", toruspoly3);
 
-  IntPoly intpoly4({1, 1, 1, 1});
-  DiscreteTorusPoly toruspoly5({0, 1, 0, 0});
-
-  // Log::debug("intpoly4:", intpoly4);
-  Log::debug("toruspoly5:", toruspoly5);
-
-  GaloisFieldPoly gfpoly4 = std::move(intpoly4);
-  GaloisFieldPoly gfpoly5 = std::move(toruspoly5);
-
-  GaloisFieldPoly gfpoly6 = gfpoly4 * gfpoly5;
-
-  DiscreteTorusPoly toruspoly6 = gfpoly6;
-  Log::debug("toruspoly6:", toruspoly6);
 
   return 0;
 }

@@ -1,19 +1,11 @@
 #include "structure/toruspoly.hpp"
 
-DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {
-  this->N = coeffs.size();
-};
+DiscreteTorusPoly::DiscreteTorusPoly(size_t N) : PolyBase<DiscreteTorus>(N) {};  
 
-DiscreteTorusPoly::DiscreteTorusPoly(const DiscreteTorusPoly &toruspoly) : PolyBase<DiscreteTorus>(toruspoly.get_coeffs()) {
-  this->N = toruspoly.size();
-}
+DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {};
 
-DiscreteTorusPoly::DiscreteTorusPoly(const GaloisFieldPoly &poly) {
-  this->N = poly.size();
-  for (int i = 0; i < this->N; ++i) {
-    std::vector<GaloisFieldElement> tmp = poly.get_coeffs();
-    this->coeffs.emplace_back(DiscreteTorus(poly[i]));
-  }
+DiscreteTorusPoly::DiscreteTorusPoly(GaloisFieldPoly &&gfpoly) noexcept
+    : PolyBase<DiscreteTorus>(std::move(gfpoly)) {
 }
 
 void DiscreteTorusPoly::print(std::ostream &os) const {

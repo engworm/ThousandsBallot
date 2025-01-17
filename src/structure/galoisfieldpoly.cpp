@@ -2,11 +2,12 @@
 #include "structure/toruspoly.hpp"
 #include "factory/multiplication_factory.hpp"
 
+GaloisFieldPoly::GaloisFieldPoly(size_t N) 
+    : PolyBase<GaloisFieldElement>(N) {
+};
 
 GaloisFieldPoly::GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) 
-    : PolyBase<GaloisFieldElement>(coeffs) {
-  this->N = coeffs.size();
-};
+    : PolyBase<GaloisFieldElement>(coeffs) {};
     
 GaloisFieldPoly::GaloisFieldPoly(IntPoly &&intpoly) noexcept
     : PolyBase<GaloisFieldElement>(std::move(intpoly)) {
@@ -25,7 +26,7 @@ std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {
   return os;
 }
 
-GaloisFieldPoly operator*(const GaloisFieldPoly &poly1, const GaloisFieldPoly &poly2) {
+GaloisFieldPoly operator*(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) {
   if (poly1.size() != poly2.size()) {
     Log::error("Polynomial degree must be the same");
   }

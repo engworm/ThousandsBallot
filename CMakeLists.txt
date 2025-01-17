@@ -38,12 +38,15 @@ set(SOURCE_FILES
     src/params/params.cpp
     src/params/nttparams.cpp
     src/operator/Montgomery.cpp
+    src/operator/ntt.cpp
     src/structure/torus.cpp
     src/structure/galoisfield.cpp
     src/structure/toruspoly.cpp
     src/structure/intpoly.cpp
     src/structure/galoisfieldpoly.cpp
-    src/strategy/ntt_multiplication_strategy.cpp)
+    src/strategy/ntt_multiplication_strategy.cpp
+    src/strategy/naive_multiplication_strategy.cpp
+    src/factory/multiplication_factory.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} -lboost_program_options)

@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <vector>
 #include "params/nttparams.hpp"
+#include "utility/log.hpp"
 
 template<typename T>
 concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
@@ -22,9 +23,11 @@ class PolyBase {
 
   public:
     PolyBase();
+    PolyBase(size_t N);
     PolyBase(const std::vector<T> &coeffs); 
+    PolyBase(const PolyBase &poly) = delete;
 
-    PolyBase(PolyBase &&poly) noexcept;
+    PolyBase(PolyBase &&poly) noexcept = default;
 
     template<Arithmetic U>
     PolyBase(PolyBase<U> &&poly) noexcept;
@@ -51,15 +54,10 @@ template<Arithmetic T>
 PolyBase<T>::PolyBase() = default;
 
 template<Arithmetic T>
-PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs) {
-  this->N = coeffs.size();
-}
+PolyBase<T>::PolyBase(size_t N) : N(N), coeffs(N, T(0)) {};
 
 template<Arithmetic T>
-PolyBase<T>::PolyBase(PolyBase &&poly) noexcept
-    : coeffs(std::move(poly.coeffs)) {
-    this->N = poly.size();
-}
+PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs), N(coeffs.size()) {};
 
 template<Arithmetic T>
 template<Arithmetic U>

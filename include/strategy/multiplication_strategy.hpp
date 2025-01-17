@@ -6,7 +6,7 @@
 class MultiplicationStrategy {
 public:
     virtual ~MultiplicationStrategy() = default;
-    virtual GaloisFieldPoly multiply(const GaloisFieldPoly &a, const GaloisFieldPoly &b) const = 0;
+    virtual GaloisFieldPoly multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const = 0;
 };
 
 #endif
