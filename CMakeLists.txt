@@ -33,8 +33,8 @@ if(NTT)
   add_definitions(-DNTT)
 endif()
 
+
 set(SOURCE_FILES
-    main.cpp
     src/params/params.cpp
     src/params/nttparams.cpp
     src/operator/Montgomery.cpp
@@ -48,8 +48,13 @@ set(SOURCE_FILES
     src/strategy/naive_multiplication_strategy.cpp
     src/factory/multiplication_factory.cpp)
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} -lboost_program_options)
+set(SERVER server)
+add_executable(${SERVER} network/server.cpp ${SOURCE_FILES})
+target_link_libraries(${SERVER} -lboost_program_options)
+
+set(CLIENT client)
+add_executable(${CLIENT} network/client.cpp ${SOURCE_FILES})
+target_link_libraries(${CLIENT} -lboost_program_options)
 
 set(TEST_SOURCE_FILES
     src/test/test_montgomerymul.cpp

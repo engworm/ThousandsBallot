@@ -23,6 +23,8 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
     GaloisFieldPoly(DiscreteTorusPoly &&poly) noexcept; 
     GaloisFieldPoly(GaloisFieldPoly &&poly) noexcept = default;
 
+    std::vector<GaloisFieldElement> get_coeffs() const;
+
   protected:
     void print(std::ostream &os) const override;
 

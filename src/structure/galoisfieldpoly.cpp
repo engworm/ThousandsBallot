@@ -17,6 +17,10 @@ GaloisFieldPoly::GaloisFieldPoly(DiscreteTorusPoly &&toruspoly) noexcept
     : PolyBase<GaloisFieldElement>(std::move(toruspoly)) {
 }
 
+std::vector<GaloisFieldElement> GaloisFieldPoly::get_coeffs() const {
+  return PolyBase<GaloisFieldElement>::get_coeffs();
+}
+
 void GaloisFieldPoly::print(std::ostream &os) const {
   PolyBase<GaloisFieldElement>::print(os);
 }

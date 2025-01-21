@@ -48,6 +48,7 @@ int main(int argc, char* argv[]) {
   if (vm.count("mont")) {
     std::vector<uint32_t> M = vm["mont"].as<std::vector<uint32_t>>();
     MontgomeryParams::R = 1 << M[0];
+    // P ans R should be coprime
     MontgomeryParams::mu = constMontgomeryMu();
     MontgomeryParams::R2 = constMontgomeryR2();
   }
@@ -108,8 +109,8 @@ int main(int argc, char* argv[]) {
     std::uniform_int_distribution<uint32_t> dis_poly(0, (1<<12));
 
     // 4次元の多項式の係数を生成
-    std::vector<uint32_t> coeffs1(4);
-    std::vector<DiscreteTorus> coeffs2(4);
+    std::vector<uint32_t> coeffs1(1024);
+    std::vector<DiscreteTorus> coeffs2(1024);
     for (auto& coeff : coeffs1) {
         coeff = dis_poly(gen);
     }
