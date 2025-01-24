@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <boost/program_options.hpp>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -29,7 +30,6 @@ void handleClient(int clientSocket) {
         return;
     }
 
-    // 受信したデータをデシリアライズ
     std::vector<uint32_t> coeffs1;
     std::vector<DiscreteTorus> coeffs2;
     size_t size1, size2;
@@ -40,24 +40,20 @@ void handleClient(int clientSocket) {
     memcpy(coeffs1.data(), buffer + 2 * sizeof(size_t), size1 * sizeof(uint32_t));
     memcpy(coeffs2.data(), buffer + 2 * sizeof(size_t) + size1 * sizeof(uint32_t), size2 * sizeof(uint32_t));
 
-    // 多項式の作成
     IntPoly intpoly1(coeffs1);
     DiscreteTorusPoly toruspoly2(coeffs2);
 
-    // 多項式の乗算
     GaloisFieldPoly gfpoly1 = std::move(intpoly1);
     GaloisFieldPoly gfpoly2 = std::move(toruspoly2);
     GaloisFieldPoly gfpoly3 = std::move(gfpoly1 * gfpoly2);
-
-    // 結果をシリアライズ
     Log::debug(gfpoly3);
+
     std::vector<GaloisFieldElement> resultCoeffs = gfpoly3.get_coeffs();
     size_t resultSize = resultCoeffs.size();
     char resultBuffer[1024] = {0};
     memcpy(resultBuffer, &resultSize, sizeof(size_t));
     memcpy(resultBuffer + sizeof(size_t), resultCoeffs.data(), resultSize * sizeof(uint32_t));
 
-    // 結果をクライアントに送信
     send(clientSocket, resultBuffer, sizeof(size_t) + resultSize * sizeof(uint32_t), 0);
 
     close(clientSocket);
@@ -71,30 +67,62 @@ void signalHandler(int signum) {
     exit(signum);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+  boost::program_options::options_description desc("Options");
+  desc.add_options()
+    ("help,h", "Help\n")
+    ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] TFHE Parameter.\nSpecify integer P and n, N, where P is a prime number and n is the length of secret key, N is degree of Polynomial.\ne.g. -P 12289 4 1024\n")
+    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication scaling factor R.\nSpecify integer r, so that R = 2^r > P.\ne.g. -M 18\n");
+                                                                                                
+  boost::program_options::variables_map vm;
+  try {
+    boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+  } catch (boost::program_options::error &e) {
+    throw std::invalid_argument(e.what());
+    return 1;
+  }
+  boost::program_options::notify(vm);
 
-    Params::P = 12289;
-    Params::n = 4;
-    Params::N = 4;
+  if (vm.count("help")) {
+    std::cout << desc << std::endl;
+    return 0;
+  }
 
-    MontgomeryParams::R = 1 << 18;
+  if (vm.count("param")) {
+    std::vector<uint32_t> P = vm["param"].as<std::vector<uint32_t>>();
+    Params::P = P[0];
+    Params::n = P[1];
+    Params::N = P[2];
+  }
+  else {
+    return 1;
+  }
+
+  if (vm.count("mont")) {
+    std::vector<uint32_t> M = vm["mont"].as<std::vector<uint32_t>>();
+    MontgomeryParams::R = 1 << M[0];
+    // P ans R should be coprime
     MontgomeryParams::mu = constMontgomeryMu();
     MontgomeryParams::R2 = constMontgomeryR2();
+  }
+  else {
+    return 1;
+  }
 
-    Log::debug("param = {\n",
+  Log::debug("param = {\n",
               "P =", Params::P, "\n", 
               "n =", Params::n, "\n", 
               "N =", Params::N, "\n}");
 
-    Log::debug("Montgomery param = {\n",
+  Log::debug("Montgomery param = {\n",
               "R =", MontgomeryParams::R, "\n", 
               "μ =", MontgomeryParams::mu, "\n", 
               "R^2 =", MontgomeryParams::R2, "\n}");
 
-    if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
-      Log::error("Montgomery constant mismatched");
-      return 1;
-    }
+  if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
+    Log::error("Montgomery constant mismatched");
+    return 1;
+  }
 
 #ifdef NTT
   Log::info("Polynomial Multiplication Method: [NTT]");
