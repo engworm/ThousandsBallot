@@ -6,12 +6,10 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include "params/params.hpp"
-#include "params/nttparams.hpp"
 #include "structure/intpoly.hpp"
 #include "structure/toruspoly.hpp"
 #include "structure/galoisfieldpoly.hpp"
 #include "strategy/ntt_multiplication_strategy.hpp"
-#include "operator/ntt.hpp"
 #include "utility/log.hpp"
 
 #define PORT 8080
@@ -126,9 +124,9 @@ int main(int argc, char* argv[]) {
 
 #ifdef NTT
   Log::info("Polynomial Multiplication Method: [NTT]");
-  if (!SetUpNttConstants::setup()) {
-    Log::error("Failed to set up NTT constants");
-  }
+  // if (!SetUpNttConstants::setup()) {
+    // Log::error("Failed to set up NTT constants");
+  // }
  #else
     Log::info("Polynomial Multiplication Method: [Naive]");
     Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");

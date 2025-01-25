@@ -1,9 +1,10 @@
 #include "structure/galoisfieldpoly.hpp"
 #include "structure/toruspoly.hpp"
 #include "factory/multiplication_factory.hpp"
+#include "strategy/multiplication_strategy.hpp"
 
-GaloisFieldPoly::GaloisFieldPoly(size_t N) 
-    : PolyBase<GaloisFieldElement>(N) {
+GaloisFieldPoly::GaloisFieldPoly(uint32_t P, uint32_t N) 
+    : P(P), PolyBase<GaloisFieldElement>(N) {
 };
 
 GaloisFieldPoly::GaloisFieldPoly(const std::vector<GaloisFieldElement> &coeffs) 
@@ -21,6 +22,10 @@ std::vector<GaloisFieldElement> GaloisFieldPoly::get_coeffs() const {
   return PolyBase<GaloisFieldElement>::get_coeffs();
 }
 
+uint32_t GaloisFieldPoly::modulus() const {
+  return P;
+}
+
 void GaloisFieldPoly::print(std::ostream &os) const {
   PolyBase<GaloisFieldElement>::print(os);
 }
@@ -34,12 +39,15 @@ GaloisFieldPoly operator*(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) {
   if (poly1.size() != poly2.size()) {
     Log::error("Polynomial degree must be the same");
   }
+  if (poly1.modulus() != poly2.modulus()) {
+    Log::error("The modulus of the polynomial coefficient fields must be the same");
+  }
   
   bool useNTT = false;
 #ifdef NTT
   useNTT = true;
 #endif
 
-  auto multiplication_strategy = MultiplicationFactory::create(useNTT);
+  auto multiplication_strategy = MultiplicationFactory::create(poly1.modulus(), poly1.size(), useNTT);
   return multiplication_strategy->multiply(poly1, poly2);
 }
