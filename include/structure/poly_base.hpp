@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
-#include "params/nttparams.hpp"
 #include "utility/log.hpp"
 
 template<typename T>
@@ -16,7 +15,7 @@ concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
 template<Arithmetic T>
 class PolyBase {
   protected:
-    uint32_t N = NttParams::N;
+    uint32_t N = 4;
     std::vector<T> coeffs;
 
     virtual void print(std::ostream &os) const;

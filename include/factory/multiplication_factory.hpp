@@ -6,8 +6,7 @@
 
 class MultiplicationFactory {
 public:
-    static std::shared_ptr<MultiplicationStrategy> create(bool useNTT);
-   
+    static std::shared_ptr<MultiplicationStrategy> create(uint32_t P, uint32_t N, bool useNTT);
 };
 
 #endif
