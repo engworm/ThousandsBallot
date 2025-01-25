@@ -24,6 +24,7 @@ class GaloisFieldElement {
     GaloisFieldElement(const DiscreteTorus &t);
 
     GaloisFieldElement(uint32_t &&x) noexcept;
+    GaloisFieldElement(GaloisFieldElement &&a) noexcept;
 
     uint32_t val() const;
 

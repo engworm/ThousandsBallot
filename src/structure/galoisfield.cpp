@@ -14,6 +14,7 @@ GaloisFieldElement::GaloisFieldElement(const uint32_t &x) : a(x) {};
 GaloisFieldElement::GaloisFieldElement(const DiscreteTorus &t) : a(t.val()) {}; 
 
 GaloisFieldElement::GaloisFieldElement(uint32_t &&x) noexcept : a(std::move(x)) {};
+GaloisFieldElement::GaloisFieldElement(GaloisFieldElement &&a) noexcept: a(std::move(a.val())) {};
 
 uint32_t GaloisFieldElement::val() const {
   return this->a;
