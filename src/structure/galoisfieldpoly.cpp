@@ -45,7 +45,6 @@ GaloisFieldPoly operator*(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) {
     Log::error("The modulus of the polynomial coefficient fields must be the same");
   }
   
-  bool useNTT = false;
 #ifdef NTT
   using MultiplicationStrategy = NTTMultiplicationStrategy;
 #else
