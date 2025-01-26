@@ -8,20 +8,20 @@
 
 // Compute μ = -P^{-1} mod R
 uint32_t constMontgomeryMu() {
-  int32_t r = extendedEuclidean(MontgomeryParams::R, Params::P).second;
+  int32_t r = extendedEuclidean(MontgomeryParams::R, Params::q).second;
   return (uint32_t)(MontgomeryParams::R - r);
 }
 
 uint32_t constMontgomeryR2() {
   uint64_t r2 = ((uint64_t)MontgomeryParams::R * MontgomeryParams::R);
-  return r2 % Params::P;
+  return r2 % Params::q;
 }
 
 uint32_t redcMontgomery(uint64_t x) {
-  uint32_t q = MontgomeryParams::mu*(x & (MontgomeryParams::R-1)) & (MontgomeryParams::R-1); // mu*(x%R)%R;
-  uint32_t r = (x + Params::P*q) >> std::countr_zero(MontgomeryParams::R);
-  if (r >= Params::P) {
-    r -= Params::P;
+  uint32_t tmp = MontgomeryParams::mu*(x & (MontgomeryParams::R-1)) & (MontgomeryParams::R-1); // mu*(x%R)%R;
+  uint32_t r = (x + Params::q*tmp) >> std::countr_zero(MontgomeryParams::R);
+  if (r >= Params::q) {
+    r -= Params::q;
   }
   return r;
 }

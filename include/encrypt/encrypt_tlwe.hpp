@@ -13,7 +13,7 @@ class EncryptDiscreteTLWE : public DiscreteTLWE {
 
       std::random_device rd;
       std::mt19937 gen(rd());
-      std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
+      std::uniform_int_distribution<uint32_t> dis(0, Params::q-1);
 
       DiscreteTorus b(message);
       for (int i = 0; i < n; ++i) {

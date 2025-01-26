@@ -30,7 +30,7 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
     void print(std::ostream &os) const override;
   
   private:
-    uint32_t P = Params::P;
+    uint32_t P = Params::q;
 
   friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
 };

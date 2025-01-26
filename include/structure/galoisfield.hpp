@@ -12,7 +12,7 @@ class DiscreteTorus;
 class GaloisFieldElement {
   private:
     uint32_t a{};
-    uint32_t P = Params::P;
+    uint32_t P = Params::q;
   
     uint32_t modP(uint32_t x);
 

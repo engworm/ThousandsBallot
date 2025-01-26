@@ -3,14 +3,14 @@
 
 DiscreteTorus::DiscreteTorus() : x(0) {};
 DiscreteTorus::DiscreteTorus(uint32_t x) : x(x) {
-        if (x >= this->P) {
+        if (x >= this->q) {
           Log::error("Discrete Torus Element must be less than P");
         }
       };
 
 DiscreteTorus::DiscreteTorus(const DiscreteTorus &t) {
   this->x = t.x;
-  this->P = t.P;
+  this->q = t.q;
   return;
 };
 
@@ -25,7 +25,7 @@ void DiscreteTorus::operator+=(const DiscreteTorus &t) {
 };
 
 void DiscreteTorus::operator-=(const DiscreteTorus &t) {
-  uint32_t tmp = this->x + (this->P - t.x);
+  uint32_t tmp = this->x + (this->q - t.x);
   this->x = modP(tmp);
   return;
 };
@@ -38,7 +38,7 @@ void DiscreteTorus::operator*=(const uint32_t c) {
 };
 
 uint32_t DiscreteTorus::modP(uint32_t x) {
-  return x%this->P;
+  return x%this->q;
 };
 
 std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {

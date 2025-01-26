@@ -10,11 +10,11 @@
 class MontgomeryTest : public ::testing::Test {
   protected:
     void SetUp() override {
-        if (Params::P == 0) {
+        if (Params::q == 0) {
             throw std::runtime_error("Params::P is not set");
         }
         std::cout << "param = {\n";
-        std::cout << "  P = " << Params::P << ",\n";
+        std::cout << "  q = " << Params::q << ",\n";
         std::cout << "  R = " << MontgomeryParams::R << ",\n";
         std::cout << "  μ = " << MontgomeryParams::mu << ",\n";
         std::cout << "  R^2 = " << MontgomeryParams::R2 << ",\n";
@@ -36,7 +36,7 @@ class MontgomeryTest : public ::testing::Test {
 // テストケース
 TEST_F(MontgomeryTest, MultiplyTest1) {
   std::mt19937 gen(MontgomeryTest::getseed());
-  std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
+  std::uniform_int_distribution<uint32_t> dis(0, Params::q-1);
   DiscreteTorus a(dis(gen));
 
   Log::debug("a =", a.val());
@@ -52,7 +52,7 @@ TEST_F(MontgomeryTest, MultiplyTest1) {
 
 TEST_F(MontgomeryTest, MultiplyTest2) {
   std::mt19937 gen(MontgomeryTest::getseed());
-  std::uniform_int_distribution<uint32_t> dis(0, Params::P-1);
+  std::uniform_int_distribution<uint32_t> dis(0, Params::q-1);
   DiscreteTorus a(dis(gen));
 
   std::uniform_int_distribution<uint32_t> disN(0, std::numeric_limits<uint32_t>::max());
@@ -64,7 +64,7 @@ TEST_F(MontgomeryTest, MultiplyTest2) {
   DiscreteTorus c =  k * a;
 
   uint32_t result = c.val();
-  uint32_t expected = ((uint64_t)(k) * a.val()) % Params::P;
+  uint32_t expected = ((uint64_t)(k) * a.val()) % Params::q;
 
   EXPECT_EQ(result, expected);
 }
@@ -74,12 +74,12 @@ int main(int argc, char **argv) {
 
     for (int i = 1; i < argc; ++i) {
         if (std::string(argv[i]).find("--P=") == 0) {
-            std::string p_value = std::string(argv[i]).substr(4);
-            Params::P = std::stoul(p_value);
+            std::string value = std::string(argv[i]).substr(4);
+            Params::q = std::stoul(value);
         }
         else if (std::string(argv[i]).find("--r=") == 0) {
-            std::string p_value = std::string(argv[i]).substr(4);
-            MontgomeryParams::R = 1 << std::stoul(p_value);
+            std::string value = std::string(argv[i]).substr(4);
+            MontgomeryParams::R = 1 << std::stoul(value);
         }
         else if (std::string(argv[i]).find("--seed=") == 0) {
             std::string seed = std::string(argv[i]).substr(7);

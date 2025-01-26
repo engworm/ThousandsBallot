@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 
   if (vm.count("param")) {
     std::vector<uint32_t> P = vm["param"].as<std::vector<uint32_t>>();
-    Params::P = P[0];
+    Params::q = P[0];
     Params::n = P[1];
     Params::N = P[2];
   }
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
   }
 
   Log::debug("param = {\n",
-              "P =", Params::P, "\n", 
+              "q =", Params::q, "\n", 
               "n =", Params::n, "\n", 
               "N =", Params::N, "\n}");
 
@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
               "μ =", MontgomeryParams::mu, "\n", 
               "R^2 =", MontgomeryParams::R2, "\n}");
 
-  if (((uint64_t)MontgomeryParams::mu*Params::P)%MontgomeryParams::R != MontgomeryParams::R-1) {
+  if (((uint64_t)MontgomeryParams::mu*Params::q)%MontgomeryParams::R != MontgomeryParams::R-1) {
     Log::error("Montgomery constant mismatched");
     return 1;
   }
@@ -73,8 +73,8 @@ int main(int argc, char* argv[]) {
   Torusの加法と減法をオーバーフローさせないために，
   2P < 2^32 である必要がある
   */
-  if (Params::P > (1<<31)) {
-    throw std::invalid_argument("2P must be less than 2^32");
+  if (Params::q > (1<<31)) {
+    throw std::invalid_argument("2q must be less than 2^32");
   }
 
 #ifdef NTT

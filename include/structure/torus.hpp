@@ -10,7 +10,7 @@ friend class TorusPoly;
 
 private:
     uint32_t x;
-    uint32_t P = Params::P;
+    uint32_t q = Params::q;
 
 public:
     DiscreteTorus();
