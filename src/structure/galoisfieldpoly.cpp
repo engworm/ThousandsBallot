@@ -2,6 +2,8 @@
 #include "structure/toruspoly.hpp"
 #include "factory/multiplication_factory.hpp"
 #include "strategy/multiplication_strategy.hpp"
+#include "strategy/naive_multiplication_strategy.hpp"
+#include "strategy/ntt_multiplication_strategy.hpp"
 
 GaloisFieldPoly::GaloisFieldPoly(uint32_t P, uint32_t N) 
     : P(P), PolyBase<GaloisFieldElement>(N) {
@@ -45,9 +47,11 @@ GaloisFieldPoly operator*(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) {
   
   bool useNTT = false;
 #ifdef NTT
-  useNTT = true;
+  using MultiplicationStrategy = NTTMultiplicationStrategy;
+#else
+  using MultiplicationStrategy = NaiveMultiplicationStrategy;
 #endif
+  auto multiplication_strategy = MultiplicationFactory<MultiplicationStrategy>::create(poly1.modulus(), poly1.size());
 
-  auto multiplication_strategy = MultiplicationFactory::create(poly1.modulus(), poly1.size(), useNTT);
   return multiplication_strategy->multiply(poly1, poly2);
 }
