@@ -101,8 +101,4 @@ std::ostream& operator<<(std::ostream &os, const PolyBase<T> &poly) {
   return os;
 }
 
-// template class PolyBase<uint32_t>;
-// template class PolyBase<GaloisFieldElement>;
-// template PolyBase<GaloisFieldElement>::PolyBase(PolyBase<uint32_t> &&poly) noexcept;
-
 #endif
