@@ -1,5 +1,13 @@
 #include "strategy/naive_multiplication_strategy.hpp"
 
+NaiveMultiplicationStrategy::NaiveMultiplicationStrategy(uint32_t P, uint32_t N) : P(P), N(N) {
+}
+
+std::shared_ptr<NaiveMultiplicationStrategy> NaiveMultiplicationStrategy::getInstance(uint32_t P, uint32_t N) {
+  auto instance = std::shared_ptr<NaiveMultiplicationStrategy>(new NaiveMultiplicationStrategy(P, N));
+  return instance;
+}
+
 GaloisFieldPoly NaiveMultiplicationStrategy::multiply(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) const {
   std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
   GaloisFieldPoly result(zero);

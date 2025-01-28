@@ -10,5 +10,5 @@ std::shared_ptr<NTTMultiplicationStrategy> MultiplicationFactory<NTTMultiplicati
 
 template<>
 std::shared_ptr<NaiveMultiplicationStrategy> MultiplicationFactory<NaiveMultiplicationStrategy>::create(uint32_t P, uint32_t N) {
-  return std::make_shared<NaiveMultiplicationStrategy>();
+  return NaiveMultiplicationStrategy::getInstance(P, N);
 }

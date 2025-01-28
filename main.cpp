@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
   2P < 2^32 である必要がある
   */
   if (Params::q > (1<<31)) {
-    throw std::invalid_argument("2q must be less than 2^32");
+    Log::error("2q must be less than 2^32");
   }
 
 #ifdef NTT
