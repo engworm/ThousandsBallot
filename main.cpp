@@ -3,6 +3,7 @@
 #include <boost/program_options.hpp>
 #include <utility>
 #include "params/params.hpp"
+#include "params/nttparams.hpp"
 #include "structure/tlwe.hpp"
 #include "utility/log.hpp"
 #include "encrypt/encrypt_tlwe.hpp"
@@ -17,7 +18,9 @@ int main(int argc, char* argv[]) {
   desc.add_options()
     ("help,h", "Help\n")
     ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] TFHE Parameter.\nSpecify integer P and n, N, where P is a prime number and n is the length of secret key, N is degree of Polynomial.\ne.g. -P 12289 4 1024\n")
-    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication scaling factor R.\nSpecify integer r, so that R = 2^r > P.\ne.g. -M 18\n");
+    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication scaling factor R.\nSpecify integer r, so that R = 2^r > P.\ne.g. -M 18\n")
+    ("ntt,N", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] NTT Parameter.\nSpecify modulus P, where P is a prime number.\ne.g. -N 12289\n")
+    ("seed,S", boost::program_options::value<uint32_t>(), "[OPTIONAL] Seed for random number generator.\n");
                                                                                                 
   boost::program_options::variables_map vm;
   try {
@@ -79,42 +82,37 @@ int main(int argc, char* argv[]) {
 
 #ifdef NTT
   Log::info("Polynomial Multiplication Method: [NTT]");
-  // if (!SetUpNttConstants::setup()) {
-    // Log::error("Failed to set up NTT constants");
-  // }
+    if (vm.count("ntt")) {
+    std::vector<uint32_t> X = vm["ntt"].as<std::vector<uint32_t>>();
+    NTTParams::P = X[0];
+    NTTParams::N = Params::N;
+    Log::debug("NTT param = {\n",
+              "P =", NTTParams::P, "\n",
+              "N =", NTTParams::N, "\n}");
+  }
 #else
   Log::info("Polynomial Multiplication Method: [Naive]");
   Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
 #endif
 
-  std::vector<uint32_t> secret(Params::n, 0);
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(0, 1);
-  for (uint32_t i = 0; i < Params::n; ++i) {
-    secret[i] = dis(gen);
+  uint32_t seed = 0;
+  if (vm.count("seed")) {
+    seed = vm["seed"].as<uint32_t>();
+    std::srand(seed);
   }
-
-  uint32_t message = 10;
-  Log::debug("mssg:", message);
-  DiscreteTLWE tlwe = EncryptDiscreteTLWE::encrypt(message, secret);
-  Log::debug("tlwe:", tlwe);
-
-  DiscreteTorus ans = DecryptDiscreteTLWE::decrypt(tlwe, secret);
-  Log::debug("decrypted mssg:", ans);
+  std::mt19937 gen(seed);
 
 
-    std::uniform_int_distribution<uint32_t> dis_poly(0, (1<<12));
+  std::uniform_int_distribution<uint32_t> dis_poly(0, (1<<12));
 
-    // 4次元の多項式の係数を生成
-    std::vector<uint32_t> coeffs1(Params::N);
-    std::vector<DiscreteTorus> coeffs2(Params::N);
-    for (auto& coeff : coeffs1) {
-        coeff = dis_poly(gen);
-    }
-    for (auto& coeff : coeffs2) {
-        coeff = dis_poly(gen);
-    }
+  std::vector<uint32_t> coeffs1(Params::N);
+  std::vector<DiscreteTorus> coeffs2(Params::N);
+  for (auto& coeff : coeffs1) {
+      coeff = dis_poly(gen);
+  }
+  for (auto& coeff : coeffs2) {
+      coeff = dis_poly(gen);
+  }
 
   // IntPoly intpoly1({1, 1, 1, 1});
   // DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
