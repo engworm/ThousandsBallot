@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
   }
 
 #ifdef NTT
-  Log::info("Polynomial Multiplication Method: [NTT]");
+  Log::info("Polynomial Multiplication Method: [ NTT ]");
     if (vm.count("ntt")) {
     std::vector<uint32_t> X = vm["ntt"].as<std::vector<uint32_t>>();
     NTTParams::P = X[0];
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
               "N =", NTTParams::N, "\n}");
   }
 #else
-  Log::info("Polynomial Multiplication Method: [Naive]");
+  Log::info("Polynomial Multiplication Method: [ Naive ]");
   Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
 #endif
 
@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
   std::mt19937 gen(seed);
 
 
-  std::uniform_int_distribution<uint32_t> dis_poly(0, (1<<12));
+  std::uniform_int_distribution<uint32_t> dis_poly(0, Params::q-1);
 
   std::vector<uint32_t> coeffs1(Params::N);
   std::vector<DiscreteTorus> coeffs2(Params::N);
