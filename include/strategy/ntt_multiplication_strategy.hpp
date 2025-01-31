@@ -41,11 +41,11 @@ private:
   bool check_2N_primitive_root_of_unitiy(GaloisFieldElement const &psi);
   GaloisFieldElement search_2N_primitive_root_of_unity();
 
-  DiscreteTorusPoly multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const override;
+  GaloisFieldPoly multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const override ;
 
 public:
   static std::shared_ptr<NTTMultiplicationStrategy> getInstance(uint32_t P, uint32_t N);
-  GaloisFieldPoly multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const override ;
+  DiscreteTorusPoly multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const override;
 };
 
 #endif 

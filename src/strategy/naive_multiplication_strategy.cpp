@@ -27,9 +27,18 @@ GaloisFieldPoly NaiveMultiplicationStrategy::multiply(GaloisFieldPoly &poly1, Ga
 }
 
 DiscreteTorusPoly NaiveMultiplicationStrategy::multiply(IntPoly &poly1, DiscreteTorusPoly&poly2) const {
-  GaloisFieldPoly gfpoly1 = std::move(poly1);
-  GaloisFieldPoly gfpoly2 = std::move(poly2);
-  GaloisFieldPoly gfpoly3 = multiply(gfpoly1, gfpoly2);
-  DiscreteTorusPoly result = std::move(gfpoly3);
+  std::vector<DiscreteTorus> zero(poly1.size(), DiscreteTorus(0));
+  DiscreteTorusPoly result(zero);
+  for (size_t i = 0; i < poly1.size(); ++i) {
+    for (size_t j = 0; j < poly1.size(); ++j) {
+      size_t k = (i + j) % poly1.size();
+      if (i + j >= poly1.size()) {
+          result[k] -= poly1[j] * poly2[i];
+      }
+      else {
+          result[k] += poly1[j] * poly2[i];
+      }
+    }
+  }
   return result;
 }
