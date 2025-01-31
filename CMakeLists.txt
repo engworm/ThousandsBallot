@@ -29,9 +29,17 @@ include_directories(${BOOST_INCLUDE})
 include_directories(./include)
 link_directories(${BOOST_LIB})
 
+option(NTT "Enable NTT" OFF)
+option(NTT_DEBUG "Enable NTT Debug" OFF)
+
 if(NTT)
   add_definitions(-DNTT)
+  if (NTT_DEBUG)
+    add_definitions(-DNTT_DEBUG)
+  endif()
 endif()
+
+
 
 
 set(SOURCE_FILES

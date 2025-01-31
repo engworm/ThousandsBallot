@@ -95,6 +95,9 @@ int main(int argc, char* argv[]) {
               "P =", NTTParams::P, "\n",
               "N =", NTTParams::N, "\n}");
   }
+  #ifdef NTT_DEBUG
+    Log::info("NTT Debug Mode: [ ON ]");
+  #endif
 #else
   Log::info("Polynomial Multiplication Method: [ Naive ]");
   Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");

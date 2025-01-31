@@ -174,7 +174,27 @@ std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::getInstanc
   return instance;
 }
 
+GaloisFieldPoly NTTMultiplicationStrategy::multiply_debug(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) const {
+  std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
+  GaloisFieldPoly result(zero);
+  for (size_t i = 0; i < poly1.size(); ++i) {
+    for (size_t j = 0; j < poly1.size(); ++j) {
+      size_t k = (i + j) % poly1.size();
+      if (i + j >= poly1.size()) {
+          result[k] -= poly1[j]* poly2[i];
+      }
+      else {
+          result[k] += poly1[j] * poly2[i];
+      }
+    }
+  }
+  return result;
+}
+
 GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
+#ifdef NTT_DEBUG
+  return multiply_debug(a, b);
+#else
   forward_NTT(a);
   forward_NTT(b);
   GaloisFieldPoly res(this->P, this->N);
@@ -183,6 +203,7 @@ GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFi
   } 
   inverse_NTT(res);
   return res;
+#endif
 }
 
 DiscreteTorusPoly NTTMultiplicationStrategy::multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const {
