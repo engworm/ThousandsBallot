@@ -16,11 +16,16 @@ public:
     DiscreteTorusPoly(DiscreteTorusPoly &&toruspoly) noexcept = default;
     DiscreteTorusPoly(GaloisFieldPoly &&gfpoly) noexcept;
 
+    uint32_t modulus() const;
+
 protected:
     void print(std::ostream &os) const override;
 
+private:
+    uint32_t q = Params::q;
+
 friend std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly);
 };
-DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly);
+DiscreteTorusPoly operator*(IntPoly& intpoly, DiscreteTorusPoly &toruspoly);
 
 #endif

@@ -1,5 +1,6 @@
 #include "strategy/ntt_multiplication_strategy.hpp"
 #include "utility/extendedEuclidean.hpp"
+#include "structure/toruspoly.hpp"
 
 NTTMultiplicationStrategy::NTTMultiplicationStrategy(uint32_t P, uint32_t N) : P(P), N(N) {
   setup(this->P, this->N);
@@ -176,10 +177,18 @@ std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::getInstanc
 GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
   forward_NTT(a);
   forward_NTT(b);
-  GaloisFieldPoly res(a.size());
+  GaloisFieldPoly res(this->P, this->N);
   for (size_t i = 0; i < this->N; ++i) {
     res[i] = a[i] * b[i];
   } 
   inverse_NTT(res);
   return res;
+}
+
+DiscreteTorusPoly NTTMultiplicationStrategy::multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const {
+  GaloisFieldPoly gfpoly1 = std::move(poly1);
+  GaloisFieldPoly gfpoly2 = std::move(poly2);
+  GaloisFieldPoly res = multiply(gfpoly1, gfpoly2);
+  DiscreteTorusPoly torus_res = std::move(res);
+  return torus_res;
 }

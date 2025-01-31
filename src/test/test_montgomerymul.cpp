@@ -11,7 +11,7 @@ class MontgomeryTest : public ::testing::Test {
   protected:
     void SetUp() override {
         if (Params::q == 0) {
-            throw std::runtime_error("Params::P is not set");
+            throw std::runtime_error("Params::q is not set");
         }
         std::cout << "param = {\n";
         std::cout << "  q = " << Params::q << ",\n";

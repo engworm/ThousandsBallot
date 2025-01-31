@@ -36,21 +36,3 @@ std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly) {
   poly.print(os);
   return os;
 }
-
-GaloisFieldPoly operator*(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) {
-  if (poly1.size() != poly2.size()) {
-    Log::error("Polynomial degree must be the same");
-  }
-  if (poly1.modulus() != poly2.modulus()) {
-    Log::error("The modulus of the polynomial coefficient fields must be the same");
-  }
-  
-#ifdef NTT
-  using MultiplicationStrategy = NTTMultiplicationStrategy;
-#else
-  using MultiplicationStrategy = NaiveMultiplicationStrategy;
-#endif
-  auto multiplication_strategy = MultiplicationFactory<MultiplicationStrategy>::create(poly1.modulus(), poly1.size());
-
-  return multiplication_strategy->multiply(poly1, poly2);
-}

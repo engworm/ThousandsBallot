@@ -6,6 +6,7 @@
 #include "params/nttparams.hpp"
 #include "structure/tlwe.hpp"
 #include "utility/log.hpp"
+#include "utility/extendedEuclidean.hpp"
 #include "encrypt/encrypt_tlwe.hpp"
 #include "decrypt/decrypt_tlwe.hpp"
 #include "structure/torus.hpp"
@@ -18,7 +19,7 @@ int main(int argc, char* argv[]) {
   desc.add_options()
     ("help,h", "Help\n")
     ("param,P", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] TFHE Parameter.\nSpecify integer P and n, N, where P is a prime number and n is the length of secret key, N is degree of Polynomial.\ne.g. -P 12289 4 1024\n")
-    ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication scaling factor R.\nSpecify integer r, so that R = 2^r > P.\ne.g. -M 18\n")
+    // ("mont,M", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] Montgomery Multiplication scaling factor R.\nSpecify integer r, so that R = 2^r > P.\ne.g. -M 18\n")
     ("ntt,N", boost::program_options::value<std::vector<uint32_t>>()->multitoken(), "[REQUIRED] NTT Parameter.\nSpecify modulus P, where P is a prime number.\ne.g. -N 12289\n")
     ("seed,S", boost::program_options::value<uint32_t>(), "[OPTIONAL] Seed for random number generator.\n");
                                                                                                 
@@ -46,31 +47,35 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  if (vm.count("mont")) {
-    std::vector<uint32_t> M = vm["mont"].as<std::vector<uint32_t>>();
-    MontgomeryParams::R = 1 << M[0];
-    // P ans R should be coprime
-    MontgomeryParams::mu = constMontgomeryMu();
-    MontgomeryParams::R2 = constMontgomeryR2();
-  }
-  else {
-    return 1;
-  }
+  // if (vm.count("mont")) {
+    // std::vector<uint32_t> M = vm["mont"].as<std::vector<uint32_t>>();
+    // MontgomeryParams::R = 1 << M[0];
+    // // P ans R should be coprime
+    // if (!isCoprime(Params::q, MontgomeryParams::R)) {
+      // Log::error("q and R must be coprime");
+      // return 1;
+    // }
+    // MontgomeryParams::mu = constMontgomeryMu();
+    // MontgomeryParams::R2 = constMontgomeryR2();
+  // }
+  // else {
+    // return 1;
+  // }
 
   Log::debug("param = {\n",
               "q =", Params::q, "\n", 
               "n =", Params::n, "\n", 
               "N =", Params::N, "\n}");
 
-  Log::debug("Montgomery param = {\n",
-              "R =", MontgomeryParams::R, "\n", 
-              "μ =", MontgomeryParams::mu, "\n", 
-              "R^2 =", MontgomeryParams::R2, "\n}");
+  // Log::debug("Montgomery param = {\n",
+              // "R =", MontgomeryParams::R, "\n", 
+              // "μ =", MontgomeryParams::mu, "\n", 
+              // "R^2 =", MontgomeryParams::R2, "\n}");
 
-  if (((uint64_t)MontgomeryParams::mu*Params::q)%MontgomeryParams::R != MontgomeryParams::R-1) {
-    Log::error("Montgomery constant mismatched");
-    return 1;
-  }
+  // if (((uint64_t)MontgomeryParams::mu*Params::q)%MontgomeryParams::R != MontgomeryParams::R-1) {
+    // Log::error("Montgomery constant mismatched");
+    // return 1;
+  // }
 
   /* 
   Torusの加法と減法をオーバーフローさせないために，
@@ -122,15 +127,7 @@ int main(int argc, char* argv[]) {
   Log::debug("intpoly1:", intpoly1);
   Log::debug("toruspoly2:", toruspoly2);
 
-  DiscreteTorusPoly toruspoly3_naive = std::move(intpoly1 * toruspoly2);
-  Log::debug("toruspoly3:", toruspoly3_naive);
-
-  GaloisFieldPoly gfpoly1 = std::move(intpoly1);
-  GaloisFieldPoly gfpoly2 = std::move(toruspoly2);
-
-  GaloisFieldPoly gfpoly3 = std::move(gfpoly1 * gfpoly2);
-
-  DiscreteTorusPoly toruspoly3 = std::move(gfpoly3);
+  DiscreteTorusPoly toruspoly3 = std::move(intpoly1 * toruspoly2);
   Log::debug("toruspoly3:", toruspoly3);
 
 

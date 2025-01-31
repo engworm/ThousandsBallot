@@ -16,4 +16,10 @@ inline std::pair<typename std::make_signed<T>::type, typename std::make_signed<T
   return std::make_pair(r.second, r.first - r.second*(a/b));
 }
 
+template <typename T>
+inline bool isCoprime(T a, T b) {
+  auto [s, t] = extendedEuclidean(a, b);
+  return (s * a) + (t * b) == 1;
+}
+
 #endif

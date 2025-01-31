@@ -31,10 +31,10 @@ void DiscreteTorus::operator-=(const DiscreteTorus &t) {
 };
 
 void DiscreteTorus::operator*=(const uint32_t c) {
-  uint32_t X = reprMontgomery(this->x);
-  uint32_t C = reprMontgomery(c);
-  this->x = invReprMontgomery(mulMontgomery(X, C));
-  return;
+  // uint32_t X = reprMontgomery(this->x);
+  // uint32_t C = reprMontgomery(c);
+  // this->x = invReprMontgomery(mulMontgomery(X, C));
+  this->x = modP((uint64_t)this->x * c); 
 };
 
 uint32_t DiscreteTorus::modP(uint32_t x) {

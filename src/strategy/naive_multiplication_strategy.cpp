@@ -1,4 +1,5 @@
 #include "strategy/naive_multiplication_strategy.hpp"
+#include "structure/toruspoly.hpp"
 
 NaiveMultiplicationStrategy::NaiveMultiplicationStrategy(uint32_t P, uint32_t N) : P(P), N(N) {
 }
@@ -22,5 +23,13 @@ GaloisFieldPoly NaiveMultiplicationStrategy::multiply(GaloisFieldPoly &poly1, Ga
       }
     }
   }
+  return result;
+}
+
+DiscreteTorusPoly NaiveMultiplicationStrategy::multiply(IntPoly &poly1, DiscreteTorusPoly&poly2) const {
+  GaloisFieldPoly gfpoly1 = std::move(poly1);
+  GaloisFieldPoly gfpoly2 = std::move(poly2);
+  GaloisFieldPoly gfpoly3 = multiply(gfpoly1, gfpoly2);
+  DiscreteTorusPoly result = std::move(gfpoly3);
   return result;
 }

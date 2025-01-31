@@ -33,9 +33,10 @@ void GaloisFieldElement::operator-=(const GaloisFieldElement &a) {
 };
 
 void GaloisFieldElement::operator*=(const GaloisFieldElement &b) {
-  uint32_t A = reprMontgomery(this->a);
-  uint32_t B = reprMontgomery(b.a);
-  this->a = invReprMontgomery(mulMontgomery(A, B));
+  // uint32_t A = reprMontgomery(this->a);
+  // uint32_t B = reprMontgomery(b.a);
+  // this->a = invReprMontgomery(mulMontgomery(A, B));
+  this->a = modP((uint64_t)this->a * b.a);
   return;
 };
 
