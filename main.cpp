@@ -133,6 +133,5 @@ int main(int argc, char* argv[]) {
   DiscreteTorusPoly toruspoly3 = std::move(intpoly1 * toruspoly2);
   Log::debug("toruspoly3:", toruspoly3);
 
-
   return 0;
 }

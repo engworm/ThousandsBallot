@@ -20,14 +20,12 @@ elseif()
   message(FATAL_ERROR "BOOST_LIB is not set")
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-
 find_package(GTest REQUIRED)
-include_directories(/usr/local/include)
 include_directories(${BOOST_INCLUDE})
-include_directories(./include)
+include_directories(${GTEST_INCLUDE_DIRS})
 link_directories(${BOOST_LIB})
+include_directories(/usr/local/include)
+include_directories(./include)
 
 option(NTT "Enable NTT" OFF)
 option(NTT_DEBUG "Enable NTT Debug" OFF)
@@ -40,7 +38,8 @@ if(NTT)
 endif()
 
 
-
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(SOURCE_FILES
     src/params/params.cpp
