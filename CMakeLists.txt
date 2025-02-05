@@ -58,20 +58,10 @@ set(MAIN ThousandsBallot)
 add_executable(${MAIN} main.cpp ${SOURCE_FILES})
 target_link_libraries(${MAIN} -lboost_program_options)
 
-# set(SERVER server)
-# add_executable(${SERVER} network/server.cpp ${SOURCE_FILES})
-# target_link_libraries(${SERVER} -lboost_program_options)
-
-# set(CLIENT client)
-# add_executable(${CLIENT} network/client.cpp ${SOURCE_FILES})
-# target_link_libraries(${CLIENT} -lboost_program_options)
-
 set(TEST_SOURCE_FILES
     src/test/test_montgomerymul.cpp
     src/params/params.cpp
-    src/operator/Montgomery.cpp
-    src/structure/torus.cpp
-    src/structure/galoisfield.cpp)
+    src/operator/Montgomery.cpp)
 
 add_executable(test_montgomerymul ${TEST_SOURCE_FILES})
 target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)

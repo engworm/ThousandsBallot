@@ -3,8 +3,6 @@
 #include <random>
 #include "params/params.hpp"
 #include "operator/Montgomery.hpp" 
-#include "structure/galoisfield.hpp"
-#include "structure/torus.hpp"
 #include "utility/log.hpp"
 
 class MontgomeryTest : public ::testing::Test {
@@ -37,15 +35,15 @@ class MontgomeryTest : public ::testing::Test {
 TEST_F(MontgomeryTest, MultiplyTest1) {
   std::mt19937 gen(MontgomeryTest::getseed());
   std::uniform_int_distribution<uint32_t> dis(0, Params::q-1);
-  DiscreteTorus a(dis(gen));
+  uint32_t a(dis(gen));
 
-  Log::debug("a =", a.val());
+  Log::debug("a =", a);
   Log::debug("k =", 1);
 
-  DiscreteTorus c = 1 * a;
+  uint32_t c = 1 * a;
 
-  uint32_t result = c.val();
-  uint32_t expected = a.val();
+  uint32_t result = c;
+  uint32_t expected = a;
 
   EXPECT_EQ(result, expected);
 }
@@ -53,18 +51,18 @@ TEST_F(MontgomeryTest, MultiplyTest1) {
 TEST_F(MontgomeryTest, MultiplyTest2) {
   std::mt19937 gen(MontgomeryTest::getseed());
   std::uniform_int_distribution<uint32_t> dis(0, Params::q-1);
-  DiscreteTorus a(dis(gen));
+  uint32_t a(dis(gen));
 
   std::uniform_int_distribution<uint32_t> disN(0, std::numeric_limits<uint32_t>::max());
   uint32_t k = disN(gen);
 
-  Log::debug("a =", a.val());
+  Log::debug("a =", a);
   Log::debug("k =", k);
 
-  DiscreteTorus c =  k * a;
+  uint32_t c =  invReprMontgomery(mulMontgomery(reprMontgomery(k), reprMontgomery(a)));
 
-  uint32_t result = c.val();
-  uint32_t expected = ((uint64_t)(k) * a.val()) % Params::q;
+  uint32_t result = c;
+  uint32_t expected = ((uint64_t)(k) * a) % Params::q;
 
   EXPECT_EQ(result, expected);
 }
