@@ -16,7 +16,7 @@ class DiscreteTLWE {
 
   private:
     int n{}; 
-    std::uint32_t P = Params::P;
+    std::uint32_t q = Params::q;
     std::vector<DiscreteTorus> v;
 
   protected:
@@ -26,7 +26,7 @@ class DiscreteTLWE {
     DiscreteTLWE(const uint32_t n) : n(n) {};
     DiscreteTLWE(const DiscreteTLWE &tlwe);
     DiscreteTLWE(DiscreteTLWE &&tlwe) noexcept 
-                          : n(tlwe.n), P(tlwe.P), v(std::move(tlwe.v)) {}; 
+                          : n(tlwe.n), q(tlwe.q), v(std::move(tlwe.v)) {}; 
 
     int len() const { return this->v.size(); };
 

@@ -1,5 +1,6 @@
 #include "strategy/ntt_multiplication_strategy.hpp"
 #include "utility/extendedEuclidean.hpp"
+#include "structure/toruspoly.hpp"
 
 NTTMultiplicationStrategy::NTTMultiplicationStrategy(uint32_t P, uint32_t N) : P(P), N(N) {
   setup(this->P, this->N);
@@ -29,7 +30,7 @@ bool NTTMultiplicationStrategy::setup(uint32_t P, uint32_t N) {
 }
   
 uint32_t NTTMultiplicationStrategy::inv(GaloisFieldElement x) {
-  uint32_t r = extendedEuclidean(Params::P, x.val()).second + Params::P;
+  uint32_t r = extendedEuclidean(this->P, x.val()).second + this->P;
   return r;
 }
     
@@ -173,13 +174,42 @@ std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::getInstanc
   return instance;
 }
 
+GaloisFieldPoly NTTMultiplicationStrategy::multiply_debug(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) const {
+  std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
+  GaloisFieldPoly result(zero);
+  for (size_t i = 0; i < poly1.size(); ++i) {
+    for (size_t j = 0; j < poly1.size(); ++j) {
+      size_t k = (i + j) % poly1.size();
+      if (i + j >= poly1.size()) {
+          result[k] -= poly1[j]* poly2[i];
+      }
+      else {
+          result[k] += poly1[j] * poly2[i];
+      }
+    }
+  }
+  return result;
+}
+
 GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
+#ifdef NTT_DEBUG
+  return multiply_debug(a, b);
+#else
   forward_NTT(a);
   forward_NTT(b);
-  GaloisFieldPoly res(a.size());
+  GaloisFieldPoly res(this->P, this->N);
   for (size_t i = 0; i < this->N; ++i) {
     res[i] = a[i] * b[i];
   } 
   inverse_NTT(res);
   return res;
+#endif
+}
+
+DiscreteTorusPoly NTTMultiplicationStrategy::multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const {
+  GaloisFieldPoly gfpoly1 = std::move(poly1);
+  GaloisFieldPoly gfpoly2 = std::move(poly2);
+  GaloisFieldPoly res = multiply(gfpoly1, gfpoly2);
+  DiscreteTorusPoly torus_res = std::move(res);
+  return torus_res;
 }

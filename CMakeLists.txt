@@ -20,22 +20,30 @@ elseif()
   message(FATAL_ERROR "BOOST_LIB is not set")
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-
 find_package(GTest REQUIRED)
-include_directories(/usr/local/include)
 include_directories(${BOOST_INCLUDE})
-include_directories(./include)
+include_directories(${GTEST_INCLUDE_DIRS})
 link_directories(${BOOST_LIB})
+include_directories(/usr/local/include)
+include_directories(./include)
+
+option(NTT "Enable NTT" OFF)
+option(NTT_DEBUG "Enable NTT Debug" OFF)
 
 if(NTT)
   add_definitions(-DNTT)
+  if (NTT_DEBUG)
+    add_definitions(-DNTT_DEBUG)
+  endif()
 endif()
 
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 set(SOURCE_FILES
     src/params/params.cpp
+    src/params/nttparams.cpp
     src/operator/Montgomery.cpp
     src/structure/torus.cpp
     src/structure/galoisfield.cpp
@@ -50,20 +58,10 @@ set(MAIN ThousandsBallot)
 add_executable(${MAIN} main.cpp ${SOURCE_FILES})
 target_link_libraries(${MAIN} -lboost_program_options)
 
-# set(SERVER server)
-# add_executable(${SERVER} network/server.cpp ${SOURCE_FILES})
-# target_link_libraries(${SERVER} -lboost_program_options)
-
-# set(CLIENT client)
-# add_executable(${CLIENT} network/client.cpp ${SOURCE_FILES})
-# target_link_libraries(${CLIENT} -lboost_program_options)
-
 set(TEST_SOURCE_FILES
     src/test/test_montgomerymul.cpp
     src/params/params.cpp
-    src/operator/Montgomery.cpp
-    src/structure/torus.cpp
-    src/structure/galoisfield.cpp)
+    src/operator/Montgomery.cpp)
 
 add_executable(test_montgomerymul ${TEST_SOURCE_FILES})
 target_link_libraries(test_montgomerymul ${GTEST_LIBRARIES} GTest::gtest_main pthread)

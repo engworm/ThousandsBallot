@@ -15,7 +15,7 @@ concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
 template<Arithmetic T>
 class PolyBase {
   protected:
-    uint32_t N = 4;
+    uint32_t N; 
     std::vector<T> coeffs;
 
     virtual void print(std::ostream &os) const;
@@ -100,9 +100,5 @@ std::ostream& operator<<(std::ostream &os, const PolyBase<T> &poly) {
   poly.print(os);
   return os;
 }
-
-// template class PolyBase<uint32_t>;
-// template class PolyBase<GaloisFieldElement>;
-// template PolyBase<GaloisFieldElement>::PolyBase(PolyBase<uint32_t> &&poly) noexcept;
 
 #endif

@@ -1,7 +1,7 @@
 #include "params/params.hpp"
 
 namespace Params {
-  uint32_t P = 0;
+  uint32_t q = 0;
   uint32_t n = 0;
   uint32_t N = 0;
 }

@@ -4,7 +4,7 @@
 #include <cstdint>
 
 namespace Params {
-  extern uint32_t P;
+  extern uint32_t q;
   extern uint32_t n;
   extern uint32_t N;
 }

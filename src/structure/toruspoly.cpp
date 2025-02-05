@@ -1,4 +1,7 @@
 #include "structure/toruspoly.hpp"
+#include "strategy/naive_multiplication_strategy.hpp"
+#include "strategy/ntt_multiplication_strategy.hpp"
+#include "factory/multiplication_factory.hpp"
 
 DiscreteTorusPoly::DiscreteTorusPoly(size_t N) : PolyBase<DiscreteTorus>(N) {};  
 
@@ -6,6 +9,10 @@ DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) :
 
 DiscreteTorusPoly::DiscreteTorusPoly(GaloisFieldPoly &&gfpoly) noexcept
     : PolyBase<DiscreteTorus>(std::move(gfpoly)) {
+}
+
+uint32_t DiscreteTorusPoly::modulus() const {
+  return q;
 }
 
 void DiscreteTorusPoly::print(std::ostream &os) const {
@@ -17,25 +24,13 @@ std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly) {
   return os;
 }
 
-DiscreteTorusPoly operator*(const IntPoly& intpoly, const DiscreteTorusPoly &toruspoly) {
+DiscreteTorusPoly operator*(IntPoly& poly1, DiscreteTorusPoly &poly2) {
+#ifdef NTT
+  using MultiplicationStrategy = NTTMultiplicationStrategy;
+#else
+  using MultiplicationStrategy = NaiveMultiplicationStrategy;
+#endif
+  auto multiplication_strategy = MultiplicationFactory<MultiplicationStrategy>::create(poly2.modulus(), poly1.size());
 
-  if (intpoly.size() != toruspoly.size()) {
-    throw std::invalid_argument("Polynomial degree must be the same");
-  }
-
-  std::vector<DiscreteTorus> zero(toruspoly.size(), DiscreteTorus(0));
-  DiscreteTorusPoly result(zero);
-  for (size_t i = 0; i < toruspoly.size(); ++i) {
-    for (size_t j = 0; j < toruspoly.size(); ++j) {
-      size_t k = (i + j) % toruspoly.size();
-      if (i + j >= toruspoly.size()) {
-        result[k] -= intpoly[j]* toruspoly[i];
-      }
-      else {
-        result[k] += intpoly[j] * toruspoly[i];
-      }
-    }
-  }
-
-  return result;
+  return multiplication_strategy->multiply(poly1, poly2);
 }
