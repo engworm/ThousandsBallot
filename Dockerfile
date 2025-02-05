@@ -13,7 +13,3 @@ RUN apt-get update && apt-get -y upgrade && \
 WORKDIR /usr/src/app
 
 COPY . .
-
-RUN mkdir -p /usr/src/app/build && cd /usr/src/app/build && \
-    cmake -DCMAKE_BUILD_TYPE=Debug -DNTT=ON -DNTT_DEBUG=OFF .. && \
-    make
