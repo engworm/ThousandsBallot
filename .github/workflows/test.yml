@@ -8,10 +8,10 @@ on:
 jobs:
   on-success:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Run Docker container and execute tests
-        run: docker run --rm -v $(pwd):/usr/src/app thousandsballot /bin/bash -c "cd /usr/src/app && ctest --verbose"
+        run: docker run --rm -v $(pwd):/usr/src/app thousandsballot /bin/bash -c "cd /usr/src/app/build && ctest --verbose"
