@@ -1,7 +1,7 @@
 name: Run Tests
 on: 
   workflow_run:
-    workflows: [Build]
+    workflows: [Run Build]
     types:
       - completed
 
@@ -12,6 +12,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: thousandsballot-image
+          path: .
+
+      - name: Load Docker image
+        run: gunzip -c thousandsballot.tar.gz | docker load
 
       - name: Run Docker container and execute tests
         run: docker run --rm -v $(pwd):/usr/src/app thousandsballot /bin/bash -c "cd /usr/src/app/build && ctest --verbose"

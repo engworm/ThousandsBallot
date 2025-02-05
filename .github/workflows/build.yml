@@ -1,4 +1,4 @@
-name: Build
+name: Run Build
 on: [push]
 
 jobs:
@@ -11,4 +11,13 @@ jobs:
 
     - name: Build Docker image
       run: docker build -t thousandsballot .
+
+    - name: Save Docker image as artifact
+      run: docker save thousandsballot | gzip > thousandsballot.tar.gz
+
+    - name: Upload Docker image artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: thousandsballot-image
+        path: thousandsballot.tar.gz
     
