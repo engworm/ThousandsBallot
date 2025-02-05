@@ -12,5 +12,3 @@ jobs:
     - name: Build Docker image
       run: docker build -t thousandsballot .
     
-    - name: Run Docker container and execute tests
-      run: docker run --rm -v $(pwd):/usr/src/app thousandsballot /bin/bash -c "cd /usr/src/app/build && ctest --verbose"

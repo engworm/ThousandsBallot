@@ -1,32 +1,17 @@
 name: Run Tests
-on: [push]
+on: 
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
 
 jobs:
-  build-and-test:
-    runs-on: macos-latest
-  
+  on-success:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: brew install gcc boost cmake 
-    
-    # - run: find /opt/homebrew/Cellar/boost/1.87.0 -name "libboost_program_options.*"
-
-    - name: Install GTest
-      run: brew install googletest
-
-    - run: echo "GTEST_ROOT=/opt/homebrew/opt/googletest/lib/cmake" >> $GITHUB_ENV
-    - run: echo "BOOST_INCLUDE=/opt/homebrew/Cellar/boost/1.87.0/include" >> $GITHUB_ENV
-    - run: echo "BOOST_LIB=/opt/homebrew/Cellar/boost/1.87.0/lib" >> $GITHUB_ENV
-
-    - name: Configure CMake
-      run: cmake -S . -B build -DNTT=OFF -DGTEST_ROOT=$GTEST_ROOT -DBOOST_INCLUDE=$BOOST_INCLUDE -DBOOST_LIB=$BOOST_LIB
-    
-    - name: Build
-      run: cmake --build build
-
-    - name: Run tests
-      run: |
-        cd build && ctest --verbose
+      - name: Run Docker container and execute tests
+        run: docker run --rm -v $(pwd):/usr/src/app thousandsballot /bin/bash -c "cd /usr/src/app && ctest --verbose"
