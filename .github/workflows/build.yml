@@ -20,4 +20,8 @@ jobs:
       with:
         name: thousandsballot-image
         path: thousandsballot.tar.gz
+
+  call-workflow:
+    needs: [build]
+    uses: ./.github/workflows/test.yml
     
