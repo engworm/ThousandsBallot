@@ -27,16 +27,15 @@ link_directories(${BOOST_LIB})
 include_directories(/usr/local/include)
 include_directories(./include)
 
-option(NTT "Enable NTT" OFF)
+# option(NTT "Enable NTT" OFF)
 option(NTT_DEBUG "Enable NTT Debug" OFF)
 
-if(NTT)
-  add_definitions(-DNTT)
-  if (NTT_DEBUG)
-    add_definitions(-DNTT_DEBUG)
-  endif()
-endif()
+set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication method (NTT or NAIVE)")
+set_property(CACHE POLYNOMIAL_MULTIPLICATION_METHOD PROPERTY STRINGS "NTT" "NAIVE")
 
+if (NTT_DEBUG)
+  add_definitions(-DNTT_DEBUG)
+endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
@@ -56,6 +55,11 @@ set(SOURCE_FILES
 
 set(MAIN ThousandsBallot)
 add_executable(${MAIN} main.cpp ${SOURCE_FILES})
+if (POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NTT")
+  target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NTT)
+elseif(POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NAIVE")
+  target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
+endif()
 target_link_libraries(${MAIN} -lboost_program_options)
 
 set(TEST_SOURCE_FILES
