@@ -25,10 +25,12 @@ std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly) {
 }
 
 DiscreteTorusPoly operator*(IntPoly& poly1, DiscreteTorusPoly &poly2) {
-#ifdef NTT
+#if defined(POLYNOMIAL_MULTIPLICATION_METHOD_NTT)
   using MultiplicationStrategy = NTTMultiplicationStrategy;
-#else
+#elif defined(POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
   using MultiplicationStrategy = NaiveMultiplicationStrategy;
+#else
+  Log::error("Polynomial Multiplication Method is not defined");
 #endif
   auto multiplication_strategy = MultiplicationFactory<MultiplicationStrategy>::create(poly2.modulus(), poly1.size());
 
