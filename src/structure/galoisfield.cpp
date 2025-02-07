@@ -3,10 +3,6 @@
 #include "structure/torus.hpp"
 #include "utility/log.hpp"
 
-uint32_t GaloisFieldElement::modP(uint32_t x) {
-  return x%this->P;
-}
-
 GaloisFieldElement::GaloisFieldElement() : a(0) {};
 
 GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 

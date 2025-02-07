@@ -27,8 +27,8 @@ link_directories(${BOOST_LIB})
 include_directories(/usr/local/include)
 include_directories(./include)
 
-# option(NTT "Enable NTT" OFF)
 option(NTT_DEBUG "Enable NTT Debug" OFF)
+option(PROFILER "Enable Profiler" OFF)
 
 set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication method (NTT or NAIVE)")
 set_property(CACHE POLYNOMIAL_MULTIPLICATION_METHOD PROPERTY STRINGS "NTT" "NAIVE")
@@ -60,6 +60,12 @@ if (POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NTT")
 elseif(POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NAIVE")
   target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
 endif()
+
+if (PROFILER)
+  target_compile_options(${MAIN} PRIVATE -pg)
+  target_link_options(${MAIN} PRIVATE -pg)
+endif()
+ 
 target_link_libraries(${MAIN} -lboost_program_options)
 
 set(TEST_SOURCE_FILES
