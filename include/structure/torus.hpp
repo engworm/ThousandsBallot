@@ -6,9 +6,9 @@
 class GaloisFieldElement;
 
 class DiscreteTorus {
-friend class TorusPoly;
+  friend class TorusPoly;
 
-private:
+  private:
     uint32_t x;
     uint32_t q = Params::q;
 
@@ -17,7 +17,7 @@ private:
         return x % q;
     };
 
-public:
+  public:
     DiscreteTorus();
     DiscreteTorus(uint32_t x);
 
@@ -34,7 +34,6 @@ public:
     void operator*=(const uint32_t c);
 
     friend std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t);
-
 };
 
 DiscreteTorus operator+(const DiscreteTorus &t1, const DiscreteTorus &t2);

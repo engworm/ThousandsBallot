@@ -14,10 +14,11 @@ concept Arithmetic = std::is_arithmetic_v<T> || requires(T a, T b) {
 
 template<Arithmetic T>
 class PolyBase {
-  protected:
+  private:
     uint32_t N; 
     std::vector<T> coeffs;
 
+  protected:
     virtual void print(std::ostream &os) const;
 
   public:
