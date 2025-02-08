@@ -18,7 +18,7 @@ public:
 
     uint32_t modulus() const;
 
-protected:
+private:
     void print(std::ostream &os) const override;
 
 private:

@@ -28,9 +28,9 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
     std::vector<GaloisFieldElement> get_coeffs() const;
     uint32_t modulus() const;
 
-  protected:
+  private:
     void print(std::ostream &os) const override;
-  
+
   private:
     uint32_t P = NTTParams::P;
 

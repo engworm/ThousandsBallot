@@ -14,7 +14,7 @@ class IntPoly : public PolyBase<uint32_t> {
 
     IntPoly(IntPoly &&intpoly) noexcept = default;
   
-  protected:
+  private:
     void print(std::ostream &os) const override;
 
   friend std::ostream& operator<<(std::ostream &os, const IntPoly &poly);
