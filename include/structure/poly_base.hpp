@@ -56,9 +56,14 @@ PolyBase<T>::PolyBase() = default;
 template<Arithmetic T>
 PolyBase<T>::PolyBase(size_t N) : N(N), coeffs(N, T(0)) {};
 
+// 実質的にコピーコンストラクタになっているが，ベクトルの代入なので高速に動作する
+// Optimized C++, p215
 template<Arithmetic T>
 PolyBase<T>::PolyBase(const std::vector<T> &coeffs) : coeffs(coeffs), N(coeffs.size()) {};
 
+// reserveしてから末尾追加するため，高速に動作する
+// 何度も呼ばれるため，実戦投入する際はパフォーマンスの評価が必要
+// Optimized C++, p216
 template<Arithmetic T>
 template<Arithmetic U>
 PolyBase<T>::PolyBase(PolyBase<U> &&poly) noexcept {
