@@ -30,7 +30,7 @@ include_directories(./include)
 option(NTT_DEBUG "Enable NTT Debug" OFF)
 option(PROFILER "Enable Profiler" OFF)
 
-set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication method (NTT or NAIVE)")
+set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication Method (NTT or NAIVE)")
 set_property(CACHE POLYNOMIAL_MULTIPLICATION_METHOD PROPERTY STRINGS "NTT" "NAIVE")
 
 set(MODULUS_STRATEGY "NAIVE" CACHE STRING "Modulus Strategy (NAIVE or MERSENNE)")
