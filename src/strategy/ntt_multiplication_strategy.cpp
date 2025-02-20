@@ -2,6 +2,8 @@
 #include "utility/extendedEuclidean.hpp"
 #include "structure/toruspoly.hpp"
 
+std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::instance = nullptr;
+
 NTTMultiplicationStrategy::NTTMultiplicationStrategy(uint32_t P, uint32_t N) : P(P), N(N) {
   setup(this->P, this->N);
   init_psi_power_table(this->N);
@@ -170,7 +172,9 @@ void NTTMultiplicationStrategy::inverse_NTT(GaloisFieldPoly &a) const {
 }
 
 std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::getInstance(uint32_t P, uint32_t N) {
-   auto instance = std::shared_ptr<NTTMultiplicationStrategy>(new NTTMultiplicationStrategy(P, N));
+  if (instance == nullptr) {
+    instance = std::shared_ptr<NTTMultiplicationStrategy>(new NTTMultiplicationStrategy(P, N));
+  }
   return instance;
 }
 
