@@ -1,4 +1,6 @@
 #include <utility>
+#include "factory/modulus_factory.hpp"
+#include "strategy/modulus_strategy.hpp"
 #include "structure/galoisfield.hpp"
 #include "structure/torus.hpp"
 #include "utility/log.hpp"
@@ -18,21 +20,21 @@ uint32_t GaloisFieldElement::val() const {
 
 void GaloisFieldElement::operator+=(const GaloisFieldElement &b) {
   uint32_t tmp = this->a + b.a;
-  this->a = modP(tmp);
+  auto modulus_strategy = ModulusFactory<ModulusStrategy>::create(this->P);
+  this->a = modulus_strategy->modulus(tmp);
   return;
 };  
 
 void GaloisFieldElement::operator-=(const GaloisFieldElement &a) {
   uint32_t tmp = this->a + (this->P - a.a);
-  this->a = modP(tmp);
+  auto modulus_strategy = ModulusFactory<ModulusStrategy>::create(this->P);
+  this->a = modulus_strategy->modulus(tmp);
   return;
 };
 
 void GaloisFieldElement::operator*=(const GaloisFieldElement &b) {
-  // uint32_t A = reprMontgomery(this->a);
-  // uint32_t B = reprMontgomery(b.a);
-  // this->a = invReprMontgomery(mulMontgomery(A, B));
-  this->a = modP((uint64_t)this->a * b.a);
+  auto modulus_strategy = ModulusFactory<ModulusStrategy>::create(this->P);
+  this->a = modulus_strategy->modulus((uint64_t)this->a * b.a);
   return;
 };
 
