@@ -14,7 +14,9 @@ class GaloisFieldElement {
     uint32_t a{};
     uint32_t P = Params::q;
   
-    uint32_t modP(uint32_t x);
+    inline uint32_t modP(uint32_t x) const {
+        return x % P;
+    }
 
   public:
     GaloisFieldElement(); 

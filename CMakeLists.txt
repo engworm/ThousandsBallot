@@ -27,11 +27,14 @@ link_directories(${BOOST_LIB})
 include_directories(/usr/local/include)
 include_directories(./include)
 
-# option(NTT "Enable NTT" OFF)
 option(NTT_DEBUG "Enable NTT Debug" OFF)
+option(PROFILER "Enable Profiler" OFF)
 
-set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication method (NTT or NAIVE)")
+set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication Method (NTT or NAIVE)")
 set_property(CACHE POLYNOMIAL_MULTIPLICATION_METHOD PROPERTY STRINGS "NTT" "NAIVE")
+
+set(MODULUS_STRATEGY "NAIVE" CACHE STRING "Modulus Strategy (NAIVE or MERSENNE)")
+set_property(CACHE MODULUS_STRATEGY PROPERTY STRINGS "NAIVE" "MERSENNE")
 
 if (NTT_DEBUG)
   add_definitions(-DNTT_DEBUG)
@@ -51,15 +54,31 @@ set(SOURCE_FILES
     src/structure/galoisfieldpoly.cpp
     src/strategy/ntt_multiplication_strategy.cpp
     src/strategy/naive_multiplication_strategy.cpp
+    src/strategy/mersenne_modulus_strategy.cpp
+    src/strategy/naive_modulus_strategy.cpp
     src/factory/multiplication_factory.cpp)
 
 set(MAIN ThousandsBallot)
 add_executable(${MAIN} main.cpp ${SOURCE_FILES})
+
 if (POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NTT")
   target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NTT)
 elseif(POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NAIVE")
   target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
 endif()
+
+if (MODULUS_STRATEGY STREQUAL "MERSENNE")
+  target_compile_definitions(${MAIN} PRIVATE MODULUS_STRATEGY_MERSENNE)
+elseif(MODULUS_STRATEGY STREQUAL "NAIVE")
+  target_compile_definitions(${MAIN} PRIVATE MODULUS_STRATEGY_NAIVE)
+endif()
+
+
+if (PROFILER)
+  target_compile_options(${MAIN} PRIVATE -pg)
+  target_link_options(${MAIN} PRIVATE -pg)
+endif()
+ 
 target_link_libraries(${MAIN} -lboost_program_options)
 
 set(TEST_SOURCE_FILES

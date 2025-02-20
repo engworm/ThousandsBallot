@@ -6,13 +6,18 @@
 class GaloisFieldElement;
 
 class DiscreteTorus {
-friend class TorusPoly;
+  friend class TorusPoly;
 
-private:
+  private:
     uint32_t x;
     uint32_t q = Params::q;
 
-public:
+    // should replace it to faster algo
+    inline uint32_t modP(uint32_t x) {
+        return x % q;
+    };
+
+  public:
     DiscreteTorus();
     DiscreteTorus(uint32_t x);
 
@@ -28,11 +33,7 @@ public:
     void operator-=(const DiscreteTorus &t);
     void operator*=(const uint32_t c);
 
-    // should replace it to faster algo
-    uint32_t modP(uint32_t x);
-
     friend std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t);
-
 };
 
 DiscreteTorus operator+(const DiscreteTorus &t1, const DiscreteTorus &t2);

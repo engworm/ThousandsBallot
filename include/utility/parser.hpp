@@ -55,6 +55,14 @@ class CommandLineParser {
                   "P =", NTTParams::P, "\n",
                   "N =", NTTParams::N, "\n}");
       }
+  #if defined(MODULUS_STRATEGY_MERSENNE)
+        Log::info("Modulus Strategy: [ Mersenne ]");
+        if (NTTParams::P & (NTTParams::P+1) != 0) {
+          Log::error("P is not a Mersenne number");
+        }
+  #elif defined(MODULUS_STRATEGY_NAIVE)
+        Log::info("Modulus Strategy: [ Naive ]");
+  #endif
 #elif defined(POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
       Log::info("Polynomial Multiplication Method: [ Naive ]");
       Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");

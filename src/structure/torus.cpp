@@ -37,10 +37,6 @@ void DiscreteTorus::operator*=(const uint32_t c) {
   this->x = modP((uint64_t)this->x * c); 
 };
 
-uint32_t DiscreteTorus::modP(uint32_t x) {
-  return x%this->q;
-};
-
 std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {
   os << t.x;
   return os;

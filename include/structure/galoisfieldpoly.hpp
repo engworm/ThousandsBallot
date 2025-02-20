@@ -12,6 +12,12 @@
 class DiscreteTorusPoly;
 
 class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
+  private:
+    uint32_t P = NTTParams::P;
+
+  private:
+    void print(std::ostream &os) const override;
+
   public:
     GaloisFieldPoly() = default;
     GaloisFieldPoly(uint32_t P, uint32_t N);
@@ -28,13 +34,7 @@ class GaloisFieldPoly : public PolyBase<GaloisFieldElement> {
     std::vector<GaloisFieldElement> get_coeffs() const;
     uint32_t modulus() const;
 
-  protected:
-    void print(std::ostream &os) const override;
-  
-  private:
-    uint32_t P = NTTParams::P;
-
-  friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
+    friend std::ostream& operator<<(std::ostream &os, const GaloisFieldPoly &poly);
 };
 
 #endif
