@@ -13,7 +13,7 @@ private:
 public:
   static std::shared_ptr<MersenneModulusStrategy> getInstance(uint32_t P);
   uint32_t modulus(uint32_t x) const override;
-  uint32_t modulus(uint64_t x) const;
+  uint32_t modulus(uint64_t x) const override;
 };
 
 #endif

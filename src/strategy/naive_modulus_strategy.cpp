@@ -9,3 +9,8 @@ std::shared_ptr<NaiveModulusStrategy> NaiveModulusStrategy::getInstance(uint32_t
 uint32_t NaiveModulusStrategy::modulus(uint32_t x) const {
   return x % this->P;
 }
+
+uint32_t NaiveModulusStrategy::modulus(uint64_t x) const {
+  return x % this->P;
+}
+
