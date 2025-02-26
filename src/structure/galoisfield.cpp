@@ -22,20 +22,20 @@ uint32_t GaloisFieldElement::val() const {
 
 void GaloisFieldElement::operator+=(const GaloisFieldElement &b) {
   uint32_t tmp = this->a + b.a;
-  auto modulus_strategy = ModulusFactory<ModulusStrategy>::create(this->P);
-  this->a = modulus_strategy->modulus(tmp);
+  auto modulus_factory = ModulusFactory::getInstance();
+  this->a = modulus_factory->modulus(tmp);
   return;
 };  
 
 void GaloisFieldElement::operator-=(const GaloisFieldElement &a) {
   uint32_t tmp = this->a + (this->P - a.a);
-  auto modulus_strategy = ModulusFactory<ModulusStrategy>::create(this->P);
+  auto modulus_strategy = ModulusFactory::getInstance();
   this->a = modulus_strategy->modulus(tmp);
   return;
 };
 
 void GaloisFieldElement::operator*=(const GaloisFieldElement &b) {
-  auto modulus_strategy = ModulusFactory<ModulusStrategy>::create(this->P);
+  auto modulus_strategy = ModulusFactory::getInstance();
   this->a = modulus_strategy->modulus((uint64_t)this->a * b.a);
   return;
 };

@@ -8,20 +8,21 @@
 #include "strategy/naive_modulus_strategy.hpp"
 #include "utility/log.hpp"
 
-template <typename ModulusStrategy>
 class ModulusFactory {
+private:
+  static std::shared_ptr<ModulusStrategy> modulus_strategy; 
+  static std::shared_ptr<ModulusFactory> instance;
+
+  ModulusFactory(uint32_t P); 
+
 public:
-  static std::shared_ptr<ModulusStrategy> create(uint32_t P);
+  static void create(uint32_t P);
+  static std::shared_ptr<ModulusFactory> getInstance();
+
+  uint32_t modulus(uint32_t x) const {
+    return modulus_strategy->modulus(x);
+  }
+  
 };
-
-template <typename ModulusStrategy>
-std::shared_ptr<ModulusStrategy> ModulusFactory<ModulusStrategy>::create(uint32_t P) {
-#if defined(MODULUS_STRATEGY_MERSENNE)
-  return MersenneModulusStrategy::getInstance(P);
-#else
-  return NaiveModulusStrategy::getInstance(P);
-#endif
-}
-
 
 #endif
