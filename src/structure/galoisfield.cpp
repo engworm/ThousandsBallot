@@ -8,7 +8,9 @@
 GaloisFieldElement::GaloisFieldElement() : a(0) {};
 
 GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 
-GaloisFieldElement::GaloisFieldElement(const uint32_t &x) : a(x) {}; 
+GaloisFieldElement::GaloisFieldElement(const uint32_t &x) {
+  this->a = modP(x);
+}
 GaloisFieldElement::GaloisFieldElement(const DiscreteTorus &t) : a(t.val()) {}; 
 
 GaloisFieldElement::GaloisFieldElement(uint32_t &&x) noexcept : a(std::move(x)) {};

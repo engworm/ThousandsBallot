@@ -14,10 +14,10 @@ private:
   uint32_t P; 
   uint32_t N;
 
-  uint32_t N_inverse;
-  uint32_t psi;
-  uint32_t psi_inverse;
-  uint32_t omega;
+  GaloisFieldElement N_inverse;
+  GaloisFieldElement psi;
+  GaloisFieldElement psi_inverse;
+  GaloisFieldElement omega;
 
   std::vector<GaloisFieldElement> psi_power_table;
   std::vector<GaloisFieldElement> psi_power_table_bit_reversed_order;
@@ -36,7 +36,7 @@ private:
   void inverse_NTT(GaloisFieldPoly &a) const;
 
   bool setup(uint32_t P, uint32_t N);
-  uint32_t inv(GaloisFieldElement x);    // 戻値の型をGaloisFieldElementにする！
+  GaloisFieldElement inv(GaloisFieldElement x);   
   GaloisFieldElement search_2N_root_of_unity(int seed);
   bool check_2N_primitive_root_of_unitiy(GaloisFieldElement const &psi);
   GaloisFieldElement search_2N_primitive_root_of_unity();

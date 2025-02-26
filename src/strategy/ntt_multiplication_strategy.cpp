@@ -31,8 +31,9 @@ bool NTTMultiplicationStrategy::setup(uint32_t P, uint32_t N) {
   return true;
 }
   
-uint32_t NTTMultiplicationStrategy::inv(GaloisFieldElement x) {
-  uint32_t r = extendedEuclidean(this->P, x.val()).second + this->P;
+GaloisFieldElement NTTMultiplicationStrategy::inv(GaloisFieldElement x) {
+  uint32_t tmp = extendedEuclidean(this->P, x.val()).second + this->P;
+  GaloisFieldElement r(tmp);
   return r;
 }
     
