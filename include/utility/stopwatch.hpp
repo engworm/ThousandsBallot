@@ -47,7 +47,7 @@ public:
 private:
   char const *activity;
   uint32_t lap;
-  std::ostream & log;
+  std::ostream& log;
 };
 
 #endif

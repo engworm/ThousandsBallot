@@ -3,20 +3,13 @@
 #include <boost/program_options.hpp>
 #include <utility>
 #include <fstream>
-#include "params/params.hpp"
-#include "params/nttparams.hpp"
-#include "structure/tlwe.hpp"
-#include "utility/parser.hpp"
-#include "utility/log.hpp"
-#include "utility/extendedEuclidean.hpp"
-#include "encrypt/encrypt_tlwe.hpp"
-#include "decrypt/decrypt_tlwe.hpp"
-#include "structure/torus.hpp"
-#include "structure/galoisfield.hpp"
+
+#include "structure/intpoly.hpp"
 #include "structure/toruspoly.hpp"
-#include "structure/galoisfieldpoly.hpp"
+
+#include "utility/parser.hpp"
 #include "utility/stopwatch.hpp"
-#include "utility/chronotimer.hpp"
+#include "utility/log.hpp"
 
 int main(int argc, char* argv[]) {
   CommandLineParser parser(argc, argv);
