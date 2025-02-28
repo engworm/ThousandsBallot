@@ -10,7 +10,7 @@ class IntPoly : public PolyBase<uint32_t> {
 
   public:
     IntPoly() = default;
-    IntPoly(size_t N);
+    IntPoly(uint32_t N);
     IntPoly(const std::vector<uint32_t> &coeffs);
 
     IntPoly(const IntPoly &poly) = delete;

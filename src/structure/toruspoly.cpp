@@ -3,7 +3,7 @@
 #include "strategy/ntt_multiplication_strategy.hpp"
 #include "factory/multiplication_factory.hpp"
 
-DiscreteTorusPoly::DiscreteTorusPoly(size_t N) : PolyBase<DiscreteTorus>(N) {};  
+DiscreteTorusPoly::DiscreteTorusPoly(uint32_t N) : PolyBase<DiscreteTorus>(N) {};  
 
 DiscreteTorusPoly::DiscreteTorusPoly(const std::vector<DiscreteTorus> &coeffs) : PolyBase<DiscreteTorus>(coeffs) {};
 
