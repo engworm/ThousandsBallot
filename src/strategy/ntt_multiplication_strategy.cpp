@@ -45,6 +45,7 @@ GaloisFieldElement NTTMultiplicationStrategy::search_2N_root_of_unity(int seed) 
   GaloisFieldElement psi = 1; 
 
   if ((this->P-1)%(2*this->N) != 0) {
+    std::cout << P-1 << ' ' << 2*N << std::endl;
     Log::error("P-1 is not divisible by 2N");
   }
 

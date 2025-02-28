@@ -49,6 +49,11 @@ class CommandLineParser {
         Params::N = P[2];
       }
 
+      Log::info("RLWE Param = {\n",
+                "q =", Params::q, "\n",
+                "n =", Params::n, "\n",
+                "N =", Params::N, "\n}");
+
 #if defined(POLYNOMIAL_MULTIPLICATION_METHOD_NTT)
       Log::info("Polynomial Multiplication Method: [ NTT ]");
       if (vm.count("ntt")) {

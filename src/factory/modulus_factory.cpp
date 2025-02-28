@@ -15,7 +15,6 @@ ModulusFactory::ModulusFactory(uint32_t P) {
 
 void ModulusFactory::create(uint32_t P) {
   if (instance == nullptr) {
-    std::cout << "Modulus Factory is created" << std::endl;
     instance = std::shared_ptr<ModulusFactory>(new ModulusFactory(P));
   } else {
     Log::error("Modulus Factory is already defined");
