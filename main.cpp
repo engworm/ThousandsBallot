@@ -17,10 +17,10 @@ int main(int argc, char* argv[]) {
   auto prng = parser.PRNG;
   std::uniform_int_distribution<uint32_t> dis_poly(0, Params::q-1);
 
-  std::ofstream ofs("log.txt");
-  StopWatch<ChronoTimer> sw(ofs, "Timer", true);
+  StopWatch<ChronoTimer> sw;
+  sw.start("start");
 
-  for (int i = 0; i < 100; ++i) {
+  for (int i = 0; i < 1000; ++i) {
     std::vector<uint32_t> coeffs1(Params::N);
     std::vector<DiscreteTorus> coeffs2(Params::N);
     for (auto& coeff : coeffs1) {

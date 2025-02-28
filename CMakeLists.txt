@@ -52,12 +52,16 @@ set(SOURCE_FILES
     src/factory/modulus_factory.cpp)
 
 set(MAIN ThousandsBallot)
-add_executable(${MAIN} main.cpp ${SOURCE_FILES})
-
 if (POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NTT")
+  set(MAIN "${MAIN}-ntt")
+  add_executable(${MAIN} main.cpp ${SOURCE_FILES})
   target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NTT)
+  target_link_libraries(${MAIN} -lboost_program_options)
 elseif(POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NAIVE")
+  set(MAIN "${MAIN}-naive")
+  add_executable(${MAIN} main.cpp ${SOURCE_FILES})
   target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
+  target_link_libraries(${MAIN} -lboost_program_options)
 endif()
 
 if (PROFILER)
@@ -65,7 +69,8 @@ if (PROFILER)
   target_link_options(${MAIN} PRIVATE -pg)
 endif()
  
-target_link_libraries(${MAIN} -lboost_program_options)
+
+add_executable(benchmark_toruspoly src/benchmark/benchmark_toruspoly.cpp) 
 
 set(TEST_SOURCE_FILES
     src/test/test_montgomerymul.cpp

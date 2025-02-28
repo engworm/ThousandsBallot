@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include "utility/chronotimer.hpp"
-#include "utility/log.hpp"
 
 template <typename T>
 class StopWatch : T {
@@ -14,16 +13,25 @@ public:
     if (start) {
       this->start();
     }
-  };
+  }
 
-  StopWatch(std::ostream &log, char const* activity = "StopWatch", bool start = true) 
-    : log(log), activity(activity), lap(0) {
+  explicit StopWatch(std::ostream &os, char const* activity = "StopWatch", bool start = true) 
+    : os(os), activity(activity), lap(0) {
       if (start) {
         this->start();
       }
-  };
+  }
 
-  StopWatch() : log(std::cout), activity("StopWatch"), lap(0) {};
+  StopWatch() : os(std::cout), activity("StopWatch"), lap(0) {}
+
+  void start() {
+    BaseTimer::start();
+  }
+
+  void start(char const* messg) {
+    os << activity << " " << messg << std::endl;
+    BaseTimer::start();
+  }
 
   uint32_t lap_get() {
     uint32_t current_lap = this->get_ms();
@@ -32,22 +40,22 @@ public:
     return lap_time;
   }
 
-  void show(char const *mssg) {
+  void show_with_flush(char const *mssg) {
     uint32_t ms = this->get_ms();
-    Log::info(mssg, ms);
+    std::cout << activity << mssg << ms << "ms" << std::endl;
   };
 
   uint32_t stop(char const *event = "stop") {
     uint32_t ms = this->get_ms();
-    log << activity << " " << event << " " << ms << "ms" << std::endl;
+    os << activity << " " << event << " " << ms << "ms" << std::endl;
     BaseTimer::clear();
     return ms;
-  };
+  }
 
 private:
   char const *activity;
   uint32_t lap;
-  std::ostream& log;
+  std::ostream& os;
 };
 
 #endif
