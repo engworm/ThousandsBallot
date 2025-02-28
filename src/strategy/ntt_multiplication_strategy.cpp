@@ -197,9 +197,6 @@ GaloisFieldPoly NTTMultiplicationStrategy::multiply_debug(GaloisFieldPoly &poly1
 }
 
 GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
-#ifdef NTT_DEBUG
-  return multiply_debug(a, b);
-#else
   forward_NTT(a);
   forward_NTT(b);
   GaloisFieldPoly res(this->P, this->N);
@@ -208,7 +205,6 @@ GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFi
   } 
   inverse_NTT(res);
   return res;
-#endif
 }
 
 DiscreteTorusPoly NTTMultiplicationStrategy::multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const {
