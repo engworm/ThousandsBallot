@@ -1,5 +1,6 @@
 #include "structure/torus.hpp"
 #include "utility/log.hpp"
+#include "factory/modulus_factory.hpp"
 
 DiscreteTorus::DiscreteTorus() : x(0) {};
 DiscreteTorus::DiscreteTorus(uint32_t x) : x(x) {
@@ -20,21 +21,21 @@ uint32_t DiscreteTorus::val() const {
 
 void DiscreteTorus::operator+=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + t.x;
-  this->x = modP(tmp);
+  auto modulus_factory = ModulusFactory::getInstance();
+  this->x = modulus_factory->modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator-=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + (this->q - t.x);
-  this->x = modP(tmp);
+  auto modulus_factory = ModulusFactory::getInstance();
+  this->x = modulus_factory->modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator*=(const uint32_t c) {
-  // uint32_t X = reprMontgomery(this->x);
-  // uint32_t C = reprMontgomery(c);
-  // this->x = invReprMontgomery(mulMontgomery(X, C));
-  this->x = modP((uint64_t)this->x * c); 
+  auto modulus_factory = ModulusFactory::getInstance();
+  this->x = modulus_factory->modulus((uint64_t)this->x * c); 
 };
 
 std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {

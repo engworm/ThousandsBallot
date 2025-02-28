@@ -9,7 +9,8 @@ GaloisFieldElement::GaloisFieldElement() : a(0) {};
 
 GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 
 GaloisFieldElement::GaloisFieldElement(const uint32_t &x) {
-  this->a = modP(x);
+  auto modulus_factory = ModulusFactory::getInstance();
+  this->a = modulus_factory->modulus(x);
 }
 GaloisFieldElement::GaloisFieldElement(const DiscreteTorus &t) : a(t.val()) {}; 
 

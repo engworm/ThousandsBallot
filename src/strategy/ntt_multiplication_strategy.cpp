@@ -10,7 +10,7 @@ NTTMultiplicationStrategy::NTTMultiplicationStrategy(uint32_t P, uint32_t N) : P
   init_psi_power_table_bit_reversed_order(this->N);
   init_psi_inverse_power_table(this->N);
   init_psi_inverse_power_table_bit_reversed_order(this->N);
-  Log::info("NTT Multiplication Strategy: ψ power table(bit-reversed) preparation is complete");
+  Log::info("Precomputation of powers of the primitive 2N-th root of unity in bit-reversed order is complete");
 }
 
 bool NTTMultiplicationStrategy::setup(uint32_t P, uint32_t N) {
