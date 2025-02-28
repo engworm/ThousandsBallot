@@ -5,6 +5,7 @@
 #include <vector>
 #include <cstdint>
 #include "params/nttparams.hpp"
+
 #include "structure/galoisfield.hpp"
 #include "structure/poly_base.hpp"
 #include "structure/intpoly.hpp"

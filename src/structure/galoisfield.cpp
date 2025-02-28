@@ -5,17 +5,23 @@
 #include "structure/torus.hpp"
 #include "utility/log.hpp"
 
+std::shared_ptr<ModulusFactory> GaloisFieldElement::modulus_factory = nullptr;
+
 GaloisFieldElement::GaloisFieldElement() : a(0) {};
 
 GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 
+
 GaloisFieldElement::GaloisFieldElement(const uint32_t &x) {
-  auto modulus_factory = ModulusFactory::getInstance();
   this->a = modulus_factory->modulus(x);
 }
-GaloisFieldElement::GaloisFieldElement(const DiscreteTorus &t) : a(t.val()) {}; 
+GaloisFieldElement::GaloisFieldElement(const DiscreteTorus &t) 
+    : a(t.val()) {}; 
 
-GaloisFieldElement::GaloisFieldElement(uint32_t &&x) noexcept : a(std::move(x)) {};
-GaloisFieldElement::GaloisFieldElement(GaloisFieldElement &&a) noexcept: a(std::move(a.val())) {};
+GaloisFieldElement::GaloisFieldElement(uint32_t &&x) noexcept 
+    : a(std::move(x)) {};
+
+GaloisFieldElement::GaloisFieldElement(GaloisFieldElement &&a) noexcept
+    : a(std::move(a.val())) {};
 
 uint32_t GaloisFieldElement::val() const {
   return this->a;
@@ -23,20 +29,17 @@ uint32_t GaloisFieldElement::val() const {
 
 void GaloisFieldElement::operator+=(const GaloisFieldElement &b) {
   uint32_t tmp = this->a + b.a;
-  auto modulus_factory = ModulusFactory::getInstance();
   this->a = modulus_factory->modulus(tmp);
   return;
 };  
 
 void GaloisFieldElement::operator-=(const GaloisFieldElement &a) {
   uint32_t tmp = this->a + (this->P - a.a);
-  auto modulus_factory = ModulusFactory::getInstance();
   this->a = modulus_factory->modulus(tmp);
   return;
 };
 
 void GaloisFieldElement::operator*=(const GaloisFieldElement &b) {
-  auto modulus_factory = ModulusFactory::getInstance();
   this->a = modulus_factory->modulus((uint64_t)this->a * b.a);
   return;
 };

@@ -4,21 +4,20 @@
 #include <iostream>
 #include <cstdint>
 #include <random>
-#include "params/params.hpp"
+#include "params/nttparams.hpp"
 #include "operator/Montgomery.hpp"
+#include "factory/modulus_factory.hpp"
 
 class DiscreteTorus;
 
 class GaloisFieldElement {
   private:
     uint32_t a{};
-    uint32_t P = Params::q;
-  
-    inline uint32_t modP(uint32_t x) const {
-        return x % P;
-    }
+    uint32_t P = NTTParams::P;
 
   public:
+    static std::shared_ptr<ModulusFactory> modulus_factory;
+
     GaloisFieldElement(); 
 
     GaloisFieldElement(const GaloisFieldElement &a);

@@ -9,6 +9,7 @@
 #include "strategy/mersenne_modulus_strategy.hpp"
 #include "strategy/naive_modulus_strategy.hpp"
 #include "utility/log.hpp"
+#include "structure/galoisfield.hpp"
 
 class CommandLineParser {
   private:
@@ -59,10 +60,12 @@ class CommandLineParser {
                   "N =", NTTParams::N, "\n}");
       }
       ModulusFactory::create(NTTParams::P);
+      GaloisFieldElement::modulus_factory = ModulusFactory::getInstance();
 #elif defined(POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
       Log::info("Polynomial Multiplication Method: [ Naive ]");
       Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
       ModulusFactory::create(Params::q);
+      DiscreteTorus::modulus_factory = ModulusFactory::getInstance();
 #else
       Log::error("Polynomial Multiplication Method is not defined");
 #endif

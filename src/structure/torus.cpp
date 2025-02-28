@@ -2,6 +2,8 @@
 #include "utility/log.hpp"
 #include "factory/modulus_factory.hpp"
 
+std::shared_ptr<ModulusFactory> DiscreteTorus::modulus_factory = nullptr;
+
 DiscreteTorus::DiscreteTorus() : x(0) {};
 DiscreteTorus::DiscreteTorus(uint32_t x) : x(x) {
         if (x >= this->q) {
@@ -21,20 +23,17 @@ uint32_t DiscreteTorus::val() const {
 
 void DiscreteTorus::operator+=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + t.x;
-  auto modulus_factory = ModulusFactory::getInstance();
   this->x = modulus_factory->modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator-=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + (this->q - t.x);
-  auto modulus_factory = ModulusFactory::getInstance();
   this->x = modulus_factory->modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator*=(const uint32_t c) {
-  auto modulus_factory = ModulusFactory::getInstance();
   this->x = modulus_factory->modulus((uint64_t)this->x * c); 
 };
 
