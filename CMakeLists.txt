@@ -27,7 +27,6 @@ link_directories(${BOOST_LIB})
 include_directories(/usr/local/include)
 include_directories(./include)
 
-option(NTT_DEBUG "Enable NTT Debug" OFF)
 option(PROFILER "Enable Profiler" OFF)
 
 set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication Method (NTT or NAIVE)")

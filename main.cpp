@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
   std::ofstream ofs("log.txt");
   StopWatch<ChronoTimer> sw(ofs, "Timer", true);
 
-  for (int i = 0; i < 10000; ++i) {
+  for (int i = 0; i < 100; ++i) {
     std::vector<uint32_t> coeffs1(Params::N);
     std::vector<DiscreteTorus> coeffs2(Params::N);
     for (auto& coeff : coeffs1) {
