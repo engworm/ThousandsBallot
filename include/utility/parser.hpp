@@ -69,9 +69,9 @@ class CommandLineParser {
 #elif defined(POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
       Log::info("Polynomial Multiplication Method: [ Naive ]");
       Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
+      NaiveModulusStrategy::q = Params::q;
 #else
       Log::error("Polynomial Multiplication Method is not defined");
-      NaiveModulusStrategy::q = Params::q;
 #endif
 
       if (vm.count("seed")) {

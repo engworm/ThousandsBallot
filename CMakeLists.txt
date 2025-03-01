@@ -46,7 +46,6 @@ set(SOURCE_FILES
     src/structure/galoisfieldpoly.cpp
     src/strategy/ntt_multiplication_strategy.cpp
     src/strategy/naive_multiplication_strategy.cpp
-    src/strategy/modulus_strategy.cpp
     src/strategy/naive_modulus_strategy.cpp
     src/factory/multiplication_factory.cpp)
 
