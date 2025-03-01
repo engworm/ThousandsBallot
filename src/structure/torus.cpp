@@ -1,8 +1,7 @@
 #include "structure/torus.hpp"
 #include "utility/log.hpp"
-#include "factory/modulus_factory.hpp"
-
-std::shared_ptr<ModulusFactory> DiscreteTorus::modulus_factory = nullptr;
+#include "strategy/modulus_strategy.hpp"
+#include "strategy/naive_modulus_strategy.hpp"
 
 DiscreteTorus::DiscreteTorus() : x(0) {};
 DiscreteTorus::DiscreteTorus(uint32_t x) : x(x) {
@@ -23,18 +22,18 @@ uint32_t DiscreteTorus::val() const {
 
 void DiscreteTorus::operator+=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + t.x;
-  this->x = modulus_factory->modulus(tmp);
+  this->x = ModulusStrategy<NaiveModulusStrategy>::modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator-=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + (this->q - t.x);
-  this->x = modulus_factory->modulus(tmp);
+  this->x = ModulusStrategy<NaiveModulusStrategy>::modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator*=(const uint32_t c) {
-  this->x = modulus_factory->modulus((uint64_t)this->x * c); 
+  this->x = ModulusStrategy<NaiveModulusStrategy>::modulus((uint64_t)this->x * c); 
 };
 
 std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {

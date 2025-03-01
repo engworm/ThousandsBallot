@@ -13,9 +13,6 @@ class DiscreteTorus {
     uint32_t q = Params::q;
 
   public:
-
-    static std::shared_ptr<ModulusFactory> modulus_factory;
-
     DiscreteTorus();
     DiscreteTorus(uint32_t x);
 

@@ -6,7 +6,6 @@
 #include <random>
 #include "params/nttparams.hpp"
 #include "operator/Montgomery.hpp"
-#include "factory/modulus_factory.hpp"
 
 class DiscreteTorus;
 
@@ -16,8 +15,6 @@ class GaloisFieldElement {
     uint32_t P = NTTParams::P;
 
   public:
-    static std::shared_ptr<ModulusFactory> modulus_factory;
-
     GaloisFieldElement(); 
 
     GaloisFieldElement(const GaloisFieldElement &a);

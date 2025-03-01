@@ -46,10 +46,9 @@ set(SOURCE_FILES
     src/structure/galoisfieldpoly.cpp
     src/strategy/ntt_multiplication_strategy.cpp
     src/strategy/naive_multiplication_strategy.cpp
-    src/strategy/mersenne_modulus_strategy.cpp
+    src/strategy/modulus_strategy.cpp
     src/strategy/naive_modulus_strategy.cpp
-    src/factory/multiplication_factory.cpp
-    src/factory/modulus_factory.cpp)
+    src/factory/multiplication_factory.cpp)
 
 set(MAIN ThousandsBallot)
 if (POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NTT")
