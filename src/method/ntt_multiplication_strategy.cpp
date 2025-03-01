@@ -1,4 +1,4 @@
-#include "strategy/ntt_multiplication_strategy.hpp"
+#include "method/ntt_multiplication_strategy.hpp"
 #include "utility/extendedEuclidean.hpp"
 #include "structure/toruspoly.hpp"
 

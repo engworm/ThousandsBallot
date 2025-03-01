@@ -2,7 +2,7 @@
 #define NAIVE_MULTIPLICATION_STRATEGY_HPP
 
 #include <memory>
-#include "strategy/multiplication_strategy.hpp"
+#include "method/multiplication_strategy.hpp"
 
 class NaiveMultiplicationStrategy : public MultiplicationStrategy {
 private:

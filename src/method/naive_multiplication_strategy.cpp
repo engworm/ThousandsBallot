@@ -1,4 +1,4 @@
-#include "strategy/naive_multiplication_strategy.hpp"
+#include "method/naive_multiplication_strategy.hpp"
 #include "structure/toruspoly.hpp"
 
 NaiveMultiplicationStrategy::NaiveMultiplicationStrategy(uint32_t P, uint32_t N) : P(P), N(N) {

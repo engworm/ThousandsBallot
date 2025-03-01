@@ -1,6 +1,6 @@
 #include "structure/toruspoly.hpp"
-#include "strategy/naive_multiplication_strategy.hpp"
-#include "strategy/ntt_multiplication_strategy.hpp"
+#include "method/naive_multiplication_strategy.hpp"
+#include "method/ntt_multiplication_strategy.hpp"
 #include "factory/multiplication_factory.hpp"
 
 DiscreteTorusPoly::DiscreteTorusPoly(uint32_t N) : PolyBase<DiscreteTorus>(N) {};  

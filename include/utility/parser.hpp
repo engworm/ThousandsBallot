@@ -9,7 +9,8 @@
 #include "strategy/modulus_wrapper.hpp"
 #include "strategy/mersenne_modulus_strategy.hpp"
 #include "strategy/naive_modulus_strategy.hpp"
-#include "strategy/naive_multiplication_strategy.hpp"
+
+#include "method/naive_multiplication_strategy.hpp"
 
 #include "utility/log.hpp"
 

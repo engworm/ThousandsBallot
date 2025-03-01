@@ -3,8 +3,7 @@
 
 #include <vector>
 #include <memory>
-#include "strategy/multiplication_strategy.hpp"
-#include "strategy/ntt_multiplication_strategy.hpp"
+#include "method/multiplication_strategy.hpp"
 #include "structure/galoisfieldpoly.hpp"
 #include "utility/log.hpp"
 
