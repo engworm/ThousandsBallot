@@ -1,6 +1,6 @@
 #include "structure/torus.hpp"
 #include "utility/log.hpp"
-#include "strategy/modulus_strategy.hpp"
+#include "strategy/modulus_wrapper.hpp"
 #include "strategy/naive_modulus_strategy.hpp"
 
 DiscreteTorus::DiscreteTorus() : x(0) {};
@@ -22,18 +22,18 @@ uint32_t DiscreteTorus::val() const {
 
 void DiscreteTorus::operator+=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + t.x;
-  this->x = ModulusStrategy<NaiveModulusStrategy>::modulus(tmp);
+  this->x = ModulusWrapper<NaiveModulusStrategy>::modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator-=(const DiscreteTorus &t) {
   uint32_t tmp = this->x + (this->q - t.x);
-  this->x = ModulusStrategy<NaiveModulusStrategy>::modulus(tmp);
+  this->x = ModulusWrapper<NaiveModulusStrategy>::modulus(tmp);
   return;
 };
 
 void DiscreteTorus::operator*=(const uint32_t c) {
-  this->x = ModulusStrategy<NaiveModulusStrategy>::modulus((uint64_t)this->x * c); 
+  this->x = ModulusWrapper<NaiveModulusStrategy>::modulus((uint64_t)this->x * c); 
 };
 
 std::ostream& operator<<(std::ostream &os, const DiscreteTorus &t) {

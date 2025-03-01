@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <memory>
-#include "strategy/modulus_strategy.hpp"
+#include "strategy/modulus_wrapper.hpp"
 
 class NaiveModulusStrategy {
 public:

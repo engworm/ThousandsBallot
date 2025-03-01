@@ -40,12 +40,12 @@ int main(int argc, char* argv[]) {
   StopWatch<ChronoTimer> sw;
   sw.start("start");
 
-  // for (int i = 0; i < 1000; ++i) {
-    // DiscreteTorusPoly toruspoly = std::move(intpolys[i] * toruspolys[i]);
-  // }
-  DiscreteTorusPoly toruspoly = std::move(intpolys[0] * toruspolys[0]);
+  for (int i = 0; i < 1000; ++i) {
+    DiscreteTorusPoly toruspoly = std::move(intpolys[i] * toruspolys[i]);
+  }
+  // DiscreteTorusPoly toruspoly = std::move(intpolys[0] * toruspolys[0]);
   sw.stop("stop");
-  Log::debug(toruspoly);
+  // Log::debug(toruspoly);
 
   return 0;
 }
