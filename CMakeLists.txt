@@ -46,7 +46,7 @@ set(SOURCE_FILES
     src/structure/galoisfieldpoly.cpp
     src/method/ntt_multiplication_strategy.cpp
     src/method/naive_multiplication_strategy.cpp
-    src/strategy/naive_modulus_strategy.cpp
+    src/modulus/naive_modulus_strategy.cpp
     src/factory/multiplication_factory.cpp)
 
 set(MAIN ThousandsBallot)

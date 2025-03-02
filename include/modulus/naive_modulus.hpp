@@ -1,11 +1,11 @@
-#ifndef NAIVE_MODULUS_STRATEGY_HPP
-#define NAIVE_MODULUS_STRATEGY_HPP
+#ifndef NAIVE_MODULUS_HPP
+#define NAIVE_MODULUS_HPP
 
 #include <cstdint>
 #include <memory>
-#include "strategy/modulus_wrapper.hpp"
+#include "modulus/modulus_wrapper.hpp"
 
-class NaiveModulusStrategy {
+class NaiveModulus {
 public:
   static uint32_t q;
 

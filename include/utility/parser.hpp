@@ -6,9 +6,10 @@
 #include "params/params.hpp"
 #include "params/nttparams.hpp"
 
-#include "strategy/modulus_wrapper.hpp"
-#include "strategy/mersenne_modulus_strategy.hpp"
-#include "strategy/naive_modulus_strategy.hpp"
+// modulus wrapperのincludeだけで済むように設計を変える
+#include "modulus/modulus_wrapper.hpp"
+#include "modulus/mersenne_modulus.hpp"
+#include "modulus/naive_modulus.hpp"
 
 #include "method/naive_multiplication_method.hpp"
 
@@ -67,11 +68,11 @@ class CommandLineParser {
                   "P =", NTTParams::P, "\n",
                   "N =", NTTParams::N, "\n}");
       }
-      NaiveModulusStrategy::q = NTTParams::P;
+      NaiveModulus::q = NTTParams::P;
 #elif defined(POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
       Log::info("Polynomial Multiplication Method: [ Naive ]");
       Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
-      NaiveModulusStrategy::q = Params::q;
+      NaiveModulus::q = Params::q;
 #else
       Log::error("Polynomial Multiplication Method is not defined");
 #endif

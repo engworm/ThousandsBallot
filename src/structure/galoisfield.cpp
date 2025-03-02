@@ -1,6 +1,6 @@
 #include <utility>
-#include "strategy/modulus_wrapper.hpp"
-#include "strategy/naive_modulus_strategy.hpp"
+#include "modulus/modulus_wrapper.hpp"
+#include "modulus/naive_modulus.hpp"
 #include "structure/galoisfield.hpp"
 #include "structure/torus.hpp"
 #include "utility/log.hpp"
@@ -10,7 +10,7 @@ GaloisFieldElement::GaloisFieldElement() : a(0) {};
 GaloisFieldElement::GaloisFieldElement(const GaloisFieldElement &a) : a(a.a) {}; 
 
 GaloisFieldElement::GaloisFieldElement(const uint32_t &x) {
-  this->a = ModulusWrapper<NaiveModulusStrategy>::modulus(x);
+  this->a = ModulusWrapper<NaiveModulus>::modulus(x);
 }
 GaloisFieldElement::GaloisFieldElement(const DiscreteTorus &t) 
     : a(t.val()) {}; 
@@ -27,18 +27,18 @@ uint32_t GaloisFieldElement::val() const {
 
 void GaloisFieldElement::operator+=(const GaloisFieldElement &b) {
   uint32_t tmp = this->a + b.a;
-  this->a = ModulusWrapper<NaiveModulusStrategy>::modulus(tmp);
+  this->a = ModulusWrapper<NaiveModulus>::modulus(tmp);
   return;
 };  
 
 void GaloisFieldElement::operator-=(const GaloisFieldElement &a) {
   uint32_t tmp = this->a + (this->P - a.a);
-  this->a = ModulusWrapper<NaiveModulusStrategy>::modulus(tmp);
+  this->a = ModulusWrapper<NaiveModulus>::modulus(tmp);
   return;
 };
 
 void GaloisFieldElement::operator*=(const GaloisFieldElement &b) {
-  this->a = ModulusWrapper<NaiveModulusStrategy>::modulus((uint64_t)this->a * b.a);
+  this->a = ModulusWrapper<NaiveModulus>::modulus((uint64_t)this->a * b.a);
   return;
 };
 

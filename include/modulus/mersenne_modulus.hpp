@@ -1,11 +1,11 @@
-#ifndef MERSENNE_MODULUS_STRATEGY_HPP
-#define MERSENNE_MODULUS_STRATEGY_HPP
+#ifndef MERSENNE_MODULUS_HPP
+#define MERSENNE_MODULUS_HPP
 
 #include <cstdint>
 #include <memory>
-#include "strategy/modulus_wrapper.hpp"
+#include "modulus/modulus_wrapper.hpp"
 
-class MersenneModulusStrategy {
+class MersenneModulus {
 public:
   static uint32_t P;
   static uint32_t n;
