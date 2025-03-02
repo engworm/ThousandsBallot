@@ -1,14 +1,14 @@
-#ifndef NTT_MULTIPLICATION_STRATEGY_HPP
-#define NTT_MULTIPLICATION_STRATEGY_HPP
+#ifndef NTT_MULTIPLICATION_METHOD_HPP
+#define NTT_MULTIPLICATION_METHOD_HPP
 
 #include <vector>
 #include <memory>
-#include "method/multiplication_strategy.hpp"
+#include "method/multiplication_method.hpp"
 #include "structure/galoisfieldpoly.hpp"
 #include "utility/log.hpp"
 
 // Singleton Pattern
-class NTTMultiplicationStrategy : public MultiplicationStrategy {
+class NTTMultiplicationMethod : public MultiplicationMethod {
 private:
   uint32_t P; 
   uint32_t N;
@@ -23,8 +23,8 @@ private:
   std::vector<GaloisFieldElement> psi_inverse_power_table;
   std::vector<GaloisFieldElement> psi_inverse_power_table_bit_reversed_order;
 
-  static std::shared_ptr<NTTMultiplicationStrategy> instance;
-  NTTMultiplicationStrategy(uint32_t P, uint32_t N);
+  static std::shared_ptr<NTTMultiplicationMethod> instance;
+  NTTMultiplicationMethod(uint32_t P, uint32_t N);
 
   void init_psi_power_table(uint32_t N);
   void init_psi_power_table_bit_reversed_order(uint32_t N);
@@ -44,7 +44,7 @@ private:
   GaloisFieldPoly multiply_debug(GaloisFieldPoly &a, GaloisFieldPoly &b) const;
 
 public:
-  static std::shared_ptr<NTTMultiplicationStrategy> getInstance(uint32_t P, uint32_t N);
+  static std::shared_ptr<NTTMultiplicationMethod> getInstance(uint32_t P, uint32_t N);
   DiscreteTorusPoly multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const override;
 };
 

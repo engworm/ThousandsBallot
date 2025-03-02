@@ -10,7 +10,7 @@
 #include "strategy/mersenne_modulus_strategy.hpp"
 #include "strategy/naive_modulus_strategy.hpp"
 
-#include "method/naive_multiplication_strategy.hpp"
+#include "method/naive_multiplication_method.hpp"
 
 #include "utility/log.hpp"
 
