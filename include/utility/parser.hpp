@@ -11,8 +11,6 @@
 #include "modulus/mersenne_modulus.hpp"
 #include "modulus/naive_modulus.hpp"
 
-#include "method/naive_multiplication_method.hpp"
-
 #include "utility/log.hpp"
 
 class CommandLineParser {
