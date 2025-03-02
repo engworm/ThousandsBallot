@@ -7,7 +7,6 @@
 #include "structure/galoisfieldpoly.hpp"
 #include "utility/log.hpp"
 
-// Singleton Pattern
 class NTTMultiplicationMethod : public MultiplicationMethod {
 private:
   uint32_t P; 
