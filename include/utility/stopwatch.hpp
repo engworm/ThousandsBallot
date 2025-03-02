@@ -45,11 +45,11 @@ public:
     std::cout << activity << mssg << ms << "ms" << std::endl;
   }
 
-  void stop(char const *event = "stop") {
+  uint32_t stop(char const *event = "stop") {
     uint32_t ms = this->get_ms();
     os << activity << " " << event << " " << ms << "ms" << std::endl;
     BaseTimer::clear();
-    return;
+    return ms;
   }
 
 private:

@@ -59,7 +59,10 @@ void PolynomialMultiplicationMeasure<BaseTimer>::measure() {
     DiscreteTorusPoly toruspoly = std::move(intpolys[i] * toruspolys[i]);
   }
 
-  this->sw.stop("stop");
+  uint32_t total_ms = this->sw.stop("stop");
+  double average_ms = (double)total_ms / total_testcase;
+  os << "Total(ms): " << total_ms << "\n";
+  os << "Avg(ms): "<< average_ms << std::endl;
 };
 
 #endif

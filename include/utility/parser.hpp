@@ -11,6 +11,10 @@
 #include "modulus/mersenne_modulus.hpp"
 #include "modulus/naive_modulus.hpp"
 
+#include "factory/multiplication_method_manager.hpp"
+#include "method/naive_multiplication_method.hpp"
+#include "method/ntt_multiplication_method.hpp"
+
 #include "utility/log.hpp"
 
 class CommandLineParser {
@@ -67,10 +71,12 @@ class CommandLineParser {
                   "N =", NTTParams::N, "\n}");
       }
       NaiveModulus::q = NTTParams::P;
+      MultiplicationMethodManager::create();
 #elif defined(POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
       Log::info("Polynomial Multiplication Method: [ Naive ]");
       Log::warn("Naive polynomial multiplication has been selected. This method is less efficient and may result in slower performance compared to NTT.");
       NaiveModulus::q = Params::q;
+      MultiplicationMethodManager::create();
 #else
       Log::error("Polynomial Multiplication Method is not defined");
 #endif
