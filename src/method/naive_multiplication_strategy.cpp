@@ -1,11 +1,15 @@
 #include "method/naive_multiplication_method.hpp"
 #include "structure/toruspoly.hpp"
 
+std::shared_ptr<NaiveMultiplicationMethod> NaiveMultiplicationMethod::instance = nullptr;
+
 NaiveMultiplicationMethod::NaiveMultiplicationMethod(uint32_t P, uint32_t N) : P(P), N(N) {
 }
 
 std::shared_ptr<NaiveMultiplicationMethod> NaiveMultiplicationMethod::getInstance(uint32_t P, uint32_t N) {
-  auto instance = std::shared_ptr<NaiveMultiplicationMethod>(new NaiveMultiplicationMethod(P, N));
+   if (instance == nullptr) {
+    instance = std::shared_ptr<NaiveMultiplicationMethod>(new NaiveMultiplicationMethod(P, N));
+  }
   return instance;
 }
 

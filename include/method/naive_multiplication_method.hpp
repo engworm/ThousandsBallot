@@ -9,6 +9,7 @@ private:
   uint32_t P; 
   uint32_t N;
 
+static std::shared_ptr<NaiveMultiplicationMethod> instance;
   NaiveMultiplicationMethod(uint32_t P, uint32_t N);
 
 public:
