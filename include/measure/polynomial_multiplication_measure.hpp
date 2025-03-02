@@ -7,10 +7,11 @@
 #include "structure/toruspoly.hpp"
 #include "utility/stopwatch.hpp"
 
+template <typename BaseTimer>
 class PolynomialMultiplicationMeasure {
   private:
     std::ostream& os;
-    StopWatch<ChronoTimer> sw;
+    StopWatch<BaseTimer> sw;
     std::mt19937 mt;
     uint32_t total_testcase;
 
@@ -18,10 +19,18 @@ class PolynomialMultiplicationMeasure {
     PolynomialMultiplicationMeasure(std::ostream& os, std::mt19937 mt, uint32_t total_testcase) 
           : os(os), mt(mt), total_testcase(total_testcase) {};
 
+    uint32_t get_total_testcase() const;
     void measure();
 };
 
-void PolynomialMultiplicationMeasure::measure() {
+template <typename BaseTimer>
+uint32_t PolynomialMultiplicationMeasure<BaseTimer>::get_total_testcase() const {
+  return this->total_testcase;
+}
+
+template <typename BaseTimer>
+void PolynomialMultiplicationMeasure<BaseTimer>::measure() {
+  Log::info("Total Testcase: ", this->total_testcase);
 
   std::uniform_int_distribution<uint32_t> dis_poly(0, Params::q-1);
 
@@ -48,7 +57,6 @@ void PolynomialMultiplicationMeasure::measure() {
 
   for (int i = 0; i < total_testcase; ++i) {
     DiscreteTorusPoly toruspoly = std::move(intpolys[i] * toruspolys[i]);
-    // Log::debug(toruspoly);
   }
 
   this->sw.stop("stop");

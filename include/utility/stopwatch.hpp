@@ -43,13 +43,13 @@ public:
   void show_with_flush(char const *mssg) {
     uint32_t ms = this->get_ms();
     std::cout << activity << mssg << ms << "ms" << std::endl;
-  };
+  }
 
-  uint32_t stop(char const *event = "stop") {
+  void stop(char const *event = "stop") {
     uint32_t ms = this->get_ms();
     os << activity << " " << event << " " << ms << "ms" << std::endl;
     BaseTimer::clear();
-    return ms;
+    return;
   }
 
 private:
