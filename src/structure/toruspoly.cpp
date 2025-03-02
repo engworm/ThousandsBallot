@@ -1,7 +1,5 @@
 #include "structure/toruspoly.hpp"
-#include "method/naive_multiplication_method.hpp"
-#include "method/ntt_multiplication_method.hpp"
-#include "factory/multiplication_factory.hpp"
+#include "factory/multiplication_method_manager.hpp"
 
 DiscreteTorusPoly::DiscreteTorusPoly(uint32_t N) : PolyBase<DiscreteTorus>(N) {};  
 
@@ -25,13 +23,6 @@ std::ostream& operator<<(std::ostream &os, const DiscreteTorusPoly &poly) {
 }
 
 DiscreteTorusPoly operator*(IntPoly& poly1, DiscreteTorusPoly &poly2) {
-#if defined(POLYNOMIAL_MULTIPLICATION_METHOD_NTT)
-  auto multiplication_strategy = MultiplicationFactory<NTTMultiplicationMethod>::create(NTTParams::P, NTTParams::N);
-#elif defined(POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
-  auto multiplication_strategy = MultiplicationFactory<NaiveMultiplicationMethod>::create(Params::q, Params::N);
-#else
-  Log::error("Polynomial Multiplication Method is not defined");
-#endif
-
+  auto multiplication_strategy = MultiplicationMethodManager::create();
   return multiplication_strategy->multiply(poly1, poly2);
 }

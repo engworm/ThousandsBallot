@@ -48,6 +48,7 @@ void PolynomialMultiplicationMeasure::measure() {
 
   for (int i = 0; i < total_testcase; ++i) {
     DiscreteTorusPoly toruspoly = std::move(intpolys[i] * toruspolys[i]);
+    Log::debug(toruspoly);
   }
 
   this->sw.stop("stop");

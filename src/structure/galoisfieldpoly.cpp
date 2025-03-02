@@ -1,9 +1,6 @@
 #include "structure/galoisfieldpoly.hpp"
 #include "structure/toruspoly.hpp"
-#include "factory/multiplication_factory.hpp"
-#include "method/multiplication_method.hpp"
-#include "method/naive_multiplication_method.hpp"
-#include "method/ntt_multiplication_method.hpp"
+#include "factory/multiplication_method_manager.hpp"
 
 GaloisFieldPoly::GaloisFieldPoly(uint32_t P, uint32_t N) 
     : P(P), PolyBase<GaloisFieldElement>(N) {
