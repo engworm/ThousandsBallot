@@ -12,11 +12,6 @@ class DiscreteTorus {
     uint32_t x;
     uint32_t q = Params::q;
 
-    // should replace it to faster algo
-    inline uint32_t modP(uint32_t x) {
-        return x % q;
-    };
-
   public:
     DiscreteTorus();
     DiscreteTorus(uint32_t x);

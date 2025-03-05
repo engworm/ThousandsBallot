@@ -2,44 +2,19 @@
 #include <vector>
 #include <boost/program_options.hpp>
 #include <utility>
-#include "params/params.hpp"
-#include "params/nttparams.hpp"
-#include "structure/tlwe.hpp"
+#include <fstream>
+
+#include "measure/polynomial_multiplication_measure.hpp"
+
 #include "utility/parser.hpp"
-#include "utility/log.hpp"
-#include "utility/extendedEuclidean.hpp"
-#include "encrypt/encrypt_tlwe.hpp"
-#include "decrypt/decrypt_tlwe.hpp"
-#include "structure/torus.hpp"
-#include "structure/galoisfield.hpp"
-#include "structure/toruspoly.hpp"
-#include "structure/galoisfieldpoly.hpp"
+#include "utility/chronotimer.hpp"
 
 int main(int argc, char* argv[]) {
   CommandLineParser parser(argc, argv);
 
-  auto prng = parser.PRNG;
-  std::uniform_int_distribution<uint32_t> dis_poly(0, Params::q-1);
-
-  std::vector<uint32_t> coeffs1(Params::N);
-  std::vector<DiscreteTorus> coeffs2(Params::N);
-  for (auto& coeff : coeffs1) {
-      coeff = dis_poly(prng);
-  }
-  for (auto& coeff : coeffs2) {
-      coeff = dis_poly(prng);
-  }
-
-  // IntPoly intpoly1({1, 1, 1, 1});
-  // DiscreteTorusPoly toruspoly2({0, 1, 0, 0});
-  IntPoly intpoly1(coeffs1);
-  DiscreteTorusPoly toruspoly2(coeffs2);
-
-  Log::debug("intpoly1:", intpoly1);
-  Log::debug("toruspoly2:", toruspoly2);
-
-  DiscreteTorusPoly toruspoly3 = std::move(intpoly1 * toruspoly2);
-  Log::debug("toruspoly3:", toruspoly3);
+  std::ofstream ofs("log.txt");
+  PolynomialMultiplicationMeasure<ChronoTimer> polynomial_multiplication_measure(ofs, parser.PRNG, 1000);
+  polynomial_multiplication_measure.measure();
 
   return 0;
 }

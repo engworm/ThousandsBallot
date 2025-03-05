@@ -1,19 +1,19 @@
-#include "strategy/ntt_multiplication_strategy.hpp"
+#include "method/ntt_multiplication_method.hpp"
 #include "utility/extendedEuclidean.hpp"
 #include "structure/toruspoly.hpp"
 
-std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::instance = nullptr;
+std::shared_ptr<NTTMultiplicationMethod> NTTMultiplicationMethod::instance = nullptr;
 
-NTTMultiplicationStrategy::NTTMultiplicationStrategy(uint32_t P, uint32_t N) : P(P), N(N) {
+NTTMultiplicationMethod::NTTMultiplicationMethod(uint32_t P, uint32_t N) : P(P), N(N) {
   setup(this->P, this->N);
   init_psi_power_table(this->N);
   init_psi_power_table_bit_reversed_order(this->N);
   init_psi_inverse_power_table(this->N);
   init_psi_inverse_power_table_bit_reversed_order(this->N);
-  Log::info("NTT Multiplication Strategy: ψ power table(bit-reversed) preparation is complete");
+  Log::info("Precomputation of powers of the primitive 2N-th root of unity in bit-reversed order is complete");
 }
 
-bool NTTMultiplicationStrategy::setup(uint32_t P, uint32_t N) {
+bool NTTMultiplicationMethod::setup(uint32_t P, uint32_t N) {
   this->N_inverse = inv(this->N);
 
   this->psi = search_2N_primitive_root_of_unity().val();
@@ -31,12 +31,13 @@ bool NTTMultiplicationStrategy::setup(uint32_t P, uint32_t N) {
   return true;
 }
   
-uint32_t NTTMultiplicationStrategy::inv(GaloisFieldElement x) {
-  uint32_t r = extendedEuclidean(this->P, x.val()).second + this->P;
+GaloisFieldElement NTTMultiplicationMethod::inv(GaloisFieldElement x) {
+  uint32_t tmp = extendedEuclidean(this->P, x.val()).second + this->P;
+  GaloisFieldElement r(tmp);
   return r;
 }
     
-GaloisFieldElement NTTMultiplicationStrategy::search_2N_root_of_unity(int seed) {
+GaloisFieldElement NTTMultiplicationMethod::search_2N_root_of_unity(int seed) {
   std::mt19937 gen(seed);
   std::uniform_int_distribution<uint32_t> dis(0, this->P-1);
     
@@ -44,6 +45,7 @@ GaloisFieldElement NTTMultiplicationStrategy::search_2N_root_of_unity(int seed) 
   GaloisFieldElement psi = 1; 
 
   if ((this->P-1)%(2*this->N) != 0) {
+    std::cout << P-1 << ' ' << 2*N << std::endl;
     Log::error("P-1 is not divisible by 2N");
   }
 
@@ -55,7 +57,7 @@ GaloisFieldElement NTTMultiplicationStrategy::search_2N_root_of_unity(int seed) 
 }
     
 // check if psi is 2N-th primitive root of unity
-bool NTTMultiplicationStrategy::check_2N_primitive_root_of_unitiy(GaloisFieldElement const &psi) {
+bool NTTMultiplicationMethod::check_2N_primitive_root_of_unitiy(GaloisFieldElement const &psi) {
   GaloisFieldElement psi_pow = 1;
   for (int i = 0; i < this->N; ++i) {
     psi_pow *= psi;
@@ -68,7 +70,7 @@ bool NTTMultiplicationStrategy::check_2N_primitive_root_of_unitiy(GaloisFieldEle
   return res;
 }
     
-GaloisFieldElement NTTMultiplicationStrategy::search_2N_primitive_root_of_unity() {
+GaloisFieldElement NTTMultiplicationMethod::search_2N_primitive_root_of_unity() {
   int seed = 0;
   GaloisFieldElement psi = search_2N_root_of_unity(seed);
   while (!check_2N_primitive_root_of_unitiy(psi)) {
@@ -78,7 +80,7 @@ GaloisFieldElement NTTMultiplicationStrategy::search_2N_primitive_root_of_unity(
   return psi;
 }
 
-void NTTMultiplicationStrategy::init_psi_power_table(uint32_t N) {
+void NTTMultiplicationMethod::init_psi_power_table(uint32_t N) {
   this->psi_power_table.reserve(N);
   this->psi_power_table[0] = 1;
   for (int i = 1; i < N; ++i) {
@@ -86,7 +88,7 @@ void NTTMultiplicationStrategy::init_psi_power_table(uint32_t N) {
   }
 }
 
-void NTTMultiplicationStrategy::init_psi_inverse_power_table(uint32_t N) {
+void NTTMultiplicationMethod::init_psi_inverse_power_table(uint32_t N) {
   this->psi_inverse_power_table.reserve(N);
   this->psi_inverse_power_table[0] = 1;
   for (int i = 1; i < N; ++i) {
@@ -96,7 +98,7 @@ void NTTMultiplicationStrategy::init_psi_inverse_power_table(uint32_t N) {
 
 
 // bit-reversed order の処理は共通化したい
-void NTTMultiplicationStrategy::init_psi_power_table_bit_reversed_order(uint32_t N) {
+void NTTMultiplicationMethod::init_psi_power_table_bit_reversed_order(uint32_t N) {
   auto bit_reverse = [](uint32_t n, uint32_t log2n) {
     uint32_t ans = 0;
     for (uint32_t i = 0; i < log2n; ++i) {
@@ -113,7 +115,7 @@ void NTTMultiplicationStrategy::init_psi_power_table_bit_reversed_order(uint32_t
   }
 }
 
-void NTTMultiplicationStrategy::init_psi_inverse_power_table_bit_reversed_order(uint32_t N) {
+void NTTMultiplicationMethod::init_psi_inverse_power_table_bit_reversed_order(uint32_t N) {
   auto bit_reverse = [](uint32_t n, uint32_t log2n) {
     uint32_t ans = 0;
     for (uint32_t i = 0; i < log2n; ++i) {
@@ -130,7 +132,7 @@ void NTTMultiplicationStrategy::init_psi_inverse_power_table_bit_reversed_order(
   }
 }
 
-void NTTMultiplicationStrategy::forward_NTT(GaloisFieldPoly &a) const {
+void NTTMultiplicationMethod::forward_NTT(GaloisFieldPoly &a) const {
     uint32_t t = this->N;
     for (uint32_t m = 1; m < this->N; m *= 2) {
         t /= 2;
@@ -148,7 +150,7 @@ void NTTMultiplicationStrategy::forward_NTT(GaloisFieldPoly &a) const {
     }
 }
 
-void NTTMultiplicationStrategy::inverse_NTT(GaloisFieldPoly &a) const {
+void NTTMultiplicationMethod::inverse_NTT(GaloisFieldPoly &a) const {
   uint32_t t = 1;
   for (uint32_t m = this->N; m > 1; m /= 2) {
     uint32_t j1 = 0;
@@ -171,14 +173,14 @@ void NTTMultiplicationStrategy::inverse_NTT(GaloisFieldPoly &a) const {
   }
 }
 
-std::shared_ptr<NTTMultiplicationStrategy> NTTMultiplicationStrategy::getInstance(uint32_t P, uint32_t N) {
+std::shared_ptr<NTTMultiplicationMethod> NTTMultiplicationMethod::getInstance(uint32_t P, uint32_t N) {
   if (instance == nullptr) {
-    instance = std::shared_ptr<NTTMultiplicationStrategy>(new NTTMultiplicationStrategy(P, N));
+    instance = std::shared_ptr<NTTMultiplicationMethod>(new NTTMultiplicationMethod(P, N));
   }
   return instance;
 }
 
-GaloisFieldPoly NTTMultiplicationStrategy::multiply_debug(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) const {
+GaloisFieldPoly NTTMultiplicationMethod::multiply_debug(GaloisFieldPoly &poly1, GaloisFieldPoly &poly2) const {
   std::vector<GaloisFieldElement> zero(poly1.size(), GaloisFieldElement(0));
   GaloisFieldPoly result(zero);
   for (size_t i = 0; i < poly1.size(); ++i) {
@@ -195,10 +197,7 @@ GaloisFieldPoly NTTMultiplicationStrategy::multiply_debug(GaloisFieldPoly &poly1
   return result;
 }
 
-GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
-#ifdef NTT_DEBUG
-  return multiply_debug(a, b);
-#else
+GaloisFieldPoly NTTMultiplicationMethod::multiply(GaloisFieldPoly &a, GaloisFieldPoly &b) const {
   forward_NTT(a);
   forward_NTT(b);
   GaloisFieldPoly res(this->P, this->N);
@@ -207,13 +206,12 @@ GaloisFieldPoly NTTMultiplicationStrategy::multiply(GaloisFieldPoly &a, GaloisFi
   } 
   inverse_NTT(res);
   return res;
-#endif
 }
 
-DiscreteTorusPoly NTTMultiplicationStrategy::multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const {
+DiscreteTorusPoly NTTMultiplicationMethod::multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const {
   GaloisFieldPoly gfpoly1 = std::move(poly1);
   GaloisFieldPoly gfpoly2 = std::move(poly2);
-  GaloisFieldPoly res = multiply(gfpoly1, gfpoly2);
+  GaloisFieldPoly res = this->multiply(gfpoly1, gfpoly2);
   DiscreteTorusPoly torus_res = std::move(res);
   return torus_res;
 }

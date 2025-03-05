@@ -1,11 +1,11 @@
-#ifndef MULTIPLICATION_STRATEGY_HPP
-#define MULTIPLICATION_STRATEGY_HPP
+#ifndef MULTIPLICATION_METHOD_HPP
+#define MULTIPLICATION_METHOD_HPP
 
 #include "structure/galoisfieldpoly.hpp"
 
-class MultiplicationStrategy {
+class MultiplicationMethod {
 public:
-    virtual ~MultiplicationStrategy() = default;
+    virtual ~MultiplicationMethod() = default;
     virtual DiscreteTorusPoly multiply(IntPoly &poly1, DiscreteTorusPoly &poly2) const = 0;
 };
 

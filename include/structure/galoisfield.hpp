@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstdint>
 #include <random>
-#include "params/params.hpp"
+#include "params/nttparams.hpp"
 #include "operator/Montgomery.hpp"
 
 class DiscreteTorus;
@@ -12,11 +12,7 @@ class DiscreteTorus;
 class GaloisFieldElement {
   private:
     uint32_t a{};
-    uint32_t P = Params::q;
-  
-    inline uint32_t modP(uint32_t x) const {
-        return x % P;
-    }
+    uint32_t P = NTTParams::P;
 
   public:
     GaloisFieldElement(); 

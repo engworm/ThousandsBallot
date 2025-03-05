@@ -27,18 +27,10 @@ link_directories(${BOOST_LIB})
 include_directories(/usr/local/include)
 include_directories(./include)
 
-option(NTT_DEBUG "Enable NTT Debug" OFF)
 option(PROFILER "Enable Profiler" OFF)
 
 set(POLYNOMIAL_MULTIPLICATION_METHOD "NAIVE" CACHE STRING "Polynimoal Multiplication Method (NTT or NAIVE)")
 set_property(CACHE POLYNOMIAL_MULTIPLICATION_METHOD PROPERTY STRINGS "NTT" "NAIVE")
-
-set(MODULUS_STRATEGY "NAIVE" CACHE STRING "Modulus Strategy (NAIVE or MERSENNE)")
-set_property(CACHE MODULUS_STRATEGY PROPERTY STRINGS "NAIVE" "MERSENNE")
-
-if (NTT_DEBUG)
-  add_definitions(-DNTT_DEBUG)
-endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
@@ -52,34 +44,30 @@ set(SOURCE_FILES
     src/structure/toruspoly.cpp
     src/structure/intpoly.cpp
     src/structure/galoisfieldpoly.cpp
-    src/strategy/ntt_multiplication_strategy.cpp
-    src/strategy/naive_multiplication_strategy.cpp
-    src/strategy/mersenne_modulus_strategy.cpp
-    src/strategy/naive_modulus_strategy.cpp
-    src/factory/multiplication_factory.cpp)
+    src/method/ntt_multiplication_strategy.cpp
+    src/method/naive_multiplication_strategy.cpp
+    src/modulus/naive_modulus_strategy.cpp)
 
 set(MAIN ThousandsBallot)
-add_executable(${MAIN} main.cpp ${SOURCE_FILES})
-
 if (POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NTT")
+  set(MAIN "${MAIN}-ntt")
+  add_executable(${MAIN} main.cpp ${SOURCE_FILES})
   target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NTT)
+  target_link_libraries(${MAIN} -lboost_program_options)
 elseif(POLYNOMIAL_MULTIPLICATION_METHOD STREQUAL "NAIVE")
+  set(MAIN "${MAIN}-naive")
+  add_executable(${MAIN} main.cpp ${SOURCE_FILES})
   target_compile_definitions(${MAIN} PRIVATE POLYNOMIAL_MULTIPLICATION_METHOD_NAIVE)
+  target_link_libraries(${MAIN} -lboost_program_options)
 endif()
-
-if (MODULUS_STRATEGY STREQUAL "MERSENNE")
-  target_compile_definitions(${MAIN} PRIVATE MODULUS_STRATEGY_MERSENNE)
-elseif(MODULUS_STRATEGY STREQUAL "NAIVE")
-  target_compile_definitions(${MAIN} PRIVATE MODULUS_STRATEGY_NAIVE)
-endif()
-
 
 if (PROFILER)
   target_compile_options(${MAIN} PRIVATE -pg)
   target_link_options(${MAIN} PRIVATE -pg)
 endif()
  
-target_link_libraries(${MAIN} -lboost_program_options)
+
+add_executable(benchmark_toruspoly src/benchmark/benchmark_toruspoly.cpp) 
 
 set(TEST_SOURCE_FILES
     src/test/test_montgomerymul.cpp

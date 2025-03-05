@@ -23,7 +23,7 @@ class PolyBase {
 
   public:
     PolyBase();
-    PolyBase(size_t N);
+    PolyBase(uint32_t N);
     PolyBase(const std::vector<T> &coeffs); 
     PolyBase(const PolyBase &poly) = delete;
 
@@ -54,7 +54,7 @@ template<Arithmetic T>
 PolyBase<T>::PolyBase() = default;
 
 template<Arithmetic T>
-PolyBase<T>::PolyBase(size_t N) : N(N), coeffs(N, T(0)) {};
+PolyBase<T>::PolyBase(uint32_t N) : N(N), coeffs(N, T(0)) {};
 
 // 実質的にコピーコンストラクタになっているが，ベクトルの代入なので高速に動作する
 // Optimized C++, p215
